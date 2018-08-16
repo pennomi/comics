@@ -1,0 +1,158 @@
+{% load static %}
+
+
+body {
+    padding: 0;
+    margin: 0;
+    display: flex;
+    justify-content: center;
+    background: {{ comic.overflow }};
+    font-family: 'Arial', sans-serif;
+}
+
+img {
+    vertical-align:bottom;
+}
+
+.content-background {
+    background: {{ comic.background }};
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    flex-padding: 10px;
+    max-width: 892px;
+    width: 100%;
+}
+
+.content {
+    display: inline-block;
+    width: 100%;
+    max-width: 700px;  /* Goblins is 892px, S&W 980px, Gaia 770px, Schlock Mercenary 780px, Swords 700px  */
+}
+
+header {
+    padding: 0;
+    margin: 0;
+}
+
+.header-image {
+    width: 100%;
+    height: auto;
+}
+
+.panel {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.comic-image {
+    width: 100%;
+    height: auto;
+}
+
+.comic-text-wrapper {
+}
+
+.comic-navigation {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: center;
+    width: 100%;
+}
+
+.box{
+	position: relative;
+	width: 20%;		/* desired width */
+}
+.box:before{
+	content: "";
+	display: block;
+	padding-top: 100%; 	/* initial ratio of 1:1*/
+}
+
+
+/* IMAGE SPRITES*/
+.navigation-button {
+    position: absolute;
+    top: 0; bottom: 0;
+    width: 100%;
+    border: none;
+    outline: none;
+    background: url({% static "comics/sword-sprites.png" %}) no-repeat;
+    background-size : 500% 200%;
+}
+
+.navigation-first {
+   background-position: 0 0;
+}
+.navigation-first:hover {
+   background-position: 0 100%;
+}
+
+.navigation-previous {
+   background-position: 25% 0;
+}
+.navigation-previous:hover {
+   background-position: 25% 100%;
+}
+
+.navigation-next {
+   background-position: 50% 0;
+}
+.navigation-next:hover {
+   background-position: 50% 100%;
+}
+
+.navigation-last {
+       background-position: 75% 0;
+}
+.navigation-last:hover {
+   background-position: 75% 100%;
+}
+
+.navigation-archive {
+   background-position: 100% 0;
+}
+.navigation-archive:hover {
+   background-position: 100% 100%;
+}
+
+
+/* COMIC BLOG POST SECTION */
+.comic-post {
+    border: 43px solid transparent;
+    border-image: url({% static "comics/default-container.png" %}) fill 43 repeat;
+}
+.comic-post-content {
+    margin: -20px;  /* To undo the very wide image border */
+}
+
+
+/* COMIC TRANSCRIPT SECTION */
+.comic-transcript {
+    margin-top: 16px;
+    border: 43px solid transparent;
+    border-image: url({% static "comics/default-container.png" %}) fill 43 repeat;
+}
+.comic-transcript-content {
+    margin: -20px;
+}
+
+/* COMIC COMMENT SECTION */
+.comic-comments {
+
+}
+
+footer {
+    color: #000000;
+    background-color: #978b65;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 48px;
+}

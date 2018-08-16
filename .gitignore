@@ -1,0 +1,6 @@
+# Editor and bytecode
+.idea/
+*.pyc
+
+# Development resources
+db.sqlite3
