@@ -1,17 +1,35 @@
 {% load static %}
 
+{% if comic.font %}
+@font-face {
+  font-family: 'ComicFont';
+  src: url({{ comic.font.url }});
+}
+{% endif %}
 
 body {
+    font-family: 'ComicFont', 'Arial', sans-serif;
     padding: 0;
     margin: 0;
     display: flex;
     justify-content: center;
     background: {{ comic.overflow }};
-    font-family: 'Arial', sans-serif;
 }
 
 img {
     vertical-align:bottom;
+}
+
+hr {
+    display: block;
+    border: 0px;
+    padding-top: 24px;
+    padding-bottom: 24px;
+    height: 10px;
+    {% if comic.hr_image %}
+    background-image: url({{ comic.hr_image.url }});
+    {% else %}
+    {% endif %}
 }
 
 .content-background {
@@ -133,11 +151,6 @@ header {
 
 
 /* COMIC TRANSCRIPT SECTION */
-.comic-transcript {
-    margin-top: 16px;
-    border: 43px solid transparent;
-    border-image: url({% static "comics/default-container.png" %}) fill 43 repeat;
-}
 .comic-transcript-content {
     margin: -20px;
 }
@@ -155,4 +168,5 @@ footer {
     justify-content: center;
     align-items: center;
     margin-top: 48px;
+    flex-direction: column;
 }

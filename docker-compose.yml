@@ -1,0 +1,22 @@
+version: '3'
+
+services:
+  db:
+    container_name: comics_db
+    image: postgres
+    restart: always
+    environment:
+      - POSTGRES_USER=django
+      - POSTGRES_PASSWORD=django
+      - POSTGRES_DB=django
+  web:
+    container_name: comics_django
+    build: .
+    command: bash /opt/django/runserver.sh
+    volumes:
+      - .:/opt/comics
+    ports:
+      - "8000:8000"
+      - "80:80"
+    depends_on:
+      - db

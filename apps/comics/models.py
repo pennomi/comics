@@ -5,7 +5,9 @@ class Comic(models.Model):
     title = models.CharField(max_length=128)
     slug = models.CharField(max_length=128, unique=True)
     header_image = models.ImageField(blank=True)
+    hr_image = models.ImageField(blank=True)
     navigation_spritesheet = models.ImageField(blank=True)
+    font = models.FileField(blank=True)
     background = models.TextField(
         default="white",
         help_text="a valid CSS `background` configuration")

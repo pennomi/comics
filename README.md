@@ -1,5 +1,7 @@
 # Project Setup
 
+Want to run a comics server for yourself? Maybe you'd rather send us a bug fix or new feature? Get started here.
+
 ##Windows Setup
 
 - Install [Python 3.7](https://www.python.org/downloads/)
@@ -24,4 +26,15 @@
 - [ ] Domain-specific routing
 - [ ] Tag Search Pages
 - [ ] Links for Web Crawlers
+- [ ] RSS Feed
 - [ ] Translations
+
+
+# AWS Ubuntu Setup
+
+```
+sudo apt-get update
+sudo apt-get install docker docker-compose
+git clone <project_url>
+
+```
