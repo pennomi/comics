@@ -68,4 +68,5 @@ certbot --nginx -d <your_domain_name>
 # Create the database for administration
 ./manage.py migrate
 ./manage.py createsuperuser
+./manage.py collectstatic
 ```
