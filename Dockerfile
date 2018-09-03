@@ -16,13 +16,9 @@ RUN apt-get update
 RUN apt-get install -y python-certbot-nginx
 RUN python3 -m pip install -r /opt/django/requirements.txt
 
-# Set Up Gunicorn
+# Set Up Gunicorn & nginx
 RUN python3 -m pip install gunicorn
 COPY comics/supervisor.conf /etc/supervisor/conf.d/gunicorn.conf
-
-# Set Up Nginx
-COPY comics/nginx.conf /etc/nginx/sites-available/django.conf
-RUN ln -s /etc/nginx/sites-available/django.conf /etc/nginx/sites-enabled/django.conf
 RUN nginx
 
 EXPOSE 8000
