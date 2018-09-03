@@ -17,6 +17,8 @@ services:
       - .:/opt/comics
       - ./certs:/etc/letsencrypt
       - ./nginx:/etc/nginx/sites-enabled
+      - ./static:/var/www/static
+      - ./media:/var/www/media
     ports:
       - "8000:8000"
       - "80:80"
