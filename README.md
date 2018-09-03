@@ -32,9 +32,40 @@ Want to run a comics server for yourself? Maybe you'd rather send us a bug fix o
 
 # AWS Ubuntu Setup
 
-```
-sudo apt-get update
-sudo apt-get install docker docker-compose
-git clone <project_url>
+```bash
+# Fix an annoying bug in AWS. This will be the last "unable to resolve host" error you see
+sudo sh -c 'echo "127.0.0.1 $(hostname)" >> /etc/hosts'
 
+# Get Docker
+sudo apt-get update
+sudo apt-get install apt-transport-https ca-certificates curl software-properties-common
+curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -
+sudo apt-key fingerprint 0EBFCD88
+sudo add-apt-repository "deb [arch=amd64] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable"
+sudo apt-get update
+sudo apt-get install docker-ce
+# OPTIONAL: if you don't want to use docker as sudo
+# sudo groupadd docker
+# sudo usermod -aG docker $USER
+# sudo systemctl enable docker
+# REBOOT HERE
+
+# Get docker-compose
+sudo curl -L https://github.com/docker/compose/releases/download/1.22.0/docker-compose-`uname -s`-`uname -m` -o /usr/local/bin/docker-compose
+sudo chmod 777 /usr/local/bin/docker-compose
+
+# Get the project
+git clone https://github.com/pennomi/comics.git
+cd comics
+sudo docker-compose build
+sudo docker-compose up -d
+
+# Configure SSL Cert with Let's Encrypt
+# First, set your DNS to the public IP address of the server
+sudo docker exec -it <container_id> bash
+certbot --nginx -d <your_domain_name>
+
+# Create the database for administration
+./manage.py migrate
+./manage.py createsuperuser
 ```

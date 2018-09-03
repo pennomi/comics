@@ -21,7 +21,8 @@ RUN python3 -m pip install gunicorn
 COPY comics/supervisor.conf /etc/supervisor/conf.d/gunicorn.conf
 
 # Set Up Nginx
-COPY comics/nginx.conf /etc/nginx/nginx.conf
+COPY comics/nginx.conf /etc/nginx/sites-available/django.conf
+RUN ln -s /etc/nginx/sites-available/django.conf /etc/nginx/sites-enabled/django.conf
 RUN nginx
 
 EXPOSE 8000
