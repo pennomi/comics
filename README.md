@@ -1,3 +1,8 @@
+# License
+
+This minimal webcomics platform is available under the terms of the permissive MIT license. While not required, if you 
+do something interesing with the code, please drop us a line; we'd love to know what you're up to!
+
 # Project Setup
 
 Want to run a comics server for yourself? Maybe you'd rather send us a bug fix or new feature? Get started here.

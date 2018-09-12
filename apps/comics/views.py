@@ -1,7 +1,9 @@
+import itertools
 import json
 
 from django.http import HttpResponse
 from django.shortcuts import get_object_or_404
+from django.template.defaultfilters import date
 from django.urls import reverse
 from django.views import View
 from django.views.generic import TemplateView, RedirectView
@@ -20,7 +22,7 @@ class ReaderRedirectView(RedirectView):
     permanent = False
 
     def get_redirect_url(self, *args, **kwargs):
-        comic = Comic.objects.get(slug=kwargs['comic'])
+        comic = get_object_or_404(Comic, slug=kwargs['comic'])
         page = comic.page_set.order_by('-ordering').first()
         return reverse("reader", kwargs={
             "comic": kwargs['comic'],
@@ -34,16 +36,16 @@ class ReaderView(TemplateView):
     def get_context_data(self, *args, **kwargs):
         context = super().get_context_data(**kwargs)
         comic = get_object_or_404(Comic, slug=kwargs['comic'])
+        page = get_object_or_404(Page, comic=comic, slug=kwargs['page'])
         context['comic'] = comic
-        context['page'] = get_object_or_404(
-            Page, comic=comic, slug=kwargs['page'])
+        context['page'] = page
         return context
 
 
 class PageAjaxView(View):
     def get(self, request, *args, **kwargs):
-        comic = Comic.objects.get(slug=kwargs['comic'])
-        page = Page.objects.get(comic=comic, slug=kwargs['page'])
+        comic = get_object_or_404(Comic, slug=kwargs['comic'])
+        page = get_object_or_404(Page, comic=comic, slug=kwargs['page'])
 
         first_page = comic.page_set.order_by('ordering').first()
         prev_page = comic.page_set.filter(
@@ -54,13 +56,25 @@ class PageAjaxView(View):
         ).order_by('ordering').first()
         last_page = comic.page_set.order_by('-ordering').first()
 
+        # Compute tag data
+        tags = page.tags.all()
+        tag_types = itertools.groupby(tags, lambda _: _.type)
+        tag_type_data = [{"title": key.title, "tags": [{
+            "url": reverse("archive", kwargs={"comic": comic.slug}),
+            "title": t.title,
+            "icon": t.icon.url if t.icon else ""
+        } for t in value]} for key, value in tag_types]
+
+        # Build the json
         data = json.dumps({
             "slug": page.slug,
             "title": page.title,
             "post": page.post,
+            "posted_at": date(page.posted_at),
             "transcript": page.transcript,
             "image": page.image.url,
             "alt_text": page.alt_text,
+            "tag_types": tag_type_data,
 
             # Get the comic list
             "first": first_page.slug if first_page else None,

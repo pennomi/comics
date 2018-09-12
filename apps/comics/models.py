@@ -1,11 +1,14 @@
 from django.db import models
+from django.utils.timezone import now
 
 
 class Comic(models.Model):
     title = models.CharField(max_length=128)
     slug = models.CharField(max_length=128, unique=True)
+    author = models.CharField(max_length=128, blank=True)
     header_image = models.ImageField(blank=True)
     hr_image = models.ImageField(blank=True)
+    post_border_image = models.ImageField(blank=True)
     navigation_spritesheet = models.ImageField(blank=True)
     font = models.FileField(blank=True)
     background = models.TextField(
@@ -15,6 +18,13 @@ class Comic(models.Model):
         default="white",
         help_text="a valid CSS `background` configuration")
 
+    # Social Links
+    patreon_link = models.URLField(blank=True)
+    discord_link = models.URLField(blank=True)
+    reddit_link = models.URLField(blank=True)
+    twitter_link = models.URLField(blank=True)
+    instagram_link = models.URLField(blank=True)
+
     def __str__(self):
         return self.title
 
@@ -23,13 +33,20 @@ class TagType(models.Model):
     comic = models.ForeignKey(Comic, on_delete=models.CASCADE)
     title = models.CharField(max_length=16)
 
+    def __str__(self):
+        return f"{self.title} ({self.comic})"
+
 
 # TODO: This could eventually turn into some kind of wiki-entry thing
 class Tag(models.Model):
     comic = models.ForeignKey(Comic, on_delete=models.CASCADE)
-    icon = models.ImageField(blank=True, null=True)
+    icon = models.ImageField(
+        blank=True, null=True, help_text="This image needs to be a 1:1 aspect ratio.")
     title = models.CharField(max_length=32)
     type = models.ForeignKey(TagType, on_delete=models.CASCADE)
+
+    def __str__(self):
+        return self.title
 
 
 class Page(models.Model):
@@ -37,11 +54,13 @@ class Page(models.Model):
     slug = models.CharField(max_length=32)
     title = models.CharField(max_length=128)
     ordering = models.FloatField()
+    posted_at = models.DateTimeField(
+        default=now, help_text="If this is in the future, it won't be visible until that time")
     post = models.TextField(blank=True)
     transcript = models.TextField(blank=True)
     image = models.ImageField()
     alt_text = models.CharField(max_length=150, blank=True)
-    tags = models.ManyToManyField(Tag, blank=True)
+    tags = models.ManyToManyField(Tag, blank=True, related_name="pages")
 
     class Meta:
         unique_together = (("comic", "slug"), ("comic", "ordering"), )

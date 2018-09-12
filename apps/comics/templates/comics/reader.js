@@ -26,8 +26,33 @@ var COMICS = function () {
         window.history.pushState(pageData, pageData.title, '/' + comicData.slug + '/' + pageData.slug + "/");
         document.title = pageData.title;
 
+        // Compute Tag HTML
+        var tagHTML = "";
+        pageData.tag_types.forEach(function (tagType) {
+            var tagStrings = "";
+            tagType.tags.forEach(function (tag){
+                if (tag.icon !== "") {
+                    tagStrings += `
+                    <a class="tag" href="${tag.url}">
+                        <img src="${tag.icon}"/> ${tag.title}
+                    </a>`;
+                } else {
+                    tagStrings += `<a class="tag" href="${tag.url}">${tag.title}</a>`;
+                }
+                console.log(tagStrings);
+            });
+
+            tagHTML += `
+            <div class="tag-group">
+                <p>${tagType.title}:</p>
+                ${tagStrings}
+            </div>`;
+        });
+
         // Page Content
         document.getElementById("comic-title").innerHTML = pageData.title;
+        document.getElementById("comic-tags").innerHTML = tagHTML;
+        document.getElementById("comic-post-date").innerHTML = pageData.posted_at;
         document.getElementById("comic-post").innerHTML = MARKDOWN.render(pageData.post);
         document.getElementById("comic-transcript").innerHTML = MARKDOWN.render(pageData.transcript);
         document.getElementById("comic-image").src = pageData.image;  // TODO: Preload data so it's cached

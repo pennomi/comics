@@ -18,7 +18,7 @@ RUN python3 -m pip install -r /opt/django/requirements.txt
 
 # Set Up Gunicorn & nginx
 RUN python3 -m pip install gunicorn
-COPY comics/supervisor.conf /etc/supervisor/conf.d/gunicorn.conf
+COPY deploy/supervisor.conf /etc/supervisor/conf.d/gunicorn.conf
 RUN nginx
 
 EXPOSE 8000

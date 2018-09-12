@@ -12,13 +12,13 @@ services:
   django:
     container_name: comics_django
     build: .
-    command: bash /opt/django/runserver.sh
+    command: bash /opt/django/deploy/runserver.sh
     volumes:
-      - .:/opt/comics
-      - ./certs:/etc/letsencrypt
-      - ./nginx:/etc/nginx/sites-enabled
-      - ./static:/var/www/static
-      - ./media:/var/www/media
+      - .:/opt/django
+      - ./deploy/certs:/etc/letsencrypt
+      - ./deploy/nginx:/etc/nginx/sites-enabled
+      - ./deploy/static:/var/www/static
+      - ./deploy/media:/var/www/media
     ports:
       - "8000:8000"
       - "80:80"

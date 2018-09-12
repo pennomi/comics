@@ -22,10 +22,10 @@ img {
 
 hr {
     display: block;
-    border: 0px;
     padding-top: 24px;
     padding-bottom: 24px;
     height: 10px;
+    border: 0px;
     {% if comic.hr_image %}
     background-image: url({{ comic.hr_image.url }});
     {% else %}
@@ -71,8 +71,15 @@ header {
     height: auto;
 }
 
+#comic-post-date {
+    margin-top: -20px;
+    margin-bottom: 20px;
+}
+
 .comic-text-wrapper {
 }
+
+/* NAV BUTTONS */
 
 .comic-navigation {
     display: flex;
@@ -82,16 +89,59 @@ header {
     width: 100%;
 }
 
-.box{
+.nav-box{
 	position: relative;
 	width: 20%;		/* desired width */
 }
-.box:before{
+.nav-box:before{
 	content: "";
 	display: block;
 	padding-top: 100%; 	/* initial ratio of 1:1*/
 }
 
+
+/* TAGS */
+#comic-tags {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    font-size: 12px;
+}
+
+.tag-group {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    width: 100%;
+}
+
+.tag {
+    background-color: #585039;
+    margin: 2px;
+    padding: 4px;
+    height: 16px;
+    line-height: 16px;
+    text-align: center;
+}
+
+.tag img {
+    height: 16px;
+    width: 16px;
+}
+
+#comic-tags a:link {
+    color: black;
+    text-decoration: none;
+}
+#comic-tags a:visited {
+    color: black;
+}
+#comic-tags a:hover {
+    color: #978b65;
+}
+#comic-tags a:active {
+    color: #978b65;
+}
 
 /* IMAGE SPRITES*/
 .navigation-button {
@@ -100,7 +150,11 @@ header {
     width: 100%;
     border: none;
     outline: none;
-    background: url({% static "comics/sword-sprites.png" %}) no-repeat;
+    {% if comic.navigation_spritesheet %}
+    background: url({{ comic.navigation_spritesheet.url }}) no-repeat;
+    {% else %}
+    background: url({% static "comics/default-sprites.png" %}) no-repeat;
+    {% endif %}
     background-size : 500% 200%;
 }
 
@@ -143,7 +197,7 @@ header {
 /* COMIC BLOG POST SECTION */
 .comic-post {
     border: 43px solid transparent;
-    border-image: url({% static "comics/default-container.png" %}) fill 43 repeat;
+    border-image: url({{ comic.post_border_image.url }}) fill 43 repeat;
 }
 .comic-post-content {
     margin: -20px;  /* To undo the very wide image border */
@@ -155,9 +209,25 @@ header {
     margin: -20px;
 }
 
-/* COMIC COMMENT SECTION */
-.comic-comments {
-
+/* FOOTER AND SOCIAL ICONS */
+.social-container {
+    display: flex;
+    align-items: center;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    padding: 8px;
+    width: 100%;
+}
+.social-icon {
+    width: 24px;
+    height: 24px;
+    border-radius: 24px;
+    font-size: 24px;
+    padding: 8px;
+    text-align: center;
+    background-color: #585039;
+    margin: 8px;
 }
 
 footer {
@@ -169,4 +239,21 @@ footer {
     align-items: center;
     margin-top: 48px;
     flex-direction: column;
+}
+
+.footer-subsection {
+    background-color: #585039;
+}
+
+footer a:link {
+    color: black;
+}
+footer a:visited {
+    color: black;
+}
+footer a:hover {
+    color: #978b65;
+}
+footer a:active {
+    color: #978b65;
 }
