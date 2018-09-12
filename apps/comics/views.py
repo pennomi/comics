@@ -57,7 +57,7 @@ class PageAjaxView(View):
         last_page = comic.page_set.order_by('-ordering').first()
 
         # Compute tag data
-        tags = page.tags.all()
+        tags = page.tags.order_by('type__title', 'title')
         tag_types = itertools.groupby(tags, lambda _: _.type)
         tag_type_data = [{"title": key.title, "tags": [{
             "url": reverse("archive", kwargs={"comic": comic.slug}),
