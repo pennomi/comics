@@ -20,6 +20,11 @@ img {
     vertical-align:bottom;
 }
 
+h1 { font-size: 32px; font-weight: bold; }
+h2 { font-size: 24px; font-weight: bold; }
+h3 { font-size: 20px; font-weight: bold; }
+p { margin-top: 8px; margin-bottom: 8px; }
+
 hr {
     display: block;
     padding-top: 24px;
@@ -41,6 +46,7 @@ hr {
     flex-padding: 10px;
     max-width: 892px;
     width: 100%;
+    box-sizing: border-box;
 }
 
 .content {
@@ -72,8 +78,8 @@ header {
 }
 
 #comic-post-date {
-    margin-top: -20px;
-    margin-bottom: 20px;
+    margin-bottom: 16px;
+    font-size: 12px;
 }
 
 .comic-text-wrapper {
@@ -206,7 +212,6 @@ header {
     justify-content: center;
     align-items: center;
     padding: 8px;
-    width: 100%;
 }
 .social-icon {
     width: 24px;
@@ -230,8 +235,15 @@ footer {
     flex-direction: column;
 }
 
+.footer-content {
+    padding: 8px;
+    box-sizing: border-box;
+}
+
 .footer-subsection {
     background-color: #585039;
+    padding: 8px;
+
 }
 
 footer a:link {
