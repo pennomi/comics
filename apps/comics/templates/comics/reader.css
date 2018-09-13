@@ -24,6 +24,8 @@ h1 { font-size: 32px; font-weight: bold; }
 h2 { font-size: 24px; font-weight: bold; }
 h3 { font-size: 20px; font-weight: bold; }
 p { margin-top: 8px; margin-bottom: 8px; }
+em { font-style: italic; }
+strong { font-weight: bold; }
 
 hr {
     display: block;
