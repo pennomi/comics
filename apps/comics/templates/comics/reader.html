@@ -1,102 +1,52 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>{{ comic.title }}</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/meyer-reset/2.0/reset.min.css">
-    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.2.0/css/all.css" integrity="sha384-hWVjflwFxL6sNzntih27bfxkr27PmbbK/iSvJ+a4+0owXq79v+lsFkW54bOGbiDQ" crossorigin="anonymous">
-    <style>
-        {% include 'comics/reader.css' %}
-    </style>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/markdown-it/8.4.1/markdown-it.min.js"></script>
-</head>
-<body>
-<div class="content-background">
-    <div class="content">
-        <header>
-            <img class="header-image" src="{{ comic.header_image.url }}"/>
-        </header>
-        <div class="panel">
-            <img id="comic-image" class="comic-image" src="{{ page.image.url }}" title="{{ page.alt_text }}"/>
-            <div class="comic-text-wrapper">
-                <div class="comic-navigation">
-                    <div class="nav-box">
-                        <button id="navigation-first" class="navigation-button navigation-first" onclick="COMICS.firstButtonPressed();"></button>
-                    </div>
-                    <div class="nav-box">
-                        <button id="navigation-previous" class="navigation-button navigation-previous" onclick="COMICS.previousButtonPressed();"></button>
-                    </div>
-                    <div class="nav-box">
-                        <a href="{% url 'archive' 'swords' %}"><button id="navigation-archive" class="navigation-button navigation-archive"></button></a>
-                    </div>
-                    <div class="nav-box">
-                        <button id="navigation-next" class="navigation-button navigation-next" onclick="COMICS.nextButtonPressed();"></button>
-                    </div>
-                    <div class="nav-box">
-                        <button id="navigation-last" class="navigation-button navigation-last" onclick="COMICS.lastButtonPressed();"></button>
-                    </div>
-                </div>
-                <div class="comic-post">
-                    <div class="comic-post-content">
-                        <h1 id="comic-title">{{ page.title }}</h1>
-                        <div id="comic-post-date" class="comic-post-date">{{ page.posted_at|date }}</div>
-                        <div id="comic-tags">
-                            <!-- If you edit this, you also need to update the templates in the reader.js -->
-                            {% regroup page.tags.all by type as tag_groups %}
-                            {% for group in tag_groups %}
-                            <div class="tag-group">
-                                <p>{{group.grouper.title}}:</p>
-                                {% for tag in group.list %}
-                                <a class="tag" href="/todo/archive/here"> <!-- TODO Fix this! -->
-                                    {% if tag.icon %}<img src="{{ tag.icon.url }}"/>{% endif %}
-                                    {{ tag.title }}
-                                </a>
-                                {% endfor %}
-                            </div>
+{% extends 'comics/base.html' %}
 
-                            {% endfor %}
-                        </div>
-                        <div id="comic-post" class="comic-post-body">{{ page.post }}</div>
+{% block content %}
+    <img id="comic-image" class="comic-image" src="{{ page.image.url }}" title="{{ page.alt_text }}"/>
+    <div class="comic-text-wrapper">
+        <div class="comic-navigation">
+            <div class="nav-box">
+                <button id="navigation-first" class="navigation-button navigation-first" onclick="COMICS.firstButtonPressed();"></button>
+            </div>
+            <div class="nav-box">
+                <button id="navigation-previous" class="navigation-button navigation-previous" onclick="COMICS.previousButtonPressed();"></button>
+            </div>
+            <div class="nav-box">
+                <a href="{% url 'archive' 'swords' %}"><button id="navigation-archive" class="navigation-button navigation-archive"></button></a>
+            </div>
+            <div class="nav-box">
+                <button id="navigation-next" class="navigation-button navigation-next" onclick="COMICS.nextButtonPressed();"></button>
+            </div>
+            <div class="nav-box">
+                <button id="navigation-last" class="navigation-button navigation-last" onclick="COMICS.lastButtonPressed();"></button>
+            </div>
+        </div>
+        <div class="comic-post">
+            <div class="comic-post-content">
+                <h1 id="comic-title">{{ page.title }}</h1>
+                <div id="comic-post-date" class="comic-post-date">{{ page.posted_at|date }}</div>
+                <div id="comic-tags">
+                    <!-- If you edit this, you also need to update the templates in the reader.js -->
+                    {% regroup page.tags.all by type as tag_groups %}
+                    {% for group in tag_groups %}
+                    <div class="tag-group">
+                        <p>{{group.grouper.title}}:</p>
+                        {% for tag in group.list %}
+                        <a class="tag" href="/todo/archive/here"> <!-- TODO Fix this! -->
+                            {% if tag.icon %}<img src="{{ tag.icon.url }}"/>{% endif %}
+                            {{ tag.title }}
+                        </a>
+                        {% endfor %}
                     </div>
-                    <hr/>
-                    <div class="comic-transcript-content">
-                        <h2>Transcript</h2>
-                        <div id="comic-transcript">{{ page.transcript }}</div>
-                    </div>
+
+                    {% endfor %}
                 </div>
+                <div id="comic-post" class="comic-post-body">{{ page.post }}</div>
+            </div>
+            <hr/>
+            <div class="comic-transcript-content">
+                <h2>Transcript</h2>
+                <div id="comic-transcript">{{ page.transcript }}</div>
             </div>
         </div>
     </div>
-    <footer>
-        <div class="content footer-content">
-            <p>Can't get enough {{ comic.title }}? Visit us on your favorite social media site!</p>
-            <div class="social-container">
-                {% if comic.patreon_link %}
-                <a href="{{ comic.patreon_link }}"><div class="social-icon"><i class="fab fa-patreon"></i></div></a>
-                {% endif %}
-                {% if comic.discord_link %}
-                <a href="{{ comic.discord_link }}"><div class="social-icon"><i class="fab fa-discord"></i></div></a>
-                {% endif %}
-                {% if comic.reddit_link %}
-                <a href="{{ comic.reddit_link }}"><div class="social-icon"><i class="fab fa-reddit-alien"></i></div></a>
-                {% endif %}
-                {% if comic.twitter_link %}
-                <a href="{{ comic.twitter_link }}"><div class="social-icon"><i class="fab fa-twitter"></i></div></a>
-                {% endif %}
-                {% if comic.instagram_link %}
-                <a href="{{ comic.instagram_link }}"><div class="social-icon"><i class="fab fa-instagram"></i></div></a>
-                {% endif %}
-            </div>
-        </div>
-        <div class="content-background footer-subsection">
-            <p>{{ comic.title }} © 2018 {{ comic.author }}</p>
-            <p>Comics Platform © 2018 Thane Brimhall. <a href="https://github.com/pennomi/comics">Fork us on GitHub!</a></p>
-        </div>
-    </footer>
-</div>
-<script>
-    {% include 'comics/reader.js' %}
-</script>
-</body>
-</html>
+{% endblock %}

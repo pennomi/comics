@@ -7,6 +7,16 @@
 }
 {% endif %}
 
+/* Additional resets */
+h1 { font-size: 32px; font-weight: bold; }
+h2 { font-size: 24px; font-weight: bold; }
+h3 { font-size: 20px; font-weight: bold; }
+p { margin-top: 8px; margin-bottom: 8px; }
+em { font-style: italic; }
+strong { font-weight: bold; }
+img { vertical-align:bottom; }
+
+
 body {
     font-family: 'ComicFont', 'Arial', sans-serif;
     padding: 0;
@@ -15,17 +25,6 @@ body {
     justify-content: center;
     background: {{ comic.overflow }};
 }
-
-img {
-    vertical-align:bottom;
-}
-
-h1 { font-size: 32px; font-weight: bold; }
-h2 { font-size: 24px; font-weight: bold; }
-h3 { font-size: 20px; font-weight: bold; }
-p { margin-top: 8px; margin-bottom: 8px; }
-em { font-style: italic; }
-strong { font-weight: bold; }
 
 hr {
     display: block;
@@ -49,6 +48,7 @@ hr {
     max-width: 892px;
     width: 100%;
     box-sizing: border-box;
+    min-height: 100vh;
 }
 
 .content {
@@ -195,6 +195,7 @@ header {
 .comic-post {
     border: 43px solid transparent;
     border-image: url({{ comic.post_border_image.url }}) fill 43 repeat;
+    margin-bottom: 48px;
 }
 .comic-post-content {
     margin: -20px;  /* To undo the very wide image border */
@@ -232,9 +233,10 @@ footer {
     width: 100%;
     display: flex;
     justify-content: center;
-    align-items: center;
-    margin-top: 48px;
     flex-direction: column;
+    align-items: center;
+    margin-top: auto;
+    text-align: center;
 }
 
 .footer-content {
@@ -245,7 +247,9 @@ footer {
 .footer-subsection {
     background-color: #585039;
     padding: 8px;
-
+    width: 100%;
+    box-sizing: border-box;
+    text-align: center;
 }
 
 footer a:link {

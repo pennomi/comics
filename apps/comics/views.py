@@ -90,3 +90,9 @@ class PageAjaxView(View):
 
 class ArchiveView(TemplateView):
     template_name = "comics/archive.html"
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        comic = get_object_or_404(Comic, slug=kwargs['comic'])
+        context['comic'] = comic
+        return context

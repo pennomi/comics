@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>{{ comic.title }}</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/meyer-reset/2.0/reset.min.css">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.2.0/css/all.css" integrity="sha384-hWVjflwFxL6sNzntih27bfxkr27PmbbK/iSvJ+a4+0owXq79v+lsFkW54bOGbiDQ" crossorigin="anonymous">
+    <style>
+        {% include 'comics/reader.css' %}
+    </style>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/markdown-it/8.4.1/markdown-it.min.js"></script>
+</head>
+<body>
+<div class="content-background">
+    <div class="content">
+        <header>
+            <img class="header-image" src="{{ comic.header_image.url }}"/>
+        </header>
+
+        <div class="panel">
+            {% block content %}{% endblock %}
+        </div>
+    </div>
+    <footer>
+        <div class="content footer-content">
+            <p>Can't get enough {{ comic.title }}? Visit us on your favorite social media site!</p>
+            <div class="social-container">
+                {% if comic.patreon_link %}
+                <a href="{{ comic.patreon_link }}"><div class="social-icon"><i class="fab fa-patreon"></i></div></a>
+                {% endif %}
+                {% if comic.discord_link %}
+                <a href="{{ comic.discord_link }}"><div class="social-icon"><i class="fab fa-discord"></i></div></a>
+                {% endif %}
+                {% if comic.reddit_link %}
+                <a href="{{ comic.reddit_link }}"><div class="social-icon"><i class="fab fa-reddit-alien"></i></div></a>
+                {% endif %}
+                {% if comic.twitter_link %}
+                <a href="{{ comic.twitter_link }}"><div class="social-icon"><i class="fab fa-twitter"></i></div></a>
+                {% endif %}
+                {% if comic.instagram_link %}
+                <a href="{{ comic.instagram_link }}"><div class="social-icon"><i class="fab fa-instagram"></i></div></a>
+                {% endif %}
+            </div>
+        </div>
+        <div class="footer-subsection">
+            <p>{{ comic.title }} © 2018 {{ comic.author }}</p>
+            <p>Comics Platform © 2018 Thane Brimhall. <a href="https://github.com/pennomi/comics">Fork us on GitHub!</a></p>
+        </div>
+    </footer>
+</div>
+<script>
+    {% include 'comics/reader.js' %}
+</script>
+</body>
+</html>
