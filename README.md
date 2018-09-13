@@ -25,11 +25,13 @@ Want to run a comics server for yourself? Maybe you'd rather send us a bug fix o
 
 # Roadmap
 
-- [ ] Tag rendering
+- [ ] Fix Navigation on Edge
+- [ ] Admin Edit Links
 - [ ] Main Page
 - [ ] Archive Page
+- [ ] Archive/Transcript Search
 - [ ] Domain-specific routing
-- [ ] Tag Search Pages
+- [ ] Tag "Wiki" Pages
 - [ ] Links for Web Crawlers
 - [ ] RSS Feed
 - [ ] Translations

@@ -39,7 +39,6 @@ var COMICS = function () {
                 } else {
                     tagStrings += `<a class="tag" href="${tag.url}">${tag.title}</a>`;
                 }
-                console.log(tagStrings);
             });
 
             tagHTML += `
@@ -80,6 +79,10 @@ var COMICS = function () {
             document.getElementById("navigation-previous").style.display = "";
             document.getElementById("navigation-first").style.display = "";
         }
+        document.getElementById("navigation-first").blur();
+        document.getElementById("navigation-previous").blur();
+        document.getElementById("navigation-next").blur();
+        document.getElementById("navigation-last").blur();
     }
 
     // Kickstart the page load
@@ -179,12 +182,26 @@ var COMICS = function () {
                     console.log(err.message + " in " + request.responseText);
                     return;
                 }
+
+                // Run the callback and update the navigation state
                 callback(data);
                 recalculateNavigationVisibility();
+
+                // Pre-warm the image cache
+                preloadImage(data.image);
             }
         };
         request.open("GET", url, true);
         request.send();
+    }
+
+    function preloadImage(url) {
+        var img = new Image();
+        img.onload = function() {
+            img.src = "";
+            img = null;
+        }
+        img.src = url;
     }
 
     // Run the initialization and then publish any variables that need to be public.

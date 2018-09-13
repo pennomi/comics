@@ -157,40 +157,29 @@ header {
     {% endif %}
     background-size : 500% 200%;
 }
+.navigation-button:active {
+   background-position-y: 100%;
+}
+@media (pointer:fine) {
+    .navigation-button:hover {
+       background-position-y: 100%;
+    }
+}
 
 .navigation-first {
-   background-position: 0 0;
+   background-position-x: 0;
 }
-.navigation-first:hover {
-   background-position: 0 100%;
-}
-
 .navigation-previous {
-   background-position: 25% 0;
+   background-position-x: 25%;
 }
-.navigation-previous:hover {
-   background-position: 25% 100%;
-}
-
 .navigation-next {
-   background-position: 50% 0;
+   background-position-x: 50%;
 }
-.navigation-next:hover {
-   background-position: 50% 100%;
-}
-
 .navigation-last {
-       background-position: 75% 0;
+       background-position-x: 75%;
 }
-.navigation-last:hover {
-   background-position: 75% 100%;
-}
-
 .navigation-archive {
-   background-position: 100% 0;
-}
-.navigation-archive:hover {
-   background-position: 100% 100%;
+   background-position-x: 100%;
 }
 
 
