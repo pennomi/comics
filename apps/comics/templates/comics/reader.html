@@ -31,7 +31,7 @@
                     <div class="tag-group">
                         <p>{{group.grouper.title}}:</p>
                         {% for tag in group.list %}
-                        <a class="tag" href="/todo/archive/here"> <!-- TODO Fix this! -->
+                        <a class="tag" href="{% url 'tag' comic.slug tag.type.title tag.title %}">
                             {% if tag.icon %}<img src="{{ tag.icon.url }}"/>{% endif %}
                             {{ tag.title }}
                         </a>

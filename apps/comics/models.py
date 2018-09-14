@@ -31,22 +31,28 @@ class Comic(models.Model):
 
 class TagType(models.Model):
     comic = models.ForeignKey(Comic, on_delete=models.CASCADE)
-    title = models.CharField(max_length=16)
+    title = models.CharField(max_length=16)  # TODO: Make sure this is URL-safe?
 
     def __str__(self):
         return f"{self.title} ({self.comic})"
 
+    class Meta:
+        unique_together = (('comic', 'title'), )
 
-# TODO: This could eventually turn into some kind of wiki-entry thing
+
 class Tag(models.Model):
     comic = models.ForeignKey(Comic, on_delete=models.CASCADE)
     icon = models.ImageField(
-        blank=True, null=True, help_text="This image needs to be a 1:1 aspect ratio.")
-    title = models.CharField(max_length=32)
+        blank=True, null=True, help_text="This image needs to be a 1:1 aspect ratio.")  # TODO: Recommended pixel size
+    title = models.CharField(max_length=32)  # TODO: Make sure this is URL-safe?
     type = models.ForeignKey(TagType, on_delete=models.CASCADE)
+    post = models.TextField(blank=True, help_text="Accepts Markdown")
 
     def __str__(self):
         return self.title
+
+    class Meta:
+        unique_together = (('type', 'title'), )
 
 
 class Page(models.Model):
@@ -56,8 +62,8 @@ class Page(models.Model):
     ordering = models.FloatField()
     posted_at = models.DateTimeField(
         default=now, help_text="If this is in the future, it won't be visible until that time")
-    post = models.TextField(blank=True)
-    transcript = models.TextField(blank=True)
+    post = models.TextField(blank=True, help_text="Accepts Markdown")
+    transcript = models.TextField(blank=True, help_text="Accepts Markdown")
     image = models.ImageField()
     alt_text = models.CharField(max_length=150, blank=True)
     tags = models.ManyToManyField(Tag, blank=True, related_name="pages")

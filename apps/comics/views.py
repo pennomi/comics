@@ -8,7 +8,7 @@ from django.urls import reverse
 from django.views import View
 from django.views.generic import TemplateView, RedirectView
 
-from apps.comics.models import Comic, Page
+from apps.comics.models import Comic, Page, TagType, Tag
 
 
 class ComicsIndexView(TemplateView):
@@ -60,7 +60,7 @@ class PageAjaxView(View):
         tags = page.tags.order_by('type__title', 'title')
         tag_types = itertools.groupby(tags, lambda _: _.type)
         tag_type_data = [{"title": key.title, "tags": [{
-            "url": reverse("archive", kwargs={"comic": comic.slug}),
+            "url": reverse("tag", kwargs={"comic": comic.slug, "type": t.type.title, "tag": t.title}),
             "title": t.title,
             "icon": t.icon.url if t.icon else ""
         } for t in value]} for key, value in tag_types]
@@ -95,4 +95,30 @@ class ArchiveView(TemplateView):
         context = super().get_context_data(**kwargs)
         comic = get_object_or_404(Comic, slug=kwargs['comic'])
         context['comic'] = comic
+        return context
+
+
+class TagTypeView(TemplateView):
+    template_name = "comics/tagtype.html"
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        comic = get_object_or_404(Comic, slug=kwargs['comic'])
+        tag_type = get_object_or_404(TagType, comic=comic, title=kwargs['type'])
+        context['comic'] = comic
+        context['tag_type'] = tag_type
+        return context
+
+
+class TagView(TemplateView):
+    template_name = "comics/tag.html"
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        comic = get_object_or_404(Comic, slug=kwargs['comic'])
+        tag_type = get_object_or_404(TagType, comic=comic, title=kwargs['type'])
+        tag = get_object_or_404(Tag, type=tag_type, title=kwargs['tag'])
+        context['comic'] = comic
+        context['tag_type'] = tag_type
+        context['tag'] = tag
         return context

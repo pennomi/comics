@@ -15,6 +15,13 @@ p { margin-top: 8px; margin-bottom: 8px; }
 em { font-style: italic; }
 strong { font-weight: bold; }
 img { vertical-align:bottom; }
+blockquote {
+    border-left:4px solid #00000044;
+    padding: 4px;
+    background-color: #FFFFFF44;
+    width: auto;
+    box-sizing: border-box;
+}
 
 
 body {
@@ -136,6 +143,23 @@ header {
     height: 16px;
     width: 16px;
 }
+
+.tag-list-entry {
+    margin: 8px;
+}
+
+.tag-list-entry img{
+    height: 24px;
+    width: 24px;
+}
+
+.tag-list-entry span{
+    height: 24px;
+    margin-left: 8px;
+    line-height: 24px;
+    text-align: center;
+}
+
 
 #comic-tags a:link {
     color: black;

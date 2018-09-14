@@ -30,4 +30,10 @@ urlpatterns = [
          comics_views.ReaderView.as_view(), name='reader'),
     path('<slug:comic>/data/<slug:page>/',
          comics_views.PageAjaxView.as_view(), name='page'),
+
+    # Tag Wiki Pages
+    path('<slug:comic>/tag/<str:type>/',
+         comics_views.TagTypeView.as_view(), name='tagtype'),
+    path('<slug:comic>/tag/<str:type>/<str:tag>/',
+         comics_views.TagView.as_view(), name='tag'),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
