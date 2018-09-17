@@ -3,7 +3,7 @@
 {% block content %}
     <div class="comic-post">
         <div class="tag-detail-header">
-            <img src="{{ tag.icon.url }}"/>
+            <img {% if tag.icon %}src="{{ tag.icon.url }}"{% endif %}/>
             <div>
                 <h1>{{ tag.title }}</h1>
                 <p>Character</p>
