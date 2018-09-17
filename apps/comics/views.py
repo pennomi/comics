@@ -81,6 +81,9 @@ class PageAjaxView(View):
             "previous": prev_page.slug if prev_page else None,
             "next": next_page.slug if next_page else None,
             "last": last_page.slug if last_page else None,
+
+            # Optional Admin edit link
+            "admin": reverse("admin:comics_page_change", args=[page.id]) if request.user.is_staff else None,
         })
 
         response = HttpResponse(data)

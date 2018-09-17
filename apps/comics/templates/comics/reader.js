@@ -56,6 +56,11 @@ var COMICS = function () {
         document.getElementById("comic-transcript").innerHTML = MARKDOWN.render(pageData.transcript);
         document.getElementById("comic-image").src = pageData.image;  // TODO: Preload data so it's cached
         document.getElementById("comic-image").title = pageData.alt_text;
+
+        var adminLink = document.getElementById("admin-edit-link");
+        if (adminLink) {
+            adminLink.href = pageData.admin;
+        }
         // TODO: Should we scroll to the top of the page?
 
         // Navigation Buttons
@@ -83,6 +88,10 @@ var COMICS = function () {
         document.getElementById("navigation-previous").blur();
         document.getElementById("navigation-next").blur();
         document.getElementById("navigation-last").blur();
+    }
+
+    function imageLoaded() {
+        console.log("Image loaded");
     }
 
     // Kickstart the page load
@@ -210,6 +219,7 @@ var COMICS = function () {
         firstButtonPressed: firstButtonPressed,
         previousButtonPressed: previousButtonPressed,
         nextButtonPressed: nextButtonPressed,
-        lastButtonPressed: lastButtonPressed
+        lastButtonPressed: lastButtonPressed,
+        imageLoaded: imageLoaded,
     };
 }();

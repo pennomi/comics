@@ -1,7 +1,7 @@
 {% extends 'comics/base.html' %}
 
 {% block content %}
-    <img id="comic-image" class="comic-image" src="{{ page.image.url }}" title="{{ page.alt_text }}"/>
+    <img id="comic-image" class="comic-image" src="{{ page.image.url }}" title="{{ page.alt_text }}" onload="COMICS.imageLoaded();"/>
     <div class="comic-text-wrapper">
         <div class="comic-navigation">
             <div class="nav-box">
@@ -24,6 +24,9 @@
             <div class="comic-post-content">
                 <h1 id="comic-title">{{ page.title }}</h1>
                 <div id="comic-post-date" class="comic-post-date">{{ page.posted_at|date }}</div>
+
+                {% if user.is_staff %}<p>Since you're staff, you can <a id="admin-edit-link" href="{% url 'admin:comics_page_change' page.id %}">EDIT</a> this comic!</p>{% endif %}
+
                 <div id="comic-tags">
                     <!-- If you edit this, you also need to update the templates in the reader.js -->
                     {% regroup page.tags.all by type as tag_groups %}
