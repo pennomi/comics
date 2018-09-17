@@ -1,5 +1,12 @@
 {% extends 'comics/base.html' %}
 
 {% block content %}
-    <h1 style="color: white; text-align: center;">Sorry, archive search not yet implemented!</h1>
+    <div class="comic-post">
+        <h1 style="text-align: center;">{{ comic.title }} Archive</h1>
+        <ul>
+            {% for page in comic.pages.all %}
+            <li><span class="archive-pagelist-item">{{ page.posted_at | date:"M d Y" }}</span> <a href="{% url 'reader' comic.slug page.slug %}">{{ page.title }}</a></li>
+            {% endfor %}
+        </ul>
+    </div>
 {% endblock %}
