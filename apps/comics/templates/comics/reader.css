@@ -8,9 +8,9 @@
 {% endif %}
 
 /* Additional resets */
-h1 { font-size: 32px; font-weight: bold; }
-h2 { font-size: 24px; font-weight: bold; }
-h3 { font-size: 20px; font-weight: bold; }
+h1 { font-size: 32px; font-weight: bold; margin-bottom: 8px; }
+h2 { font-size: 24px; font-weight: bold; margin-bottom: 8px; }
+h3 { font-size: 20px; font-weight: bold; margin-bottom: 8px; }
 p { margin-top: 8px; margin-bottom: 8px; }
 em { font-style: italic; }
 strong { font-weight: bold; }
@@ -23,6 +23,13 @@ blockquote {
     box-sizing: border-box;
 }
 
+/* LINK STYLING */
+a:link {
+    color: black;
+}
+a:visited {
+    color: black;
+}
 
 body {
     font-family: 'ComicFont', 'Arial', sans-serif;
@@ -287,4 +294,32 @@ footer a:hover {
 }
 footer a:active {
     color: #978b65;
+}
+
+
+/* ARCHIVE PAGE */
+.archive-pagelist-item {
+    width: 128px;
+    border-right: 4px solid #00000044;
+    margin-right: 24px;
+    display: inline-block;
+}
+
+/* TAG DETAIL PAGE */
+.tag-detail-header {
+    display: flex;
+    align-items: center;
+}
+
+.tag-detail-header img {
+    height: 128px;
+    width: 128px;
+    border-right: 4px solid #00000044;
+    margin-right: 24px;
+    padding-right: 24px;
+}
+
+#tag-post {
+    margin-top: 24px;
+    margin-bottom: 24px;
 }

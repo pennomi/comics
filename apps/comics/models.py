@@ -30,7 +30,7 @@ class Comic(models.Model):
 
 
 class TagType(models.Model):
-    comic = models.ForeignKey(Comic, on_delete=models.CASCADE)
+    comic = models.ForeignKey(Comic, on_delete=models.CASCADE, related_name="tag_types")
     title = models.CharField(max_length=16)  # TODO: Make sure this is URL-safe?
 
     def __str__(self):
@@ -38,14 +38,15 @@ class TagType(models.Model):
 
     class Meta:
         unique_together = (('comic', 'title'), )
+        ordering = ('title', )
 
 
 class Tag(models.Model):
-    comic = models.ForeignKey(Comic, on_delete=models.CASCADE)
+    comic = models.ForeignKey(Comic, on_delete=models.CASCADE, related_name="tags")
     icon = models.ImageField(
         blank=True, null=True, help_text="This image needs to be a 1:1 aspect ratio.")  # TODO: Recommended pixel size
     title = models.CharField(max_length=32)  # TODO: Make sure this is URL-safe?
-    type = models.ForeignKey(TagType, on_delete=models.CASCADE)
+    type = models.ForeignKey(TagType, on_delete=models.CASCADE, related_name="tags")
     post = models.TextField(blank=True, help_text="Accepts Markdown")
 
     def __str__(self):
@@ -53,10 +54,11 @@ class Tag(models.Model):
 
     class Meta:
         unique_together = (('type', 'title'), )
+        ordering = ('type', 'title', )
 
 
 class Page(models.Model):
-    comic = models.ForeignKey(Comic, on_delete=models.PROTECT)
+    comic = models.ForeignKey(Comic, on_delete=models.PROTECT, related_name="pages")
     slug = models.CharField(max_length=32)
     title = models.CharField(max_length=128)
     ordering = models.FloatField()
@@ -70,6 +72,7 @@ class Page(models.Model):
 
     class Meta:
         unique_together = (("comic", "slug"), ("comic", "ordering"), )
+        ordering = ('ordering', )
 
     def __str__(self):
-        return f'{self.comic} - {self.title}'
+        return f'{self.comic} | {self.title}'

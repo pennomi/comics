@@ -1,0 +1,12 @@
+{% extends 'comics/base.html' %}
+
+{% block content %}
+    <div class="comic-post">
+        <h1>{{ tag_type.title }}</h1>
+        <ul>
+            {% for tag in tag_type.tags.all %}
+            <li class="tag-list-entry">{% if tag.icon %}<img src="{{tag.icon.url}}"/>{% endif %}<span>{{ tag.title }}</span></li>
+            {% endfor %}
+        </ul>
+    </div>
+{% endblock %}

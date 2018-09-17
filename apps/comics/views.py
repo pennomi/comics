@@ -23,7 +23,7 @@ class ReaderRedirectView(RedirectView):
 
     def get_redirect_url(self, *args, **kwargs):
         comic = get_object_or_404(Comic, slug=kwargs['comic'])
-        page = comic.page_set.order_by('-ordering').first()
+        page = comic.pages.order_by('-ordering').first()
         return reverse("reader", kwargs={
             "comic": kwargs['comic'],
             "page": page.slug,
@@ -47,14 +47,14 @@ class PageAjaxView(View):
         comic = get_object_or_404(Comic, slug=kwargs['comic'])
         page = get_object_or_404(Page, comic=comic, slug=kwargs['page'])
 
-        first_page = comic.page_set.order_by('ordering').first()
-        prev_page = comic.page_set.filter(
+        first_page = comic.pages.order_by('ordering').first()
+        prev_page = comic.pages.filter(
             ordering__lt=page.ordering
         ).order_by('-ordering').first()
-        next_page = comic.page_set.filter(
+        next_page = comic.pages.filter(
             ordering__gt=page.ordering
         ).order_by('ordering').first()
-        last_page = comic.page_set.order_by('-ordering').first()
+        last_page = comic.pages.order_by('-ordering').first()
 
         # Compute tag data
         tags = page.tags.order_by('type__title', 'title')
