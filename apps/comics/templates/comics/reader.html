@@ -1,7 +1,11 @@
 {% extends 'comics/base.html' %}
 
 {% block content %}
-    <img id="comic-image" class="comic-image" src="{{ page.image.url }}" title="{{ page.alt_text }}" onload="COMICS.imageLoaded();"/>
+    <div>
+        <img id="comic-image" class="comic-image" src="{{ page.image.url }}" title="{{ page.alt_text }}" onload="COMICS.imageLoaded();"/>
+        <div id="comic-image-spinner"></div>
+    </div>
+
     <div class="comic-text-wrapper">
         <div class="comic-navigation">
             <div class="nav-box">

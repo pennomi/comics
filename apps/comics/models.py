@@ -10,6 +10,8 @@ class Comic(models.Model):
     hr_image = models.ImageField(blank=True)
     post_border_image = models.ImageField(blank=True)
     navigation_spritesheet = models.ImageField(blank=True)
+    spinner_image = models.ImageField(
+        blank=True, help_text="A square image that can spin about its center. Ideally 120x120px.")
     font = models.FileField(blank=True)
     background = models.TextField(
         default="white",

@@ -15,6 +15,7 @@ var COMICS = function () {
             "title": "{{ comic.title }}",
         }
     }
+    var NUM_ACTIVE_REQUESTS = 0;
 
     // Make the current comic's data appear in the page
     function loadDataIntoDOM() {
@@ -56,6 +57,8 @@ var COMICS = function () {
         document.getElementById("comic-transcript").innerHTML = MARKDOWN.render(pageData.transcript);
         document.getElementById("comic-image").src = pageData.image;  // TODO: Preload data so it's cached
         document.getElementById("comic-image").title = pageData.alt_text;
+        document.getElementById("comic-image").style.opacity = 0.5;
+        document.getElementById("comic-image-spinner").style.opacity = 1.0;
 
         var adminLink = document.getElementById("admin-edit-link");
         if (adminLink) {
@@ -84,6 +87,13 @@ var COMICS = function () {
             document.getElementById("navigation-previous").style.display = "";
             document.getElementById("navigation-first").style.display = "";
         }
+
+        if (NUM_ACTIVE_REQUESTS > 0) {
+            document.getElementsByClassName("comic-navigation")[0].style.opacity = 0.5;
+        } else {
+            document.getElementsByClassName("comic-navigation")[0].style.opacity = 1.0;
+        }
+
         document.getElementById("navigation-first").blur();
         document.getElementById("navigation-previous").blur();
         document.getElementById("navigation-next").blur();
@@ -91,7 +101,8 @@ var COMICS = function () {
     }
 
     function imageLoaded() {
-        console.log("Image loaded");
+        document.getElementById("comic-image").style.opacity = 1.0;
+        document.getElementById("comic-image-spinner").style.opacity = 0.0;
     }
 
     // Kickstart the page load
@@ -115,8 +126,13 @@ var COMICS = function () {
 
     // The next 4 functions perform the navigation. They look similar but are subtly different
     function firstButtonPressed() {
+        if (NUM_ACTIVE_REQUESTS > 0) {
+            console.log("Can't navigate, " + NUM_ACTIVE_REQUESTS + " active requests.");
+            return;
+        }
+
         if (DATA_CACHE.first === NAVIGATION_INVALID || DATA_CACHE.first === NAVIGATION_UNKNOWN) {
-            console.log("Can't navigate");
+            console.log("Can't navigate, unknown destination.");
             return;
         }
 
@@ -130,8 +146,13 @@ var COMICS = function () {
     }
 
     function previousButtonPressed() {
+        if (NUM_ACTIVE_REQUESTS > 0) {
+            console.log("Can't navigate, " + NUM_ACTIVE_REQUESTS + " active requests.");
+            return;
+        }
+
         if (DATA_CACHE.previous === NAVIGATION_INVALID || DATA_CACHE.previous === NAVIGATION_UNKNOWN) {
-            console.log("Can't navigate");
+            console.log("Can't navigate, unknown destination.");
             return;
         }
 
@@ -145,8 +166,13 @@ var COMICS = function () {
     }
 
     function nextButtonPressed() {
+        if (NUM_ACTIVE_REQUESTS > 0) {
+            console.log("Can't navigate, " + NUM_ACTIVE_REQUESTS + " active requests.");
+            return;
+        }
+
         if (DATA_CACHE.next === NAVIGATION_INVALID || DATA_CACHE.next === NAVIGATION_UNKNOWN) {
-            console.log("Can't navigate");
+            console.log("Can't navigate, unknown destination.");
             return;
         }
 
@@ -160,8 +186,13 @@ var COMICS = function () {
     }
 
     function lastButtonPressed() {
+        if (NUM_ACTIVE_REQUESTS > 0) {
+            console.log("Can't navigate, " + NUM_ACTIVE_REQUESTS + " active requests.");
+            return;
+        }
+
         if (DATA_CACHE.last === NAVIGATION_INVALID || DATA_CACHE.last === NAVIGATION_UNKNOWN) {
-            console.log("Can't navigate");
+            console.log("Can't navigate, unknown destination.");
             return;
         }
 
@@ -181,6 +212,9 @@ var COMICS = function () {
             recalculateNavigationVisibility();
             return;
         }
+
+        NUM_ACTIVE_REQUESTS += 1;
+        recalculateNavigationVisibility();
         var url = "/" + comicSlug + "/data/" + pageSlug + "/";
         var request = new XMLHttpRequest();
         request.onreadystatechange = function() {
@@ -194,6 +228,7 @@ var COMICS = function () {
 
                 // Run the callback and update the navigation state
                 callback(data);
+                NUM_ACTIVE_REQUESTS -= 1;
                 recalculateNavigationVisibility();
 
                 // Pre-warm the image cache
@@ -214,8 +249,8 @@ var COMICS = function () {
     }
 
     // Run the initialization and then publish any variables that need to be public.
-    initializePage();
     return {
+        initializePage: initializePage,
         firstButtonPressed: firstButtonPressed,
         previousButtonPressed: previousButtonPressed,
         nextButtonPressed: nextButtonPressed,
@@ -223,3 +258,7 @@ var COMICS = function () {
         imageLoaded: imageLoaded,
     };
 }();
+
+document.addEventListener("DOMContentLoaded", function(event) {
+    COMICS.initializePage();
+});

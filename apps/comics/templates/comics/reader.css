@@ -88,9 +88,32 @@ header {
     justify-content: center;
 }
 
+#comic-image-spinner {
+    position: absolute;
+    top: calc(50% - 120px);
+    left: calc(50% - 120px / 2);
+    width: 120px;
+    height: 120px;
+    animation: spin 2s linear infinite;
+    {% if comic.spinner_image %}
+    background: url({{ comic.spinner_image.url}}) no-repeat;
+    background-size: contain;
+    {% else %}
+      border-radius: 50%;
+      border: 8px solid #fff;
+      border-color: #fff transparent #fff transparent;
+    {% endif %}
+    transition: opacity 0.1s ease-out
+}
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
 .comic-image {
     width: 100%;
     height: auto;
+    transition: opacity 0.5s ease-out
 }
 
 #comic-post-date {
@@ -101,16 +124,16 @@ header {
 .comic-text-wrapper {
 }
 
-/* NAV BUTTONS */
 
+/* NAV BUTTONS */
 .comic-navigation {
     display: flex;
     flex-direction: row;
     flex-wrap: wrap;
     justify-content: center;
     width: 100%;
+    transition: opacity 0.5s ease-out
 }
-
 .nav-box{
 	position: relative;
 	width: 20%;		/* desired width */
@@ -197,6 +220,9 @@ header {
     background-size : 500% 200%;
 }
 .navigation-button:active {
+   background-position-y: 100%;
+}
+.navigation-button:focus {
    background-position-y: 100%;
 }
 @media (pointer:fine) {
