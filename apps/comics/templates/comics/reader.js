@@ -72,8 +72,6 @@ var COMICS = function () {
         // Tell Google Analytics that we successfully loaded the page
         if ("ga" in window) {
             tracker = ga.getAll()[0];
-            console.log(ga.getAll());
-            console.log(tracker);
             if (tracker) {
                 tracker.set('page', window.location.pathname);
                 tracker.send('pageview');
