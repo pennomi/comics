@@ -35,7 +35,7 @@ var COMICS = function () {
                 if (tag.icon !== "") {
                     tagStrings += `
                     <a class="tag" href="${tag.url}">
-                        <img src="${tag.icon}"/> ${tag.title}
+                        <div style="background-image: url(${tag.icon});"></div>&nbsp;${tag.title}
                     </a>`;
                 } else {
                     tagStrings += `<a class="tag" href="${tag.url}">${tag.title}</a>`;
@@ -70,7 +70,7 @@ var COMICS = function () {
         recalculateNavigationVisibility();
 
         // Tell Google Analytics that we successfully loaded the page
-        if ("ga" in window) {
+        if ("ga" in window && ga.getAll !== undefined) {
             tracker = ga.getAll()[0];
             if (tracker) {
                 tracker.set('page', window.location.pathname);

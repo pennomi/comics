@@ -78,7 +78,9 @@ header {
 
 .header-image {
     width: 100%;
-    height: auto;
+    height: 200px;
+    background-image: url({{ comic.header_image.url }});
+    background-size: cover;
 }
 
 .panel {
@@ -169,9 +171,11 @@ header {
     text-align: center;
 }
 
-.tag img {
+.tag div {
     height: 16px;
     width: 16px;
+    background-size: cover;
+    float: left;
 }
 
 .tag-list-entry {
@@ -218,6 +222,7 @@ header {
     background: url({% static "comics/default-sprites.png" %}) no-repeat;
     {% endif %}
     background-size : 500% 200%;
+    cursor: pointer;
 }
 .navigation-button:active {
    background-position-y: 100%;
