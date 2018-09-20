@@ -70,7 +70,10 @@ var COMICS = function () {
         recalculateNavigationVisibility();
 
         // Tell Google Analytics that we successfully loaded the page
-        ga('send', 'pageview', window.location.pathname);
+        console.log("Setting");
+        ga('set', 'page', window.location.pathname);
+        ga('send', 'pageview');
+        console.log("Sent");
     }
 
     // Make the navigation buttons appear or disappear
