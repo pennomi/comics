@@ -11,4 +11,8 @@ class PageAdmin(admin.ModelAdmin):
 
 
 admin.site.register(TagType)
-admin.site.register(Tag)
+
+
+@admin.register(Tag)
+class TagAdmin(admin.ModelAdmin):
+    list_filter = ('type',)

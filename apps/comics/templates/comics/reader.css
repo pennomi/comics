@@ -78,9 +78,6 @@ header {
 
 .header-image {
     width: 100%;
-    height: 200px;
-    background-image: url({{ comic.header_image.url }});
-    background-size: cover;
 }
 
 .panel {

@@ -27,7 +27,7 @@
 <div class="content-background">
     <div class="content">
         <header>
-            <a href="{% url 'reader-redirect' comic.slug %}"><div class="header-image"></div></a>
+            <a href="{% url 'reader-redirect' comic.slug %}"><img class="header-image" src="{{ comic.header_image.url }}"/></a>
         </header>
 
         <div class="panel">
