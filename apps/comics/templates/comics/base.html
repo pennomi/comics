@@ -36,7 +36,7 @@
     </div>
     <footer>
         <div class="content footer-content">
-            <p>Can't get enough {{ comic.title }}? Visit us on your favorite social media site!</p>
+            <p>Can't get enough {{ comic.title }}? Visit us on your favorite platform!</p>
             <div class="social-container">
                 {% if comic.patreon_link %}
                 <a href="{{ comic.patreon_link }}"><div class="social-icon"><i class="fab fa-patreon"></i></div></a>
@@ -53,6 +53,7 @@
                 {% if comic.instagram_link %}
                 <a href="{{ comic.instagram_link }}"><div class="social-icon"><i class="fab fa-instagram"></i></div></a>
                 {% endif %}
+                <a href="{% url 'feed' comic.slug %}"><div class="social-icon"><i class="fas fa-rss"></i></div></a>
             </div>
         </div>
         <div class="footer-subsection">
