@@ -11,8 +11,11 @@ from django.views.generic import TemplateView, RedirectView
 from apps.comics.models import Comic, Page, TagType, Tag
 
 
-class ComicsIndexView(TemplateView):
-    template_name = "comics/index.html"
+class ComicsIndexView(RedirectView):
+    permanent = False
+
+    def get_redirect_url(self, *args, **kwargs):
+        return "https://swordscomic.com/swords/"
 
 
 class ReaderRedirectView(RedirectView):
