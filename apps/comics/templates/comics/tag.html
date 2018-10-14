@@ -15,7 +15,7 @@
         <h2>Pages {{ tag.title }} appeared in:</h2>
         <ul>
             {% for page in tag.pages.all %}
-            <li><span class="archive-pagelist-item">{{ page.posted_at | date:"M d Y" }}</span> <a href="{% url 'reader' comic.slug page.slug %}">{{ page.title }}</a></li>
+            <li><span class="archive-pagelist-item">{{ page.posted_at | date:"M d Y" }}</span> <a href="{{ page.get_absolute_url }}">{{ page.title }}</a></li>
             {% endfor %}
         </ul>
 

@@ -1,5 +1,7 @@
 from django.db import models
+from django.urls import reverse
 from django.utils.timezone import now
+from markdown import markdown
 
 
 class Comic(models.Model):
@@ -26,6 +28,9 @@ class Comic(models.Model):
     reddit_link = models.URLField(blank=True)
     twitter_link = models.URLField(blank=True)
     instagram_link = models.URLField(blank=True)
+
+    def get_absolute_url(self):
+        return reverse("reader-redirect", kwargs={"comic": self.slug})
 
     def __str__(self):
         return self.title
@@ -76,5 +81,14 @@ class Page(models.Model):
         unique_together = (("comic", "slug"), ("comic", "ordering"), )
         ordering = ('ordering', )
 
+    def get_absolute_url(self):
+        return reverse("reader", kwargs={
+            "comic": self.comic.slug,
+            "page": self.slug,
+        })
+
     def __str__(self):
         return f'{self.comic} | {self.title}'
+
+    def transcript_html(self):
+        return markdown(self.transcript)

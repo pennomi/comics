@@ -1,5 +1,14 @@
 {% load static %}
 
+:root {
+    --blockquote-border-color: #00000044;
+    --blockquote-background-color: #FFFFFF44;
+    --tag-background-color: #585039;
+    --tag-text-hover-color: #978b65;
+    --footer-background-dark-color: #585039;
+    --footer-background-light-color: #585039;
+}
+
 {% if comic.font %}
 @font-face {
   font-family: 'ComicFont';
@@ -16,9 +25,9 @@ em { font-style: italic; }
 strong { font-weight: bold; }
 img { vertical-align:bottom; }
 blockquote {
-    border-left:4px solid #00000044;
+    border-left: 4px solid var(--blockquote-border-color);
+    background-color: var(--blockquote-background-color);
     padding: 4px;
-    background-color: #FFFFFF44;
     width: auto;
     box-sizing: border-box;
 }
@@ -99,8 +108,8 @@ header {
     background-size: contain;
     {% else %}
       border-radius: 50%;
-      border: 8px solid #fff;
-      border-color: #fff transparent #fff transparent;
+      border: 8px solid white;
+      border-color: white transparent white transparent;
     {% endif %}
     transition: opacity 0.1s ease-out
 }
@@ -160,7 +169,7 @@ header {
 }
 
 .tag {
-    background-color: #585039;
+    background-color: var(--tag-background-color);
     margin: 2px;
     padding: 4px;
     height: 16px;
@@ -200,10 +209,10 @@ header {
     color: black;
 }
 #comic-tags a:hover {
-    color: #978b65;
+    color: var(--tag-text-hover-color);
 }
 #comic-tags a:active {
-    color: #978b65;
+    color: var(--tag-text-hover-color);
 }
 
 /* IMAGE SPRITES*/
@@ -282,13 +291,13 @@ header {
     font-size: 24px;
     padding: 8px;
     text-align: center;
-    background-color: #585039;
+    background-color: var(--footer-background-dark-color);
     margin: 8px;
 }
 
 footer {
-    color: #000000;
-    background-color: #978b65;
+    color: black;
+    background-color: var(--footer-background-light-color);
     width: 100%;
     display: flex;
     justify-content: center;
@@ -304,7 +313,7 @@ footer {
 }
 
 .footer-subsection {
-    background-color: #585039;
+    background-color: var(--footer-background-dark-color);
     padding: 8px;
     width: 100%;
     box-sizing: border-box;
@@ -328,7 +337,7 @@ footer a:active {
 /* ARCHIVE PAGE */
 .archive-pagelist-item {
     width: 128px;
-    border-right: 4px solid #00000044;
+    border-right: 4px solid var(--blockquote-border-color);
     margin-right: 24px;
     display: inline-block;
 }
@@ -342,7 +351,7 @@ footer a:active {
 .tag-detail-header img {
     height: 128px;
     width: 128px;
-    border-right: 4px solid #00000044;
+    border-right: 4px solid var(--blockquote-border-color);
     margin-right: 24px;
     padding-right: 24px;
 }

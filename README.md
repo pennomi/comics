@@ -7,37 +7,36 @@ do something interesing with the code, please drop us a line; we'd love to know 
 
 Want to run a comics server for yourself? Maybe you'd rather send us a bug fix or new feature? Get started here.
 
-##Windows Setup
+##Docker Setup
 
-- Install [Python 3.7](https://www.python.org/downloads/)
-- Install Requirements: `python -m pip install -r requirements.txt`
-- Create the Database: `python manage.py migrate`
-- Create a User: `python manage.py createsuperuser`
-- Run the Development Server: `python manage.py runserver`
-- Add Data into the [Django Admin](http://localhost:8000/admin/).
-- Open [the Site](http://localhost:8000) in a Web Browser.
+If you're unfamiliar with Docker, this might be a little tricky for you. It's worth learning though; power through it until you understand!
 
-
-## Linux Setup (Ubuntu)
-
-- To be added later. If you're a Linux person, you can probably figure it out.
+- Install Docker and Docker Compose for your platform
+- Run `docker-compose build`
+- Run `docker-compose up -d`
+- The site will now be running on `http://localhost`
+- Enter a shell on the docker django machine `docker exec -it YOUR_CONTAINER_ID bash`
+- Create the database `python3 manage.py migrate`
+- Add a superuser `python3 manage.py createsuperuser`
+- Collect static files `python3 manage.py collectstatic`
+- Add Data into the [Django Admin](http://localhost/admin/).
+- Open [the Site](http://localhost) in a Web Browser.
 
 
 # Roadmap
 
-- [ ] Fix Navigation on Edge
-- [ ] Admin Edit Links
-- [ ] Main Page
-- [ ] Archive Page
-- [ ] Archive/Transcript Search
-- [ ] Domain-specific routing
-- [ ] Tag "Wiki" Pages
-- [ ] Links for Web Crawlers
+- [ ] Fix Navigation on VERY old browsers and crawlers (anchor fallback for no js)
 - [ ] RSS Feed
+- [ ] Main Page
+- [ ] Domain-specific routing
+- [ ] Tag "Wiki" Page "Crosslink" markdown
+- [ ] Archive/Transcript Search
 - [ ] Translations
 
 
 # AWS Ubuntu Setup
+
+Here's a rough outline of what I did to get this server deployed on an Ubuntu AWS EC2 instance.
 
 ```bash
 # Fix an annoying bug in AWS. This will be the last "unable to resolve host" error you see

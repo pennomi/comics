@@ -23,17 +23,19 @@ from apps.comics import views as comics_views
 urlpatterns = [
     path('', comics_views.ComicsIndexView.as_view(), name='index'),
     path('admin/', admin.site.urls),
-    path('<slug:comic>/',
-         comics_views.ReaderRedirectView.as_view(), name='reader-redirect'),
+
+    # Comic root
+    path('<slug:comic>/', comics_views.ReaderRedirectView.as_view(), name='reader-redirect'),
+
+    # Special pages  # TODO: Make these illegal slugs for pages
     path('<slug:comic>/archive/', comics_views.ArchiveView.as_view(), name='archive'),
-    path('<slug:comic>/<slug:page>/',
-         comics_views.ReaderView.as_view(), name='reader'),
-    path('<slug:comic>/data/<slug:page>/',
-         comics_views.PageAjaxView.as_view(), name='page'),
+    path('<slug:comic>/feed/', comics_views.FeedView.as_view(), name='feed'),
+
+    # Individual pages
+    path('<slug:comic>/<slug:page>/', comics_views.ReaderView.as_view(), name='reader'),
+    path('<slug:comic>/data/<slug:page>/', comics_views.PageAjaxView.as_view(), name='page'),
 
     # Tag Wiki Pages
-    path('<slug:comic>/tag/<str:type>/',
-         comics_views.TagTypeView.as_view(), name='tagtype'),
-    path('<slug:comic>/tag/<str:type>/<str:tag>/',
-         comics_views.TagView.as_view(), name='tag'),
+    path('<slug:comic>/tag/<str:type>/', comics_views.TagTypeView.as_view(), name='tagtype'),
+    path('<slug:comic>/tag/<str:type>/<str:tag>/', comics_views.TagView.as_view(), name='tag'),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

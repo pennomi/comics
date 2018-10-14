@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<rss version="2.0">
+
+<channel>
+  <title>{{ comic.title }}</title>
+  <link>{{ comic.get_absolute_url }}</link>
+  <description>Read {{ comic.title }} online!</description>
+  <image>
+    <url>{{ comic.header_image.url }}</url>
+    <title>{{ comic.title }}</title>
+    <link>{{ comic.get_absolute_url }}</link>
+  </image>
+  {% for page in pages %}
+  <item>
+    <title><![CDATA[{{ page.title }}]]></title>
+    <link>{{ page.get_absolute_url }}</link>
+    <description><![CDATA[
+      <img src="{{ page.image.url }}"></img>
+    ]]>
+      {{ page.transcript_html }}</description>
+    <author>{{ comic.author }}</author>
+    <pubDate>{{ page.posted_at }}</pubDate>
+  </item>
+  {% endfor %}
+</channel>
+
+</rss>
