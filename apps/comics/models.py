@@ -47,9 +47,14 @@ class TagType(models.Model):
         unique_together = (('comic', 'title'), )
         ordering = ('title', )
 
+    def get_absolute_url(self):
+        return reverse("tagtype", kwargs={
+            "comic": self.comic.slug,
+            "type": self.title
+        })
+
 
 class Tag(models.Model):
-    comic = models.ForeignKey(Comic, on_delete=models.CASCADE, related_name="tags")
     icon = models.ImageField(
         blank=True, null=True, help_text="This image needs to be a 1:1 aspect ratio.")  # TODO: Recommended pixel size
     title = models.CharField(max_length=32)  # TODO: Make sure this is URL-safe?
@@ -62,6 +67,13 @@ class Tag(models.Model):
     class Meta:
         unique_together = (('type', 'title'), )
         ordering = ('type', 'title', )
+
+    def get_absolute_url(self):
+        return reverse("tag", kwargs={
+            "comic": self.type.comic.slug,
+            "type": self.type.title,
+            "tag": self.title,
+        })
 
 
 class Page(models.Model):

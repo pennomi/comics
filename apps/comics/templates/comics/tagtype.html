@@ -5,7 +5,7 @@
         <h1>{{ tag_type.title }}</h1>
         <ul>
             {% for tag in tag_type.tags.all %}
-            <li class="tag-list-entry">{% if tag.icon %}<img src="{{tag.icon.url}}"/>{% endif %}<span>{{ tag.title }}</span></li>
+            <li class="tag-list-entry"><a href="{{ tag.get_absolute_url }}">{% if tag.icon %}<img src="{{tag.icon.url}}"/>{% endif %}<span>{{ tag.title }}</span></a></li>
             {% endfor %}
         </ul>
     </div>

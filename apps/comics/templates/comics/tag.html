@@ -6,18 +6,22 @@
             <img {% if tag.icon %}src="{{ tag.icon.url }}"{% endif %}/>
             <div>
                 <h1>{{ tag.title }}</h1>
-                <p>{{ tag.type.title }}</p>
+                <p><a href="{{ tag.type.get_absolute_url }}">{{ tag.type.title }}</a></p>
             </div>
         </div>
 
         <div id="tag-post">{{ tag.post }}</div>
 
-        <h2>Pages {{ tag.title }} appeared in:</h2>
-        <ul>
+        <h2>{{ tag.title }} appearances:</h2>
+
+        <table style="margin-left: -10px; margin-right: -10px">
             {% for page in tag.pages.all %}
-            <li><span class="archive-pagelist-item">{{ page.posted_at | date:"M d Y" }}</span> <a href="{{ page.get_absolute_url }}">{{ page.title }}</a></li>
+            <tr>
+                <td class="archive-page-td-date">{{ page.posted_at | date:"M d Y" }}</td>
+                <td class="archive-page-td-title"><a href="{{ page.get_absolute_url }}">{{ page.title }}</a></td>
+            </tr>
             {% endfor %}
-        </ul>
+        </table>
 
         <script>
             function htmlDecode(input){

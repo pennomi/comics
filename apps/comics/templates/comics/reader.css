@@ -335,11 +335,23 @@ footer a:active {
 
 
 /* ARCHIVE PAGE */
-.archive-pagelist-item {
-    width: 128px;
-    border-right: 4px solid var(--blockquote-border-color);
-    margin-right: 24px;
-    display: inline-block;
+.archive-tagtype-container {
+    display: flex;
+    justify-content: center;
+}
+.archive-tagtype-container a {
+    padding: 8px;
+}
+.archive-page-td-date {
+    min-width: 128px;
+    padding-top: 4px;
+    padding-bottom: 4px;
+}
+.archive-page-td-title {
+    border-left: 4px solid var(--blockquote-border-color);
+    padding-top: 4px;
+    padding-bottom: 4px;
+    padding-left: 24px;
 }
 
 /* TAG DETAIL PAGE */

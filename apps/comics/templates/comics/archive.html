@@ -3,10 +3,18 @@
 {% block content %}
     <div class="comic-post">
         <h1 style="text-align: center;">{{ comic.title }} Archive</h1>
-        <ul>
+        <div class="archive-tagtype-container">
+        {% for type in comic.tag_types.all %}
+            <a href="{{ type.get_absolute_url }}">{{ type.title }}</a>
+        {% endfor %}
+        </div>
+        <table style="margin-left: -10px; margin-right: -10px">
             {% for page in comic.pages.all %}
-            <li><span class="archive-pagelist-item">{{ page.posted_at | date:"M d Y" }}</span> <a href="{{ page.get_absolute_url }}">{{ page.title }}</a></li>
+            <tr>
+                <td class="archive-page-td-date">{{ page.posted_at | date:"M d Y" }}</td>
+                <td class="archive-page-td-title"><a href="{{ page.get_absolute_url }}">{{ page.title }}</a></td>
+            </tr>
             {% endfor %}
-        </ul>
+        </table>
     </div>
 {% endblock %}

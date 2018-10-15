@@ -25,9 +25,9 @@ If you're unfamiliar with Docker, this might be a little tricky for you. It's wo
 
 # Roadmap
 
+- [ ] Tag and TagType pages, also a TagType List page
 - [ ] Fix Navigation on VERY old browsers and crawlers (anchor fallback for no js)
-- [ ] RSS Feed
-- [ ] Main Page
+- [ ] Main Page (temporarily just redirecting to swords)
 - [ ] Domain-specific routing
 - [ ] Tag "Wiki" Page "Crosslink" markdown
 - [ ] Archive/Transcript Search
