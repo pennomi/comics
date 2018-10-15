@@ -3,19 +3,19 @@
 
 <channel>
   <title>{{ comic.title }}</title>
-  <link>{{ comic.get_absolute_url }}</link>
+  <link>{{ request.scheme }}://{{request.get_host}}{{ comic.get_absolute_url }}</link>
   <description>Read {{ comic.title }} online!</description>
   <image>
-    <url>{{ comic.header_image.url }}</url>
+    <url>{{ request.scheme }}://{{request.get_host}}{{ comic.header_image.url }}</url>
     <title>{{ comic.title }}</title>
-    <link>{{ comic.get_absolute_url }}</link>
+    <link>{{ request.scheme }}://{{request.get_host}}{{ comic.get_absolute_url }}</link>
   </image>
   {% for page in pages %}
   <item>
     <title><![CDATA[{{ page.title }}]]></title>
-    <link>{{ page.get_absolute_url }}</link>
+    <link>{{ request.scheme }}://{{request.get_host}}{{ page.get_absolute_url }}</link>
     <description><![CDATA[
-      <img src="{{ page.image.url }}"></img>
+      <img src="{{ request.scheme }}://{{request.get_host}}{{ page.image.url }}"></img>
     ]]>
       {{ page.transcript_html }}</description>
     <author>{{ comic.author }}</author>

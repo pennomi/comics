@@ -27,7 +27,7 @@ class ReaderRedirectView(RedirectView):
     def get_redirect_url(self, *args, **kwargs):
         comic = get_object_or_404(Comic, slug=kwargs['comic'])
         page = comic.pages.order_by('-ordering').first()
-        return page.get_absolute_url()
+        return self.request.build_absolute_uri(page.get_absolute_url())
 
 
 class ReaderView(TemplateView):
@@ -49,7 +49,7 @@ class FeedView(TemplateView):
         context = super().get_context_data(**kwargs)
         comic = get_object_or_404(Comic, slug=kwargs['comic'])
         context['comic'] = comic
-        context['pages'] = comic.pages.order_by('-ordering')[:100]
+        context['pages'] = comic.pages.order_by('-ordering')[:10]
         return context
 
 
