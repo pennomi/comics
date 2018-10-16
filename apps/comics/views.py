@@ -73,7 +73,7 @@ class PageAjaxView(View):
         tag_type_data = [{"title": key.title, "tags": [{
             "url": reverse("tag", kwargs={"comic": comic.slug, "type": t.type.title, "tag": t.title}),
             "title": t.title,
-            "icon": t.icon.url if t.icon else ""
+            "icon": t.icon_url if t.icon_url else ""
         } for t in value]} for key, value in tag_types]
 
         # Build the json
