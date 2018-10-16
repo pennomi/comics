@@ -39,7 +39,7 @@
                         <p>{{group.grouper.title}}:</p>
                         {% for tag in group.list %}
                         <a class="tag" href="{% url 'tag' comic.slug tag.type.title tag.title %}">
-                            {% if tag.icon %}<div style="background-image:url({{ tag.icon.url }});"></div>{% endif %}
+                            {% if tag.icon_url %}<div style="background-image:url({{ tag.icon_url }});"></div>{% endif %}
                             {{ tag.title }}
                         </a>
                         {% endfor %}

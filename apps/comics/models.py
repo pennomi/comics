@@ -39,6 +39,7 @@ class Comic(models.Model):
 class TagType(models.Model):
     comic = models.ForeignKey(Comic, on_delete=models.CASCADE, related_name="tag_types")
     title = models.CharField(max_length=16)  # TODO: Make sure this is URL-safe?
+    default_icon = models.ImageField(blank=True, help_text="Tags without an image will use this instead.")
 
     def __str__(self):
         return f"{self.title} ({self.comic})"
@@ -67,6 +68,15 @@ class Tag(models.Model):
     class Meta:
         unique_together = (('type', 'title'), )
         ordering = ('type', 'title', )
+
+    @property
+    def icon_url(self):
+        if self.icon:
+            return self.icon.url
+        elif self.type.default_icon:
+            return self.type.default_icon.url
+        else:
+            return None
 
     def get_absolute_url(self):
         return reverse("tag", kwargs={

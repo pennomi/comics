@@ -26,6 +26,7 @@ If you're unfamiliar with Docker, this might be a little tricky for you. It's wo
 # Roadmap
 
 - [ ] Tag and TagType pages, also a TagType List page
+- [ ] Fix AJAX navigation with forward/back buttons
 - [ ] Fix Navigation on VERY old browsers and crawlers (anchor fallback for no js)
 - [ ] Main Page (temporarily just redirecting to swords)
 - [ ] Domain-specific routing
