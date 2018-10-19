@@ -15,7 +15,7 @@
         <h2>{{ tag.title }} appearances:</h2>
 
         <table style="margin-left: -10px; margin-right: -10px">
-            {% for page in tag.pages.all %}
+            {% for page in tag.pages.active %}
             <tr>
                 <td class="archive-page-td-date">{{ page.posted_at | date:"M d Y" }}</td>
                 <td class="archive-page-td-title"><a href="{{ page.get_absolute_url }}">{{ page.title }}</a></td>

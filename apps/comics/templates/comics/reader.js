@@ -273,6 +273,11 @@ var COMICS = function () {
     }
     document.onkeydown = checkKeycode;
 
+    // TODO: handle routing like this instead
+    // window.onpopstate = function(event) {
+    //     console.log("location: " + document.location + ", state: " + JSON.stringify(event.state));
+    // };
+
     // Run the initialization and then publish any variables that need to be public.
     return {
         initializePage: initializePage,

@@ -9,7 +9,7 @@
         {% endfor %}
         </div>
         <table style="margin-left: -10px; margin-right: -10px">
-            {% for page in comic.pages.all %}
+            {% for page in comic.pages.active %}
             <tr>
                 <td class="archive-page-td-date">{{ page.posted_at | date:"M d Y" }}</td>
                 <td class="archive-page-td-title"><a href="{{ page.get_absolute_url }}">{{ page.title }}</a></td>

@@ -1,10 +1,11 @@
 import itertools
 import json
 
-from django.http import HttpResponse
+from django.http import HttpResponse, Http404
 from django.shortcuts import get_object_or_404
 from django.template.defaultfilters import date
 from django.urls import reverse
+from django.utils.timezone import now
 from django.views import View
 from django.views.generic import TemplateView, RedirectView
 
@@ -26,7 +27,7 @@ class ReaderRedirectView(RedirectView):
 
     def get_redirect_url(self, *args, **kwargs):
         comic = get_object_or_404(Comic, slug=kwargs['comic'])
-        page = comic.pages.order_by('-ordering').first()
+        page = comic.pages.active().order_by('-ordering').first()
         return self.request.build_absolute_uri(page.get_absolute_url())
 
 
@@ -37,6 +38,8 @@ class ReaderView(TemplateView):
         context = super().get_context_data(**kwargs)
         comic = get_object_or_404(Comic, slug=kwargs['comic'])
         page = get_object_or_404(Page, comic=comic, slug=kwargs['page'])
+        if page.posted_at > now():
+            raise Http404()
         context['comic'] = comic
         context['page'] = page
         return context
@@ -49,7 +52,7 @@ class FeedView(TemplateView):
         context = super().get_context_data(**kwargs)
         comic = get_object_or_404(Comic, slug=kwargs['comic'])
         context['comic'] = comic
-        context['pages'] = comic.pages.order_by('-ordering')[:10]
+        context['pages'] = comic.pages.active().order_by('-ordering')[:10]
         return context
 
 
@@ -57,15 +60,17 @@ class PageAjaxView(View):
     def get(self, request, *args, **kwargs):
         comic = get_object_or_404(Comic, slug=kwargs['comic'])
         page = get_object_or_404(Page, comic=comic, slug=kwargs['page'])
+        if page.posted_at > now():
+            raise Http404()
 
-        first_page = comic.pages.order_by('ordering').first()
-        prev_page = comic.pages.filter(
+        first_page = comic.pages.active().order_by('ordering').first()
+        prev_page = comic.pages.active().filter(
             ordering__lt=page.ordering
         ).order_by('-ordering').first()
-        next_page = comic.pages.filter(
+        next_page = comic.pages.active().filter(
             ordering__gt=page.ordering
         ).order_by('ordering').first()
-        last_page = comic.pages.order_by('-ordering').first()
+        last_page = comic.pages.active().order_by('-ordering').first()
 
         # Compute tag data
         tags = page.tags.order_by('type__title', 'title')

@@ -86,6 +86,11 @@ class Tag(models.Model):
         })
 
 
+class PageQuerySet(models.QuerySet):
+    def active(self):
+        return self.filter(posted_at__lte=now())
+
+
 class Page(models.Model):
     comic = models.ForeignKey(Comic, on_delete=models.PROTECT, related_name="pages")
     slug = models.CharField(max_length=32)
@@ -98,6 +103,8 @@ class Page(models.Model):
     image = models.ImageField()
     alt_text = models.CharField(max_length=150, blank=True)
     tags = models.ManyToManyField(Tag, blank=True, related_name="pages")
+
+    objects = PageQuerySet.as_manager()
 
     class Meta:
         unique_together = (("comic", "slug"), ("comic", "ordering"), )
