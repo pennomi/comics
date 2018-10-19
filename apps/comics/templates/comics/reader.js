@@ -257,6 +257,22 @@ var COMICS = function () {
         img.src = url;
     }
 
+    function checkKeycode(event) {
+        // handling Internet Explorer stupidity with window.event
+        // @see http://stackoverflow.com/a/3985882/517705
+        var keyDownEvent = event || window.event;
+        var keycode = (keyDownEvent.which) ? keyDownEvent.which : keyDownEvent.keyCode;
+        var LEFT = 37;
+        var RIGHT = 39;
+        if (keycode === LEFT) {
+            previousButtonPressed();
+        } else if (keycode === RIGHT) {
+            nextButtonPressed();
+        }
+        return false;
+    }
+    document.onkeydown = checkKeycode;
+
     // Run the initialization and then publish any variables that need to be public.
     return {
         initializePage: initializePage,
