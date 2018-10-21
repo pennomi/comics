@@ -1,7 +1,7 @@
 # License
 
 This minimal webcomics platform is available under the terms of the permissive MIT license. While not required, if you 
-do something interesing with the code, please drop us a line; we'd love to know what you're up to!
+do something interesting with the code, please drop us a line; we'd love to know what you're up to!
 
 # Project Setup
 
@@ -25,8 +25,8 @@ If you're unfamiliar with Docker, this might be a little tricky for you. It's wo
 
 # Roadmap
 
-- [ ] Tag and TagType pages, also a TagType List page
-- [ ] Fix AJAX navigation with forward/back buttons
+- [ ] Social link previews
+- [ ] Refine Tag, TagType, and Archive Pages
 - [ ] Fix Navigation on VERY old browsers and crawlers (anchor fallback for no js)
 - [ ] Main Page (temporarily just redirecting to swords)
 - [ ] Domain-specific routing

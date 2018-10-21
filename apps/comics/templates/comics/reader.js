@@ -1,30 +1,20 @@
+"use strict";
+
 var COMICS = function () {
 
     // Set up some global variables
     var MARKDOWN = window.markdownit();
-    var NAVIGATION_UNKNOWN = "unknown";
-    var NAVIGATION_INVALID = "invalid";
-    var DATA_CACHE = {
-        first: NAVIGATION_UNKNOWN,
-        previous: NAVIGATION_UNKNOWN,
-        current: NAVIGATION_UNKNOWN,
-        next: NAVIGATION_UNKNOWN,
-        last: NAVIGATION_UNKNOWN,
-        comic: {
-            "slug": "{{ comic.slug }}",
-            "title": "{{ comic.title }}",
-        }
-    }
+    var CACHE = {};
+    var COMIC = {
+        "slug": "{{ comic.slug }}",
+        "title": "{{ comic.title }}",
+    };
     var NUM_ACTIVE_REQUESTS = 0;
 
     // Make the current comic's data appear in the page
-    function loadDataIntoDOM() {
-        var comicData = DATA_CACHE.comic;
-        var pageData = DATA_CACHE.current;
-
+    function loadDataIntoDOM(pageData) {
         // Browser State
-        var newTitle = pageData.title + " | " + comicData.title;
-        window.history.pushState(pageData, pageData.title, '/' + comicData.slug + '/' + pageData.slug + "/");
+        var newTitle = pageData.title + " | " + COMIC.title;
         document.title = pageData.title;
 
         // Compute Tag HTML
@@ -61,46 +51,44 @@ var COMICS = function () {
         document.getElementById("comic-image-spinner").style.opacity = 1.0;
 
         var adminLink = document.getElementById("admin-edit-link");
-        if (adminLink) {
-            adminLink.href = pageData.admin;
-        }
+        if (adminLink) { adminLink.href = pageData.admin; }
+
         // TODO: Should we scroll to the top of the page?
 
         // Navigation Buttons
         recalculateNavigationVisibility();
-
-        // Tell Google Analytics that we successfully loaded the page
-        if ("ga" in window && ga.getAll !== undefined) {
-            tracker = ga.getAll()[0];
-            if (tracker) {
-                tracker.set('page', window.location.pathname);
-                tracker.send('pageview');
-            }
-        }
     }
 
     // Make the navigation buttons appear or disappear
     function recalculateNavigationVisibility() {
-        // TODO: Change these into CSS classes for "unready", "ready", "invalid"
-        if (DATA_CACHE.next === NAVIGATION_INVALID) {
+        // TODO: Do this with a CSS class
+        if (NUM_ACTIVE_REQUESTS > 0) {
+            document.getElementsByClassName("comic-navigation")[0].style.opacity = 0.5;
+        } else {
+            document.getElementsByClassName("comic-navigation")[0].style.opacity = 1.0;
+        }
+
+        var page = getActivePageData()
+
+        if (page === undefined) {
+            // We're still loading
+            return;
+        }
+
+        // TODO: Change these into CSS class for "hidden"
+        if (page.slug === page.last) {
             document.getElementById("navigation-next").style.display = "none";
             document.getElementById("navigation-last").style.display = "none";
         } else {
             document.getElementById("navigation-next").style.display = "";
             document.getElementById("navigation-last").style.display = "";
         }
-        if (DATA_CACHE.previous === NAVIGATION_INVALID) {
+        if (page.slug === page.first) {
             document.getElementById("navigation-previous").style.display = "none";
             document.getElementById("navigation-first").style.display = "none";
         } else {
             document.getElementById("navigation-previous").style.display = "";
             document.getElementById("navigation-first").style.display = "";
-        }
-
-        if (NUM_ACTIVE_REQUESTS > 0) {
-            document.getElementsByClassName("comic-navigation")[0].style.opacity = 0.5;
-        } else {
-            document.getElementsByClassName("comic-navigation")[0].style.opacity = 1.0;
         }
 
         document.getElementById("navigation-first").blur();
@@ -114,116 +102,90 @@ var COMICS = function () {
         document.getElementById("comic-image-spinner").style.opacity = 0.0;
     }
 
+    function getActivePageData() {
+        return CACHE[getComicAndPageFromActiveUrl().pageSlug];
+    }
+
     // Kickstart the page load
     function initializePage() {
-        // Get the initial params from the URL
-        var data = new URL(document.location).pathname.split('/');
-        var pageSlug = data[2];
-
-        // Request the page data
-        getPageData(DATA_CACHE.comic.slug, pageSlug, function (response) {
-            DATA_CACHE.current = response;
-            loadDataIntoDOM();
-
-            // Preload the data for each of the navigation arrows
-            getPageData(DATA_CACHE.comic.slug, DATA_CACHE.current.first, function (response) { DATA_CACHE.first = response; });
-            getPageData(DATA_CACHE.comic.slug, DATA_CACHE.current.previous, function (response) { DATA_CACHE.previous = response; });
-            getPageData(DATA_CACHE.comic.slug, DATA_CACHE.current.next, function (response) { DATA_CACHE.next = response; });
-            getPageData(DATA_CACHE.comic.slug, DATA_CACHE.current.last, function (response) { DATA_CACHE.last = response; });
+        requestPageData(COMIC.slug, getComicAndPageFromActiveUrl().pageSlug, function (response) {
+            navigateToPage(response.slug, false);
         });
     };
 
-    // The next 4 functions perform the navigation. They look similar but are subtly different
+    function navigateToPage(pageSlug, pushState=true) {
+        var pageData = CACHE[pageSlug];
+
+        // This should never happen, but it's protection
+        if (pageData === undefined) {
+            console.log("Can't navigate, unknown destination. " + pageSlug);
+            return;
+        }
+
+        // We don't push the state on the initial load or if using the back/forward buttons
+        // We also don't care if there are outstanding requests in those cases
+        if (pushState) {
+            if (NUM_ACTIVE_REQUESTS > 0) {
+                console.log("Can't navigate, " + NUM_ACTIVE_REQUESTS + " active requests.");
+                return;
+            }
+            window.history.pushState(pageData, pageData.title, '/' + COMIC.slug + '/' + pageData.slug + "/");
+        }
+
+        // Render the new page
+        loadDataIntoDOM(pageData);
+
+        // Tell Google Analytics that we successfully loaded the page
+        if ("ga" in window && ga.getAll !== undefined) {
+            var tracker = ga.getAll()[0];
+            if (tracker) {
+                tracker.set('page', window.location.pathname);
+                tracker.send('pageview');
+            }
+        }
+
+        // Cache all the pages we can navigate to from this page
+        requestPageData(COMIC.slug, pageData.first, function (response) { });
+        requestPageData(COMIC.slug, pageData.previous, function (response) { });
+        requestPageData(COMIC.slug, pageData.next, function (response) { });
+        requestPageData(COMIC.slug, pageData.last, function (response) { });
+    }
+
+    // The next 4 functions perform the navigation.
     function firstButtonPressed() {
-        if (NUM_ACTIVE_REQUESTS > 0) {
-            console.log("Can't navigate, " + NUM_ACTIVE_REQUESTS + " active requests.");
-            return;
-        }
-
-        if (DATA_CACHE.first === NAVIGATION_INVALID || DATA_CACHE.first === NAVIGATION_UNKNOWN) {
-            console.log("Can't navigate, unknown destination.");
-            return;
-        }
-
-        DATA_CACHE.current = DATA_CACHE.first;
-        DATA_CACHE.previous = NAVIGATION_INVALID;
-        DATA_CACHE.next = NAVIGATION_UNKNOWN;
-
-        loadDataIntoDOM();
-
-        getPageData(DATA_CACHE.comic.slug, DATA_CACHE.current.next, function (response) { DATA_CACHE.next = response; });
+        navigateToPage(getActivePageData().first);
     }
 
     function previousButtonPressed() {
-        if (NUM_ACTIVE_REQUESTS > 0) {
-            console.log("Can't navigate, " + NUM_ACTIVE_REQUESTS + " active requests.");
-            return;
-        }
-
-        if (DATA_CACHE.previous === NAVIGATION_INVALID || DATA_CACHE.previous === NAVIGATION_UNKNOWN) {
-            console.log("Can't navigate, unknown destination.");
-            return;
-        }
-
-        DATA_CACHE.next = DATA_CACHE.current;
-        DATA_CACHE.current = DATA_CACHE.previous;
-        DATA_CACHE.previous = NAVIGATION_UNKNOWN;
-
-        loadDataIntoDOM();
-
-        getPageData(DATA_CACHE.comic.slug, DATA_CACHE.current.previous, function (response) { DATA_CACHE.previous = response; });
+        navigateToPage(getActivePageData().previous);
     }
 
     function nextButtonPressed() {
-        if (NUM_ACTIVE_REQUESTS > 0) {
-            console.log("Can't navigate, " + NUM_ACTIVE_REQUESTS + " active requests.");
-            return;
-        }
-
-        if (DATA_CACHE.next === NAVIGATION_INVALID || DATA_CACHE.next === NAVIGATION_UNKNOWN) {
-            console.log("Can't navigate, unknown destination.");
-            return;
-        }
-
-        DATA_CACHE.previous = DATA_CACHE.current;
-        DATA_CACHE.current = DATA_CACHE.next;
-        DATA_CACHE.next = NAVIGATION_UNKNOWN;
-
-        loadDataIntoDOM();
-
-        getPageData(DATA_CACHE.comic.slug, DATA_CACHE.current.next, function (response) { DATA_CACHE.next = response; });
+        navigateToPage(getActivePageData().next);
     }
 
     function lastButtonPressed() {
-        if (NUM_ACTIVE_REQUESTS > 0) {
-            console.log("Can't navigate, " + NUM_ACTIVE_REQUESTS + " active requests.");
-            return;
-        }
-
-        if (DATA_CACHE.last === NAVIGATION_INVALID || DATA_CACHE.last === NAVIGATION_UNKNOWN) {
-            console.log("Can't navigate, unknown destination.");
-            return;
-        }
-
-        DATA_CACHE.current = DATA_CACHE.last;
-        DATA_CACHE.previous = NAVIGATION_UNKNOWN;
-        DATA_CACHE.next = NAVIGATION_INVALID;
-
-        loadDataIntoDOM();
-
-        getPageData(DATA_CACHE.comic.slug, DATA_CACHE.current.previous, function (response) { DATA_CACHE.previous = response; });
+        navigateToPage(getActivePageData().last);
     }
 
     // Make an AJAX request to get data
-    function getPageData(comicSlug, pageSlug, callback) {
+    function requestPageData(comicSlug, pageSlug, callback) {
+        // Don't try to get missing pages
         if (pageSlug === null) {
-            callback(NAVIGATION_INVALID);
+            return;
+        }
+
+        if (CACHE[pageSlug] !== undefined) {
+            callback(CACHE[pageSlug]);
             recalculateNavigationVisibility();
             return;
         }
 
+        // Make the nav buttons go transparent
         NUM_ACTIVE_REQUESTS += 1;
         recalculateNavigationVisibility();
+
+        // Execute the request
         var url = "/" + comicSlug + "/data/" + pageSlug + "/";
         var request = new XMLHttpRequest();
         request.onreadystatechange = function() {
@@ -236,7 +198,10 @@ var COMICS = function () {
                 }
 
                 // Run the callback and update the navigation state
+                CACHE[pageSlug] = data;
                 callback(data);
+
+                // Make the nav buttons go opaque
                 NUM_ACTIVE_REQUESTS -= 1;
                 recalculateNavigationVisibility();
 
@@ -273,10 +238,17 @@ var COMICS = function () {
     }
     document.onkeydown = checkKeycode;
 
-    // TODO: handle routing like this instead
-    // window.onpopstate = function(event) {
-    //     console.log("location: " + document.location + ", state: " + JSON.stringify(event.state));
-    // };
+    function getComicAndPageFromActiveUrl() {
+        var url = new URL(document.location).pathname;
+        var split = url.split('/');
+        return {"comicSlug": split[1], "pageSlug": split[2]};
+    }
+
+    // TODO: handle routing like this instead. This captures only back/forward navigation, so we need to also capture
+    // pushstate
+    window.onpopstate = function(event) {
+        navigateToPage(getComicAndPageFromActiveUrl().pageSlug, false);
+    };
 
     // Run the initialization and then publish any variables that need to be public.
     return {
