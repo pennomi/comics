@@ -229,6 +229,9 @@ var COMICS = function () {
         var keycode = (keyDownEvent.which) ? keyDownEvent.which : keyDownEvent.keyCode;
         var LEFT = 37;
         var RIGHT = 39;
+        if (keyDownEvent.altKey) {
+            return true;
+        }
         if (keycode === LEFT) {
             previousButtonPressed();
         } else if (keycode === RIGHT) {
