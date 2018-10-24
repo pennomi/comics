@@ -26,13 +26,13 @@ If you're unfamiliar with Docker, this might be a little tricky for you. It's wo
 # Roadmap
 
 - [ ] Social link previews
+- [ ] Extended Markdown for tag links; update transcripts and wiki pages
 - [ ] Refine Tag, TagType, and Archive Pages
-- [ ] Fix Navigation on VERY old browsers and crawlers (anchor fallback for no js)
-- [ ] Main Page (temporarily just redirecting to swords)
-- [ ] Domain-specific routing
-- [ ] Tag "Wiki" Page "Crosslink" markdown
-- [ ] Archive/Transcript Search
+- [ ] Archive/Transcript/Tag Search
 - [ ] Translations
+- [ ] Fix Navigation on VERY old browsers and crawlers (anchor fallback for no js)
+- [ ] Domain-specific routing
+- [ ] Main Page (temporarily just redirecting to swords)
 
 
 # AWS Ubuntu Setup

@@ -234,10 +234,12 @@ var COMICS = function () {
         }
         if (keycode === LEFT) {
             previousButtonPressed();
+            return false;
         } else if (keycode === RIGHT) {
             nextButtonPressed();
+            return false;
         }
-        return false;
+        return true;
     }
     document.onkeydown = checkKeycode;
 
