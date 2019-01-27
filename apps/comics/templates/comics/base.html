@@ -12,13 +12,16 @@
 
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>{{ comic.title }}</title>
+    <title>{{ comic.title }}{% block page_title %} | A webcomic by {{ comic.author }}{% endblock %}</title>
+    <meta name="description" content="{% block page_description %}{% endblock %}" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/meyer-reset/2.0/reset.min.css">
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.2.0/css/all.css" integrity="sha384-hWVjflwFxL6sNzntih27bfxkr27PmbbK/iSvJ+a4+0owXq79v+lsFkW54bOGbiDQ" crossorigin="anonymous">
     <style>
         {% include 'comics/reader.css' %}
     </style>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/markdown-it/8.4.1/markdown-it.min.js"></script>
+
+    {% block social_media_tags %}{% endblock %}
 </head>
 <body>
 <script>

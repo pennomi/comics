@@ -26,10 +26,15 @@ If you're unfamiliar with Docker, this might be a little tricky for you. It's wo
 
 # Roadmap
 
-- [ ] Add a docker-generated secret key for Django
-- [ ] Full overhaul of Docker image (Alpine-based for faster builds)
+- [x] Add a docker-generated secret key for Django
+- [x] Full overhaul of Docker image (Alpine-based for faster builds)
 - [ ] Social link previews & search engine metadata (use SEO checkers)
+  - [ ] Archive
+  - [ ] Tag
+  - [ ] Tagtype
+- [ ] robots.txt
 - [ ] Scroll to top of comic upon navigating
+- [ ] Error handling for failed AJAX requests
 - [ ] Order by Chronological
 - [ ] Favicons
 - [ ] New Patreon banners (also consider ad space)
