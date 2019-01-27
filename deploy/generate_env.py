@@ -8,7 +8,7 @@ try:
 except FileNotFoundError:
     chars = 'abcdefghijklmnopqrstuvwxyz0123456789!@#$%^&*(-_=+)'
     with open(filepath, 'w') as outfile:
-        outfile.write(f'''
-DJANGO_SECRET={get_random_string(50, chars)}
+        outfile.write('''
+DJANGO_SECRET={}
 PYTHONUNBUFFERED=1
-''')
+'''.format(get_random_string(50, chars)))
