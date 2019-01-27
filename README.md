@@ -7,7 +7,7 @@ do something interesting with the code, please drop us a line; we'd love to know
 
 Want to run a comics server for yourself? Maybe you'd rather send us a bug fix or new feature? Get started here.
 
-##Docker Setup
+## Docker Setup
 
 If you're unfamiliar with Docker, this might be a little tricky for you. It's worth learning though; power through it until you understand!
 
@@ -29,6 +29,7 @@ If you're unfamiliar with Docker, this might be a little tricky for you. It's wo
 - [x] Add a docker-generated secret key for Django
 - [x] Full overhaul of Docker image (Alpine-based for faster builds)
 - [ ] Social link previews & search engine metadata (use SEO checkers)
+  - [x] Page
   - [ ] Archive
   - [ ] Tag
   - [ ] Tagtype

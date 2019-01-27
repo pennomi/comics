@@ -269,6 +269,16 @@ header {
 }
 
 
+/* COMIC INVITATION SECTION */
+.invitation {
+    width: 100%;
+}
+.invitation img {
+    width: 100%;
+    margin-bottom: 24px;
+}
+
+
 /* COMIC TRANSCRIPT SECTION */
 .comic-transcript-content {
     margin: -20px;

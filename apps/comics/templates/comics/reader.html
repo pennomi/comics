@@ -67,5 +67,11 @@
                 <div id="comic-transcript">{{ page.transcript }}</div>
             </div>
         </div>
+
+        {% if ad %}
+        <div class="invitation">
+            <a target="_blank" href="{{ ad.url }}"><img src="{{ ad.image.url }}"/></a>
+        </div>
+        {% endif %}
     </div>
 {% endblock %}

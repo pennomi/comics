@@ -121,3 +121,10 @@ class Page(models.Model):
 
     def transcript_html(self):
         return markdown(self.transcript)
+
+
+class Ad(models.Model):
+    comic = models.ForeignKey(Comic, on_delete=models.PROTECT, related_name="ads")
+    image = models.ImageField()
+    url = models.URLField()
+    active = models.BooleanField(default=True)

@@ -9,7 +9,7 @@ from django.utils.timezone import now
 from django.views import View
 from django.views.generic import TemplateView, RedirectView
 
-from apps.comics.models import Comic, Page, TagType, Tag
+from apps.comics.models import Comic, Page, TagType, Tag, Ad
 
 
 class ComicsIndexView(RedirectView):
@@ -42,6 +42,7 @@ class ReaderView(TemplateView):
             raise Http404()
         context['comic'] = comic
         context['page'] = page
+        context['ad'] = Ad.objects.filter(comic=comic).order_by("?").first()
         return context
 
 
