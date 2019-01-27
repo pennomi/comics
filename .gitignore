@@ -1,3 +1,4 @@
 # Editor and bytecode
 .idea/
 *.pyc
+supervisord.pid

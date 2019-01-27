@@ -1,25 +1,17 @@
 # Set Up the Basic System
-FROM ubuntu:bionic
-ENV PYTHONUNBUFFERED 1
-ENV DEBIAN_FRONTEND noninteractive
-
+FROM python:3-alpine
 
 # Mount the host directory
 COPY . /opt/django
 WORKDIR /opt/django
 
 # Get Packages and Other Dependencies
-RUN apt-get update
-RUN apt-get install -y software-properties-common vim curl python3 python3-venv python3-pip supervisor nginx
-RUN add-apt-repository ppa:certbot/certbot
-RUN apt-get update
-RUN apt-get install -y python-certbot-nginx
-RUN python3 -m pip install -r /opt/django/requirements.txt
+RUN apk add supervisor nginx certbot vim postgresql-libs bash curl
+RUN apk add --no-cache --virtual .build-deps gcc musl-dev postgresql-dev jpeg-dev zlib-dev
+RUN pip install -r /opt/django/requirements.txt gunicorn
 
-# Set Up Gunicorn & nginx
-RUN python3 -m pip install gunicorn
-COPY deploy/supervisor.conf /etc/supervisor/conf.d/gunicorn.conf
-RUN nginx
+# Set environment variables
+RUN python ./deploy/generate_env.py
 
 EXPOSE 8000
 EXPOSE 80
