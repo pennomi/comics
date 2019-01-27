@@ -128,3 +128,6 @@ class Ad(models.Model):
     image = models.ImageField()
     url = models.URLField()
     active = models.BooleanField(default=True)
+
+    def __str__(self):
+        return f'{self.comic} | {self.url}'

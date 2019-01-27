@@ -42,7 +42,7 @@ class ReaderView(TemplateView):
             raise Http404()
         context['comic'] = comic
         context['page'] = page
-        context['ad'] = Ad.objects.filter(comic=comic).order_by("?").first()
+        context['ad'] = Ad.objects.filter(comic=comic, active=True).order_by("?").first()
         return context
 
 
