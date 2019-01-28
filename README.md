@@ -28,13 +28,19 @@ If you're unfamiliar with Docker, this might be a little tricky for you. It's wo
 
 - [x] Add a docker-generated secret key for Django
 - [x] Full overhaul of Docker image (Alpine-based for faster builds)
+- [ ] Better tenant SSL cert management (LetsEncrypt)
 - [ ] Social link previews & search engine metadata (use SEO checkers)
   - [x] Page
   - [ ] Archive
   - [ ] Tag
-  - [ ] Tagtype
+  - [ ] TagType
 - [ ] robots.txt
 - [ ] Scroll to top of comic upon navigating
+- [ ] Schema.org tagging for our pages, tags
+  - [ ] About the author section
+  - [ ] Character section
+  - [ ] Distinguish between cover art, etc
+  - [ ] Javascript changing of values where appropriate
 - [ ] Error handling for failed AJAX requests
 - [ ] Order by Chronological
 - [ ] Favicons

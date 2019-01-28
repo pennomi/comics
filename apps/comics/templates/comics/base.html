@@ -33,9 +33,7 @@
             <a href="{% url 'reader-redirect' comic.slug %}"><img class="header-image" src="{{ comic.header_image.url }}"/></a>
         </header>
 
-        <div class="panel">
-            {% block content %}{% endblock %}
-        </div>
+        {% block content %}{% endblock %}
     </div>
     <footer>
         <div class="content footer-content">

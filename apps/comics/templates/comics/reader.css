@@ -88,13 +88,6 @@ header {
     width: 100%;
 }
 
-.panel {
-    width: 100%;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-}
-
 #comic-image-spinner {
     position: absolute;
     top: calc(50% - 120px);

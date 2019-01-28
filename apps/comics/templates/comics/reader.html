@@ -13,6 +13,32 @@
 {% endblock %}
 
 {% block content %}
+    <!-- JSON-ld schema -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "CreativeWork",
+      "name": "{{ comic.title }}",
+      "image": "{{ request.scheme }}://{{ request.get_host }}{{ comic.header_image.url }}",
+      "url": "{{ request.scheme }}://{{ request.get_host }}",
+      "genre": "{{ comic.genre }}",
+      "accessMode": ["textual", "visual"],
+      "sameAs": "{{ request.scheme }}://{{ request.get_host }}",
+      "hasPart": {
+        "@type": "ComicStory",
+        "name": "{{ page.title }}",
+        "position": "{{ page.ordering }}",
+        "datePublished": "{{ page.posted_at|date:'Y-m-d' }}",
+        "image": "{{ request.scheme }}://{{ request.get_host }}{{ page.image.url }}",
+        "text": "{{ page.transcript }}"
+      },
+      "author": {
+        "@type": "Person",
+        "name": "{{ comic.author }}"
+      }
+    }
+    </script>
+
     <div>
         <img id="comic-image" class="comic-image" src="{{ page.image.url }}" title="{{ page.alt_text }}" onload="COMICS.imageLoaded();"/>
         <div id="comic-image-spinner"></div>

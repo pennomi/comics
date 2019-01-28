@@ -21,6 +21,7 @@ class Comic(models.Model):
     overflow = models.TextField(
         default="white",
         help_text="a valid CSS `background` configuration")
+    genre = models.CharField(max_length=64, blank=True)
 
     # Social Links
     patreon_link = models.URLField(blank=True)
