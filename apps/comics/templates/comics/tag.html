@@ -1,5 +1,14 @@
 {% extends 'comics/base.html' %}
 
+{% block social_media_tags %}
+    <meta property="og:title" content="{{ tag.title }}" />
+    <meta property="og:type" content="article" />
+    <meta property="og:url" content="{{ request.scheme }}://{{request.get_host}}{{ tag.get_absolute_url }}" />
+    {% if tag.icon_url %}<meta property="og:image" content="{{ request.scheme }}://{{request.get_host}}{{ tag.icon_url }}" />{% endif %}
+    <meta property="og:description" content="{{ tag.post}}" />
+    <meta property="og:site_name" content="{{ comic.title }} | A webcomic by {{ comic.author }}" />
+{% endblock %}
+
 {% block content %}
     <div class="comic-post">
         <div class="tag-detail-header">
