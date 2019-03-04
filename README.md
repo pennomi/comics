@@ -13,9 +13,10 @@ If you're unfamiliar with Docker, this might be a little tricky for you. It's wo
 
 - Install Docker and Docker Compose for your platform
 - Run `python deploy/generate_env.py` to set up the docker environment configuration
+- Add the line `DJANGO_DEBUG=1` to `deploy/django.env` if you are running a development environment. Don't do this in production!
 - Run `docker-compose build`
 - Run `docker-compose up -d`
-- The site will now be running on `http://localhost`
+- The site will now be running on `http://localhost/admin/`
 - Enter a shell on the docker django machine `docker exec -it YOUR_CONTAINER_ID bash`
 - Create the database `python3 manage.py migrate`
 - Add a superuser `python3 manage.py createsuperuser`
