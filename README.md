@@ -21,7 +21,7 @@ If you're unfamiliar with Docker, this might be a little tricky for you. It's wo
 - Add a superuser `python3 manage.py createsuperuser`
 - Collect static files `python3 manage.py collectstatic`
 - The site will now be running on `http://localhost`
-- Add Data into the [Django Admin](http://localhost/admin/).
+- Add Data into the [Django Admin](http://localhost/admin/). Set up at least one Comic and then give it at least one Page.
 - Open [the Site](http://localhost) in a Web Browser.
 
 
