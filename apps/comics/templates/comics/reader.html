@@ -14,6 +14,7 @@
 
 {% block content %}
     <!-- JSON-ld schema -->
+    {% if comic.header_image %}
     <script type="application/ld+json">
     {
       "@context": "https://schema.org",
@@ -38,6 +39,8 @@
       }
     }
     </script>
+    {% endif %}
+
 
     <div>
         <img id="comic-image" class="comic-image" src="{{ page.image.url }}" title="{{ page.alt_text }}" onload="COMICS.imageLoaded();"/>

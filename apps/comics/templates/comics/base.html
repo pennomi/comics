@@ -29,9 +29,11 @@
 </script>
 <div class="content-background">
     <div class="content">
+        {% if comic.header_image %}
         <header>
             <a href="{% url 'reader-redirect' comic.slug %}"><img class="header-image" src="{{ comic.header_image.url }}"/></a>
         </header>
+        {% endif %}
 
         {% block content %}{% endblock %}
     </div>

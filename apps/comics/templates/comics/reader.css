@@ -253,8 +253,12 @@ header {
 
 /* COMIC BLOG POST SECTION */
 .comic-post {
+    {% if comic.post_border_image %}
     border: 43px solid transparent;
     border-image: url({{ comic.post_border_image.url }}) fill 43 repeat;
+    {% else %}
+    border: 1px solid black;
+    {% endif %}
     margin-bottom: 48px;
 }
 .comic-post-content {

@@ -19,7 +19,10 @@ class ComicsIndexView(RedirectView):
     permanent = False
 
     def get_redirect_url(self, *args, **kwargs):
-        return "https://swordscomic.com/swords/"
+        page = Page.objects.first()
+        if page is None:
+            return reverse("admin:index")
+        return reverse("reader", kwargs={"comic": page.comic.slug, "page": page.slug})
 
 
 class ReaderRedirectView(RedirectView):
