@@ -27,36 +27,81 @@ If you're unfamiliar with Docker, this might be a little tricky for you. It's wo
 
 # Roadmap
 
-- [ ] Better tenant SSL cert management (LetsEncrypt)
-- [ ] Social link previews & search engine metadata (use SEO checkers)
-  - [x] Page
-  - [ ] Archive
-  - [ ] Tag
-  - [ ] TagType
-- [ ] robots.txt
-- [ ] Scroll to top of comic upon navigating
-- [ ] Schema.org tagging for our pages, tags
-  - [ ] About the author section
-  - [ ] Character section
-  - [ ] Distinguish between cover art, etc
-  - [ ] Javascript changing of values where appropriate
-- [ ] Error handling for failed AJAX requests
-- [ ] Order by Chronological
-- [ ] Favicons
-- [ ] New Patreon banners (also consider ad space)
-- [ ] Smooth out navigation so people don't get stuck in the tag pages ("Return to the Comic" button)
-- [ ] Reveal hover-text button
-- [ ] Extended Markdown for tag links; update transcripts and wiki pages
-- [ ] Refine Tag, TagType, and Archive Pages
-- [ ] Archive/Transcript/Tag Search
-- [ ] Translations
-- [ ] Fix Navigation on VERY old browsers and crawlers (anchor fallback for no js)
-- [ ] Allow suggestions to transcripts, tags, wiki pages
-- [ ] Add configuration for Google Analytics per-comic
-- [ ] Opt-in to receive [browser push notifications](https://developers.google.com/web/updates/2016/07/web-push-interop-wins) on new posts
-- [ ] Domain-specific routing
-- [ ] Main Page (temporarily just redirecting to swords)
-- [ ] OAuth client to auto-post to various social media
+- [ ] Misc
+  - [ ] Favicon
+- [ ] New URL-based Router
+  - [ ] Google Analytics per domain
+  - [ ] AliasUrl model that redirects to the primary
+  - [ ] Blacklisted comic slugs
+  - [ ] Blacklisted page slugs
+  - [ ] Admin filters
+  - [ ] Catch unconfigured domains and redirect
+  - [ ] Index page for exploring comics
+  - [ ] Automate SSL certs through LetsEncrypt as a management command
+- [ ] Cache invalidation
+  - [ ] Configure CloudFlare per-domain
+  - [ ] Split first/last AJAX into a separate request
+  - [ ] Ensure JSON XHR is cached by cloudflare
+  - [ ] On-save Comic/Page trigger that invalidates related URLs (namespace for easier invalidation)
+  - [ ] CTA ad should load using API and invalidate on model change
+- [ ] Browser Push Notifications
+  - [ ] Only present the modal if requested
+  - [ ] Take them to a dedicated page that explains what to expect and then present modal
+  - [ ] Look here: [browser push notifications](https://developers.google.com/web/updates/2016/07/web-push-interop-wins)
+- [ ] Auto-post to various social media
+  - [ ] General OAuth login
+  - [ ] Reddit
+  - [ ] Instagram
+  - [ ] Discord
+  - [ ] Patreon
+  - [ ] Webtoons
+  - [ ] Tumblr
+- [ ] Merch Shop
+  - [ ] Identify partner
+  - [ ] One product beta
+  - [ ] Upload image with strict specifications
+  - [ ] Google Analytics tracking for conversion
+- [ ] Patreon integration
+  - [ ] Adjust UI if user is authed
+  - [ ] Google Analytics tracking for conversion
+- [ ] Floating Banner Ad
+  - [ ] Adwords or PPM?
+  - [ ] Rotate when new comic is loaded, on a debounce
+  - [ ] Hide for Patrons
+- [ ] Call to Action section of the site
+  - [ ] Become a Patron
+  - [ ] Join the Conversation on Discord
+  - [ ] Get notified when a new comic is posted
+  - [ ] Subscribe to RSS feed
+  - [ ] Tip me on Ko-Fi
+  - [ ] Vote for me on TopWebComics
+  - [ ] GA event tracking
+  - [ ] How are these presented. Rotate through or show all?
+- [ ] QoL improvements
+  - [ ] Scroll to top of page when navigating
+  - [ ] Error handling for failed AJAX requests
+  - [ ] Reveal Hover Text button
+  - [ ] Smooth out navigation so people don't get stuck in the tag pages ("Return to the Comic" button)
+  - [ ] Search
+  - [ ] Translations
+  - [ ] No Javascript fallback
+  - [ ] Transcript/Tag suggestions
+- [ ] Search Engine Optimization
+  - [ ] Metadata
+    - [x] Page
+    - [ ] Archive
+    - [ ] Tag
+    - [ ] TagType
+  - [ ] robots.txt
+  - [ ] Schema.org tagging for our pages, tags
+    - [ ] About the author section
+    - [ ] Character section
+    - [ ] Distinguish between cover art, etc
+    - [ ] Javascript changing of values where appropriate
+- [ ] Other Wishlist
+  - [ ] Order by Chronological vs Release vs whatever
+  - [ ] Extended Markdown for tag links; update transcripts and wiki pages
+  - [ ] Translations
 
 # Other ideas:
 
