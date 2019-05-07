@@ -27,8 +27,6 @@ If you're unfamiliar with Docker, this might be a little tricky for you. It's wo
 
 # Roadmap
 
-- [ ] Misc
-  - [ ] Favicon
 - [ ] New URL-based Router
   - [ ] Google Analytics per domain
   - [ ] AliasUrl model that redirects to the primary
