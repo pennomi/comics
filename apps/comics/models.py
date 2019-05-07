@@ -1,6 +1,8 @@
 from django.db import models
 from django.urls import reverse
 from django.utils.timezone import now
+from django.contrib.staticfiles.templatetags.staticfiles import static
+
 from markdown import markdown
 
 
@@ -13,7 +15,9 @@ class Comic(models.Model):
     post_border_image = models.ImageField(blank=True)
     navigation_spritesheet = models.ImageField(blank=True)
     spinner_image = models.ImageField(
-        blank=True, help_text="A square image that can spin about its center. Ideally 120x120px.")
+        blank=True, help_text="A square PNG that can spin about its center. Ideally 120x120px.")
+    favicon_image = models.ImageField(
+        blank=True, help_text="A square PNG to be used as a favicon. Ideally 192x192px.")
     font = models.FileField(blank=True)
     background = models.TextField(
         default="white",
@@ -32,6 +36,12 @@ class Comic(models.Model):
 
     def get_absolute_url(self):
         return reverse("reader-redirect", kwargs={"comic": self.slug})
+
+    @property
+    def favicon_url(self):
+        if self.favicon_image:
+            return self.favicon_image.url
+        return static("comics/default-favicon/192.png")
 
     def __str__(self):
         return self.title
