@@ -24,21 +24,13 @@
     </style>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/markdown-it/8.4.1/markdown-it.min.js"></script>
 
-    <!-- Google Adwords -->
-    <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
-    <script>
-      (adsbygoogle = window.adsbygoogle || []).push({
-        google_ad_client: "ca-pub-2375784139505496",
-        enable_page_level_ads: true
-      });
-    </script>
-
     {% block social_media_tags %}{% endblock %}
 </head>
 <body>
 <script>
     {% include 'comics/reader.js' %}
 </script>
+
 <div class="content-background">
     <div class="content">
         {% if comic.header_image %}
@@ -49,6 +41,7 @@
 
         {% block content %}{% endblock %}
     </div>
+
     <footer>
         <div class="content footer-content">
             <p>Can't get enough {{ comic.title }}? Visit us on your favorite platform!</p>
@@ -76,6 +69,22 @@
             <p>Comics Platform © 2018 Thane Brimhall. <a href="https://github.com/pennomi/comics">Fork us on GitHub!</a></p>
         </div>
     </footer>
+
+    <div class="cta-footer">
+      <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+      <!-- Footer Banner -->
+      <ins class="adsbygoogle"
+        style="display:block"
+        data-ad-client="ca-pub-2375784139505496"
+        data-ad-slot="1508513553"
+        data-ad-format="auto"
+        data-full-width-responsive="true"></ins>
+      <script>
+        (adsbygoogle = window.adsbygoogle || []).push({});
+      </script>
+    </div>
 </div>
+
+
 </body>
 </html>

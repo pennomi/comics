@@ -1,6 +1,9 @@
 {% load static %}
 
 :root {
+    --comic-max-width: 700px;  /* Goblins is 892px, S&W 980px, Gaia 770px, Schlock Mercenary 780px, Swords 700px  */
+    --overflow-max-width: 892px;
+    --ad-height: 90px;
     --blockquote-border-color: #00000044;
     --blockquote-background-color: #FFFFFF44;
     --tag-background-color: #585039;
@@ -44,9 +47,12 @@ body {
     font-family: 'ComicFont', 'Arial', sans-serif;
     padding: 0;
     margin: 0;
+    width: 100vw;
+    height: 100vh;
+    position: fixed;
+    background: {{ comic.overflow }};
     display: flex;
     justify-content: center;
-    background: {{ comic.overflow }};
 }
 
 hr {
@@ -57,26 +63,35 @@ hr {
     border: 0px;
     {% if comic.hr_image %}
     background-image: url({{ comic.hr_image.url }});
-    {% else %}
     {% endif %}
+}
+
+.cta-footer {
+    margin-top: calc(100vh - var(--ad-height));
+    width: 100%;
+    max-width: var(--comic-max-width);
+    height: var(--ad-height);
+    max-height: var(--ad-height);
+    position: fixed;
+    background-color: #cccccc;
 }
 
 .content-background {
     background: {{ comic.background }};
     display: flex;
     flex-direction: column;
-    justify-content: center;
+    overflow-y: scroll;
     align-items: center;
-    max-width: 892px;
-    width: 100%;
+    max-width: var(--overflow-max-width);
+    width: 100vw;
+    height: 100vh;
     box-sizing: border-box;
-    min-height: 100vh;
 }
 
 .content {
     display: inline-block;
     width: 100%;
-    max-width: 700px;  /* Goblins is 892px, S&W 980px, Gaia 770px, Schlock Mercenary 780px, Swords 700px  */
+    max-width: var(--comic-max-width);
 }
 
 header {
@@ -96,8 +111,8 @@ header {
     height: 120px;
     animation: spin 2s linear infinite;
     {% if comic.spinner_image %}
-    background: url({{ comic.spinner_image.url}}) no-repeat;
-    background-size: contain;
+      background: url({{ comic.spinner_image.url}}) no-repeat;
+      background-size: contain;
     {% else %}
       border-radius: 50%;
       border: 8px solid white;
@@ -289,6 +304,7 @@ header {
     justify-content: center;
     align-items: center;
     padding: 8px;
+    max-width: 100%;
 }
 .social-icon {
     width: 24px;
@@ -311,6 +327,7 @@ footer {
     align-items: center;
     margin-top: auto;
     text-align: center;
+    padding-bottom: var(--ad-height);
 }
 
 .footer-content {
