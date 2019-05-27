@@ -12,6 +12,11 @@
     --footer-background-light-color: #585039;
 }
 
+::-webkit-scrollbar {
+    display: none;
+}
+
+
 {% if comic.font %}
 @font-face {
   font-family: 'ComicFont';
@@ -48,11 +53,11 @@ body {
     padding: 0;
     margin: 0;
     width: 100vw;
-    height: 100vh;
-    position: fixed;
     background: {{ comic.overflow }};
     display: flex;
     justify-content: center;
+    overflow-y: scroll;
+    scrollbar-width: none;  // Firefox
 }
 
 hr {
@@ -80,11 +85,9 @@ hr {
     background: {{ comic.background }};
     display: flex;
     flex-direction: column;
-    overflow-y: scroll;
     align-items: center;
     max-width: var(--overflow-max-width);
     width: 100vw;
-    height: 100vh;
     box-sizing: border-box;
 }
 
