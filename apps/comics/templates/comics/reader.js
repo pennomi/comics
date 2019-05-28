@@ -154,18 +154,22 @@ var COMICS = function () {
     // The next 4 functions perform the navigation.
     function firstButtonPressed() {
         navigateToPage(getActivePageData().first);
+        return false;
     }
 
     function previousButtonPressed() {
         navigateToPage(getActivePageData().previous);
+        return false;
     }
 
     function nextButtonPressed() {
         navigateToPage(getActivePageData().next);
+        return false;
     }
 
     function lastButtonPressed() {
         navigateToPage(getActivePageData().last);
+        return false;
     }
 
     // Make an AJAX request to get data

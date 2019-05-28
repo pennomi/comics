@@ -50,19 +50,19 @@
     <div class="comic-text-wrapper">
         <div class="comic-navigation">
             <div class="nav-box">
-                <button id="navigation-first" class="navigation-button navigation-first" onclick="COMICS.firstButtonPressed();"></button>
+                <a href="{% url 'reader' comic.slug nav.first.slug %}" id="navigation-first" class="navigation-button navigation-first" onclick="COMICS.firstButtonPressed(); return false;"></a>
             </div>
             <div class="nav-box">
-                <button id="navigation-previous" class="navigation-button navigation-previous" onclick="COMICS.previousButtonPressed();"></button>
+                <a href="{%if nav.previous %}{% url 'reader' comic.slug nav.previous.slug %}{% endif %}" id="navigation-previous" class="navigation-button navigation-previous" onclick="COMICS.previousButtonPressed(); return false;"></a>
             </div>
             <div class="nav-box">
-                <a href="{% url 'archive' 'swords' %}"><button id="navigation-archive" class="navigation-button navigation-archive"></button></a>
+                <a href="{% url 'archive' comic.slug %}"><button id="navigation-archive" class="navigation-button navigation-archive"></button></a>
             </div>
             <div class="nav-box">
-                <button id="navigation-next" class="navigation-button navigation-next" onclick="COMICS.nextButtonPressed();"></button>
+                <a href="{%if nav.next %}{% url 'reader' comic.slug nav.next.slug %}{% endif %}" id="navigation-next" class="navigation-button navigation-next" onclick="COMICS.nextButtonPressed(); return false;"></a>
             </div>
             <div class="nav-box">
-                <button id="navigation-last" class="navigation-button navigation-last" onclick="COMICS.lastButtonPressed();"></button>
+                <a href="{% url 'reader' comic.slug nav.last.slug %}" id="navigation-last" class="navigation-button navigation-last" onclick="COMICS.lastButtonPressed(); return false;"></a>
             </div>
         </div>
         <div class="comic-post">
@@ -102,5 +102,17 @@
             <a target="_blank" href="{{ ad.url }}"><img src="{{ ad.image.url }}"/></a>
         </div>
         {% endif %}
+
+          <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+          <!-- Footer Banner -->
+          <ins class="adsbygoogle"
+            style="display:block"
+            data-ad-client="ca-pub-2375784139505496"
+            data-ad-slot="1508513553"
+            data-ad-format="auto"
+            data-full-width-responsive="true"></ins>
+          <script>
+            (adsbygoogle = window.adsbygoogle || []).push({});
+          </script>
     </div>
 {% endblock %}

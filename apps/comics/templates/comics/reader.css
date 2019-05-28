@@ -3,7 +3,7 @@
 :root {
     --comic-max-width: 700px;  /* Goblins is 892px, S&W 980px, Gaia 770px, Schlock Mercenary 780px, Swords 700px  */
     --overflow-max-width: 892px;
-    --ad-height: 90px;
+    --ad-height: 0px;
     --blockquote-border-color: #00000044;
     --blockquote-background-color: #FFFFFF44;
     --tag-background-color: #585039;

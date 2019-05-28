@@ -37,6 +37,20 @@ class ReaderRedirectView(RedirectView):
         return self.request.build_absolute_uri(page.get_absolute_url())
 
 
+def _get_navigation_pages(current_page):
+    comic = current_page.comic
+    return {
+        "first": comic.pages.active().order_by('ordering').first(),
+        "previous": comic.pages.active().filter(
+            ordering__lt=current_page.ordering
+        ).order_by('-ordering').first(),
+        "next": comic.pages.active().filter(
+            ordering__gt=current_page.ordering
+        ).order_by('ordering').first(),
+        "last": comic.pages.active().order_by('-ordering').first(),
+    }
+
+
 class ReaderView(TemplateView):
     template_name = "comics/reader.html"
 
@@ -48,6 +62,7 @@ class ReaderView(TemplateView):
             raise Http404()
         context['comic'] = comic
         context['page'] = page
+        context['nav'] = _get_navigation_pages(page)
         context['ad'] = Ad.objects.filter(comic=comic, active=True).order_by("?").first()
         return context
 
@@ -71,14 +86,7 @@ class PageAjaxView(View):
         if page.posted_at > now():
             raise Http404()
 
-        first_page = comic.pages.active().order_by('ordering').first()
-        prev_page = comic.pages.active().filter(
-            ordering__lt=page.ordering
-        ).order_by('-ordering').first()
-        next_page = comic.pages.active().filter(
-            ordering__gt=page.ordering
-        ).order_by('ordering').first()
-        last_page = comic.pages.active().order_by('-ordering').first()
+        pages = _get_navigation_pages(page)
 
         # Compute tag data
         tags = page.tags.order_by('type__title', 'title')
@@ -101,10 +109,10 @@ class PageAjaxView(View):
             "tag_types": tag_type_data,
 
             # Get the comic list
-            "first": first_page.slug if first_page else None,
-            "previous": prev_page.slug if prev_page else None,
-            "next": next_page.slug if next_page else None,
-            "last": last_page.slug if last_page else None,
+            "first": pages['first'].slug if pages['first'] else None,
+            "previous": pages['previous'].slug if pages['previous'] else None,
+            "next": pages['next'].slug if pages['next'] else None,
+            "last": pages['last'].slug if pages['last'] else None,
 
             # Optional Admin edit link
             "admin": reverse("admin:comics_page_change", args=[page.id]) if request.user.is_staff else None,
