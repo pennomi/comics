@@ -76,13 +76,13 @@ If you're unfamiliar with Docker, this might be a little tricky for you. It's wo
   - [ ] GA event tracking
   - [ ] How are these presented. Rotate through or show all?
 - [ ] QoL improvements
-  - [ ] Scroll to top of page when navigating
+  - [x] Scroll to top of page when navigating
   - [ ] Error handling for failed AJAX requests
   - [ ] Reveal Hover Text button
   - [ ] Smooth out navigation so people don't get stuck in the tag pages ("Return to the Comic" button)
   - [ ] Search
   - [ ] Translations
-  - [ ] No Javascript fallback
+  - [x] No Javascript fallback
   - [ ] Transcript/Tag suggestions
 - [ ] Search Engine Optimization
   - [ ] Metadata

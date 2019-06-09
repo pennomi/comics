@@ -3,7 +3,6 @@ from django.utils.safestring import mark_safe
 
 from apps.comics.models import Comic, Page, TagType, Tag, Ad
 
-
 admin.site.register(Comic)
 admin.site.register(TagType)
 

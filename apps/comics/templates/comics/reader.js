@@ -50,10 +50,10 @@ var COMICS = function () {
         document.getElementById("comic-image").style.opacity = 0.5;
         document.getElementById("comic-image-spinner").style.opacity = 1.0;
 
-        var adminLink = document.getElementById("admin-edit-link");
-        if (adminLink) { adminLink.href = pageData.admin; }
-
-        // TODO: Should we scroll to the top of the page?
+        if (sessionStorage.getItem("admin") === "true") {
+            document.getElementById("staff-text").style.display = "block";
+            document.getElementById("staff-link").href = pageData.admin;
+        }
 
         // Navigation Buttons
         recalculateNavigationVisibility();
@@ -134,6 +134,10 @@ var COMICS = function () {
 
         // Render the new page
         loadDataIntoDOM(pageData);
+
+        // If we're currently not able to see the top of the next page, scroll up to it
+        var imageElement = document.getElementById("comic-image");
+        imageElement.scrollIntoView({behavior: "smooth"});
 
         // Tell Google Analytics that we successfully loaded the page
         if ("ga" in window && ga.getAll !== undefined) {
