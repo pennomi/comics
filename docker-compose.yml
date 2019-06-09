@@ -9,6 +9,10 @@ services:
       - POSTGRES_USER=django
       - POSTGRES_PASSWORD=django
       - POSTGRES_DB=django
+    logging:
+      options:
+        max-size: 50m
+        max-file: 2
   django:
     container_name: comics_django
     build: .
@@ -26,3 +30,7 @@ services:
       - "8000:8000"
     depends_on:
       - db
+    logging:
+      options:
+        max-size: 50m
+        max-file: 2
