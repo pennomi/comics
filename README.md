@@ -37,6 +37,8 @@ If you're unfamiliar with Docker, this might be a little tricky for you. It's wo
   - [ ] Index page for exploring comics
   - [ ] Automate SSL certs through LetsEncrypt as a management command
   - [ ] Autorenew certs where applicable
+- [ ] Data integrity
+  - [ ] Consider making slugs case-insensitive, and have restricted slugs, for pages, tags, and tag types
 - [ ] Management Convenience
   - [ ] Easy backup and restore management commands
 - [ ] Cache invalidation
@@ -93,6 +95,7 @@ If you're unfamiliar with Docker, this might be a little tricky for you. It's wo
   - [ ] Translations
   - [x] No Javascript fallback
   - [ ] Transcript/Tag suggestions
+  - [ ] Better reading experience for people with 1366x768 laptop screens
 - [ ] Search Engine Optimization
   - [ ] Metadata
     - [x] Page
@@ -158,3 +161,15 @@ certbot --nginx -d <your_domain_name>
 ./manage.py createsuperuser
 ./manage.py collectstatic
 ```
+
+# Notes on comfortable reading
+
+The theory behind the design on the site is that it should be a perfectly comfortable reading experience for all of
+the following screen sizes:
+
+- [ ] 1024x768 (iPad landscape. This also covers smallish laptops, which are typically just wider with the same height.
+ In this case, the vertical height is the limitation.)
+- [ ] 329x568 (iPhone 5 portrait. This also covers )
+- [ ] (Large screens. This covers the case where neither the height nor width are bounded.)
+
+These need to have the comic fill the majority of the screen, while still exposing the navigation buttons.
