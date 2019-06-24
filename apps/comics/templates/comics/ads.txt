@@ -1,0 +1,1 @@
+google.com, {{ comic.adsense_publisher_account }}, DIRECT, f08c47fec0942fa0

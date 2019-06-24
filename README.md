@@ -16,7 +16,7 @@ If you're unfamiliar with Docker, this might be a little tricky for you. It's wo
 - Add the line `DJANGO_DEBUG=1` to `deploy/django.env` if you are running a development environment. Don't do this in production!
 - Run `docker-compose build`
 - Run `docker-compose up -d`
-- Enter a shell on the docker django machine `docker-compose exec django bash`
+- Enter a shell on the docker django machine `docker-compose exec comics_django bash`
 - Create the database `python3 manage.py migrate`
 - Add a superuser `python3 manage.py createsuperuser`
 - Collect static files `python3 manage.py collectstatic`
@@ -36,12 +36,20 @@ If you're unfamiliar with Docker, this might be a little tricky for you. It's wo
   - [ ] Catch unconfigured domains and redirect
   - [ ] Index page for exploring comics
   - [ ] Automate SSL certs through LetsEncrypt as a management command
+  - [ ] Autorenew certs where applicable
+- [ ] Management Convenience
+  - [ ] Easy backup and restore management commands
 - [ ] Cache invalidation
   - [ ] Configure CloudFlare per-domain
   - [ ] Split first/last AJAX into a separate request
   - [ ] Ensure JSON XHR is cached by cloudflare
   - [ ] On-save Comic/Page trigger that invalidates related URLs (namespace for easier invalidation)
   - [ ] CTA ad should load using API and invalidate on model change
+- [ ] Font update
+  - [ ] Adjust certain punctuation to be lower (apostrophe, quotation, exclamation, question)
+  - [ ] Make left margin slightly smaller on O
+  - [ ] Slightly smaller space
+  - [ ] Russian characters
 - [ ] Browser Push Notifications
   - [ ] Only present the modal if requested
   - [ ] Take them to a dedicated page that explains what to expect and then present modal
@@ -63,6 +71,7 @@ If you're unfamiliar with Docker, this might be a little tricky for you. It's wo
   - [ ] Adjust UI if user is authed
   - [ ] Google Analytics tracking for conversion
 - [ ] Floating Banner Ad
+  - [x] ads.txt
   - [ ] Adwords or PPM?
   - [ ] Rotate when new comic is loaded, on a debounce
   - [ ] Hide for Patrons

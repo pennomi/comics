@@ -34,6 +34,12 @@ class Comic(models.Model):
     twitter_link = models.URLField(blank=True)
     instagram_link = models.URLField(blank=True)
 
+    # Ad Configuration
+    adsense_publisher_account = models.CharField(
+        max_length=32, blank=True, help_text="Looks like `pub-1234567891234567`")
+    adsense_ad_slot = models.CharField(
+        max_length=10, blank=True, help_text="Looks like `1234567890`")
+
     def get_absolute_url(self):
         return reverse("reader-redirect", kwargs={"comic": self.slug})
 

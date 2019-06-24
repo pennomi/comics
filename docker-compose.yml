@@ -11,9 +11,9 @@ services:
       - POSTGRES_DB=django
     logging:
       options:
-        max-size: 50m
-        max-file: 2
-  django:
+        max-size: "50m"
+        max-file: "2"
+  comics_django:
     container_name: comics_django
     build: .
     env_file:
@@ -32,5 +32,5 @@ services:
       - db
     logging:
       options:
-        max-size: 50m
-        max-file: 2
+        max-size: "50m"
+        max-file: "2"

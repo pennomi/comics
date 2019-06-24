@@ -23,6 +23,7 @@ from apps.comics import views as comics_views
 urlpatterns = [
     path('', comics_views.ComicsIndexView.as_view(), name='index'),
     path('admin/', admin.site.urls),
+    path('ads.txt', comics_views.AdsTxt.as_view(), name='ads-txt'),
 
     # Comic root
     path('<slug:comic>/', comics_views.ReaderRedirectView.as_view(), name='reader-redirect'),

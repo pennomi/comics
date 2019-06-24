@@ -157,3 +157,13 @@ class TagView(TemplateView):
         context['tag_type'] = tag_type
         context['tag'] = tag
         return context
+
+
+class AdsTxt(TemplateView):
+    template_name = "comics/ads.txt"
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        comic = Comic.objects.first()  # TODO: Make this use the inevitable URL router
+        context['comic'] = comic
+        return context
