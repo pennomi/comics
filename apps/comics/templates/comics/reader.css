@@ -1,7 +1,8 @@
 {% load static %}
 
 :root {
-    --comic-max-width: 700px;  /* Goblins is 892px, S&W 980px, Gaia 770px, Schlock Mercenary 780px, Swords 700px  */
+    /* 728px should be the minimum for this value, because Google's AdSense gets the most competition at that size. */
+    --comic-max-width: 728px;  /* Goblins is 892px, S&W 980px, Gaia 770px, Schlock Mercenary 780px, Swords 700px */
     --overflow-max-width: 892px;
     --ad-height: 0px;
     --blockquote-border-color: #00000044;
