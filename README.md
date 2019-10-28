@@ -52,6 +52,7 @@ If you're unfamiliar with Docker, this might be a little tricky for you. It's wo
   - [ ] Make left margin slightly smaller on O
   - [ ] Slightly smaller space
   - [ ] Russian characters
+- [ ] Social Share Functionality
 - [ ] Browser Push Notifications
   - [ ] Only present the modal if requested
   - [ ] Take them to a dedicated page that explains what to expect and then present modal
