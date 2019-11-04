@@ -148,6 +148,9 @@ var COMICS = function () {
             }
         }
 
+        // Try to refresh the ad
+        refreshAd();
+
         // Cache all the pages we can navigate to from this page
         requestPageData(COMIC.slug, pageData.first, function (response) { });
         requestPageData(COMIC.slug, pageData.previous, function (response) { });
@@ -230,7 +233,8 @@ var COMICS = function () {
         img.src = url;
     }
 
-    function checkKeycode(event) {
+    // Implement keyboard navigation using the arrow keys
+    function keyboardNav(event) {
         // handling Internet Explorer stupidity with window.event
         // @see http://stackoverflow.com/a/3985882/517705
         var keyDownEvent = event || window.event;
@@ -249,7 +253,30 @@ var COMICS = function () {
         }
         return true;
     }
-    document.onkeydown = checkKeycode;
+    document.onkeydown = keyboardNav;
+
+    var adLastRefreshed = 0;
+    function refreshAd() {
+        // if the ad has been refreshed recently, ignore this
+        var now = new Date().getTime();
+        if (now - adLastRefreshed < 30000) {  // 30 seconds
+            return;
+        }
+        adLastRefreshed = now;
+
+        // clear the element out entirely and rebind it
+        var adContainer = document.getElementById("ad-banner");
+        adContainer.innerHTML = `
+        <ins class="adsbygoogle"
+          style="display:block"
+          data-ad-client="ca-{{ comic.adsense_publisher_account }}"
+          data-ad-slot="{{ comic.adsense_ad_slot }}"
+          data-ad-format="auto"
+          data-full-width-responsive="true"></ins>
+        `;
+
+        (adsbygoogle = window.adsbygoogle || []).push({});
+    }
 
     function getComicAndPageFromActiveUrl() {
         var url = new URL(document.location).pathname;

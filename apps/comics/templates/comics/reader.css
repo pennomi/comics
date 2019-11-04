@@ -134,6 +134,13 @@ header {
     100% { transform: rotate(360deg); }
 }
 
+#ad-banner {
+    width: 100%;
+    max-width: var(--comic-max-width);
+    overflow: hidden;
+    background-color: white;  // For debugging when the ad is removed
+}
+
 .comic-image {
     width: 100%;
     height: auto;
