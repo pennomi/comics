@@ -138,7 +138,6 @@ header {
     width: 100%;
     max-width: var(--comic-max-width);
     overflow: hidden;
-    background-color: white;  // For debugging when the ad is removed
 }
 
 .comic-image {
