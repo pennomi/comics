@@ -257,25 +257,30 @@ var COMICS = function () {
 
     var adLastRefreshed = 0;
     function refreshAd() {
-        // if the ad has been refreshed recently, ignore this
-        var now = new Date().getTime();
-        if (now - adLastRefreshed < 30000) {  // 30 seconds
-            return;
+        try {
+            // if the ad has been refreshed recently, ignore this
+            var now = new Date().getTime();
+            if (now - adLastRefreshed < 30000) {  // 30 seconds
+                return;
+            }
+
+            // clear the element out entirely and rebind it
+            var adContainer = document.getElementById("ad-banner");
+            adContainer.innerHTML = `
+            <ins class="adsbygoogle"
+              style="display:block"
+              data-ad-client="ca-{{ comic.adsense_publisher_account }}"
+              data-ad-slot="{{ comic.adsense_ad_slot }}"
+              data-ad-format="auto"
+              data-full-width-responsive="true"></ins>
+            `;
+
+            (adsbygoogle = window.adsbygoogle || []).push({});
+            adLastRefreshed = now;
         }
-        adLastRefreshed = now;
-
-        // clear the element out entirely and rebind it
-        var adContainer = document.getElementById("ad-banner");
-        adContainer.innerHTML = `
-        <ins class="adsbygoogle"
-          style="display:block"
-          data-ad-client="ca-{{ comic.adsense_publisher_account }}"
-          data-ad-slot="{{ comic.adsense_ad_slot }}"
-          data-ad-format="auto"
-          data-full-width-responsive="true"></ins>
-        `;
-
-        (adsbygoogle = window.adsbygoogle || []).push({});
+        catch (error) {
+            console.log("Ad network not loaded, will try again next time the page navigates.");
+        }
     }
 
     function getComicAndPageFromActiveUrl() {
