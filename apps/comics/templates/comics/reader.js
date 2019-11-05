@@ -255,7 +255,7 @@ var COMICS = function () {
     }
     document.onkeydown = keyboardNav;
 
-    var adLastRefreshed = 0;
+    var adLastRefreshed = new Date().getTime();
     function refreshAd() {
         try {
             // if the ad has been refreshed recently, ignore this
