@@ -283,6 +283,11 @@ var COMICS = function () {
         }
     }
 
+    function getCanonicalActiveUrl() {
+        var url = new URL(document.location);
+        return url.origin + url.pathname;
+    }
+
     function getComicAndPageFromActiveUrl() {
         var url = new URL(document.location).pathname;
         var split = url.split('/');
@@ -303,6 +308,7 @@ var COMICS = function () {
         nextButtonPressed: nextButtonPressed,
         lastButtonPressed: lastButtonPressed,
         imageLoaded: imageLoaded,
+        getCanonicalActiveUrl: getCanonicalActiveUrl,
     };
 }();
 
