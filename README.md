@@ -24,6 +24,8 @@ If you're unfamiliar with Docker, this might be a little tricky for you. It's wo
 - Add Data into the [Django Admin](http://localhost/admin/). Set up at least one Comic and then give it at least one Page.
 - Open [the Site](http://localhost) in a Web Browser.
 
+Sometimes we change this process and forget to update the readme. If it's not working for you, open an issue and we'll get it fixed.
+
 
 # Roadmap
 
@@ -35,10 +37,10 @@ If you're unfamiliar with Docker, this might be a little tricky for you. It's wo
   - [ ] Admin filters
   - [ ] Catch unconfigured domains and redirect
   - [ ] Index page for exploring comics
+  - [ ] Automate NGINX configuration as a management command
   - [ ] Automate SSL certs through LetsEncrypt as a management command
   - [ ] Autorenew certs where applicable
-- [ ] Data integrity
-  - [ ] Consider making slugs case-insensitive, and have restricted slugs, for pages, tags, and tag types
+  - [ ] Change URL scheme from /{slug}/ to /comic/
 - [ ] Management Convenience
   - [ ] Easy backup and restore management commands
 - [ ] Cache invalidation
@@ -57,6 +59,8 @@ If you're unfamiliar with Docker, this might be a little tricky for you. It's wo
   - [ ] Only present the modal if requested
   - [ ] Take them to a dedicated page that explains what to expect and then present modal
   - [ ] Look here: [browser push notifications](https://developers.google.com/web/updates/2016/07/web-push-interop-wins)
+- [ ] Data integrity
+  - [ ] Consider making slugs case-insensitive, and have restricted slugs, for pages, tags, and tag types
 - [ ] Auto-post to various social media
   - [ ] General OAuth login
   - [ ] Reddit
@@ -74,9 +78,6 @@ If you're unfamiliar with Docker, this might be a little tricky for you. It's wo
   - [ ] Adjust UI if user is authed
   - [ ] Google Analytics tracking for conversion
 - [ ] Floating Banner Ad
-  - [x] ads.txt
-  - [ ] Adwords or PPM?
-  - [ ] Rotate when new comic is loaded, on a debounce
   - [ ] Hide for Patrons
 - [ ] Call to Action section of the site
   - [ ] Become a Patron
@@ -104,6 +105,7 @@ If you're unfamiliar with Docker, this might be a little tricky for you. It's wo
     - [ ] Tag
     - [ ] TagType
   - [ ] robots.txt
+  - [ ] sitemap
   - [ ] Schema.org tagging for our pages, tags
     - [ ] About the author section
     - [ ] Character section
