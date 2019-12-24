@@ -151,6 +151,9 @@ var COMICS = function () {
         // Try to refresh the ad
         refreshAd();
 
+        // Try to refresh the comments
+        refreshDiscourseComments();
+
         // Cache all the pages we can navigate to from this page
         requestPageData(COMIC.slug, pageData.first, function (response) { });
         requestPageData(COMIC.slug, pageData.previous, function (response) { });
@@ -283,9 +286,34 @@ var COMICS = function () {
         }
     }
 
-    function getCanonicalActiveUrl() {
-        var url = new URL(document.location);
-        return url.origin + url.pathname;
+    function refreshDiscourseComments() {
+        try {
+            var url = new URL(document.location);
+            window.DiscourseEmbed = {
+                discourseUrl: 'https://forum.swordscomic.com/',
+                discourseEmbedUrl: url.origin + url.pathname
+            };
+
+            // If the comments chain already exists, remove it
+            var discourseScript = document.getElementById('discourse-script');
+            if (discourseScript) {
+                discourseScript.remove();
+            }
+            var discourseComments = document.getElementById('discourse-comments');
+            if (discourseComments) {
+                discourseComments.innerHTML = '';
+            }
+
+            // Create a script tag that loads the comments into the #discourse-comments tag
+            var d = document.createElement('script');
+            d.id = 'discourse-script';
+            d.type = 'text/javascript';
+            d.async = true;
+            d.src = window.DiscourseEmbed.discourseUrl + 'javascripts/embed.js';
+            document.getElementsByTagName('head')[0].appendChild(d);
+        } catch (error) {
+            console.log("Comments not loaded, will try again next time the page navigates.");
+        }
     }
 
     function getComicAndPageFromActiveUrl() {
@@ -308,7 +336,6 @@ var COMICS = function () {
         nextButtonPressed: nextButtonPressed,
         lastButtonPressed: lastButtonPressed,
         imageLoaded: imageLoaded,
-        getCanonicalActiveUrl: getCanonicalActiveUrl,
     };
 }();
 

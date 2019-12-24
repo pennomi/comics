@@ -289,12 +289,25 @@ header {
     {% else %}
     border: 1px solid black;
     {% endif %}
-    margin-bottom: 48px;
+    margin-bottom: 16px;
 }
 .comic-post-content {
     margin: -20px;  /* To undo the very wide image border */
 }
 
+/* COMMENTS SECTION */
+.comic-comments {
+    {% if comic.post_border_image %}
+    border: 43px solid transparent;
+    border-image: url({{ comic.post_border_image.url }}) fill 43 repeat;
+    {% else %}
+    border: 1px solid black;
+    {% endif %}
+    margin-bottom: 16px;
+}
+#discourse-comments {
+    margin: -20px;  /* To undo the very wide image border */
+}
 
 /* COMIC INVITATION SECTION */
 .invitation {

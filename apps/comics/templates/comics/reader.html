@@ -109,17 +109,9 @@
             </div>
         </div>
 
-        <div id='discourse-comments'></div>
-        <script type="text/javascript">
-          window.DiscourseEmbed = { discourseUrl: 'https://forum.swordscomic.com/',
-                             discourseEmbedUrl: COMICS.getCanonicalActiveUrl() };
-
-          (function() {
-            var d = document.createElement('script'); d.type = 'text/javascript'; d.async = true;
-            d.src = window.DiscourseEmbed.discourseUrl + 'javascripts/embed.js';
-            (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(d);
-          })();
-        </script>
+        <div class="comic-comments">
+            <div id='discourse-comments'></div>
+        </div>
 
         {% if ad %}
         <div class="invitation">
