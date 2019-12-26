@@ -28,7 +28,6 @@ Sometimes we change this process and forget to update the readme. If it's not wo
 
 # Roadmap
 
-- [ ] Fix static files in development
 - [ ] New URL-based Router
   - [ ] Google Analytics per domain
   - [ ] AliasUrl model that redirects to the primary
