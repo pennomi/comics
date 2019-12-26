@@ -2,3 +2,4 @@
 .idea/
 *.pyc
 supervisord.pid
+deploy/django.env

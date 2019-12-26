@@ -12,8 +12,7 @@ Want to run a comics server for yourself? Maybe you'd rather send us a bug fix o
 If you're unfamiliar with Docker, this might be a little tricky for you. It's worth learning though; power through it until you understand!
 
 - Install Docker and Docker Compose for your platform
-- Run `python deploy/generate_env.py` to set up the docker environment configuration
-- Add the line `DJANGO_DEBUG=1` to `deploy/django.env` if you are running a development environment. Don't do this in production!
+- Run `python deploy/generate_env.py` to set up the docker environment configuration. Answer `y` to the prompt if you're doing development work, or `n` if you're deploying a server.
 - Run `docker-compose build`
 - Run `docker-compose up -d`
 - Enter a shell on the docker django machine `docker-compose exec comics_django bash`
@@ -41,6 +40,9 @@ Sometimes we change this process and forget to update the readme. If it's not wo
   - [ ] Automate SSL certs through LetsEncrypt as a management command
   - [ ] Autorenew certs where applicable
   - [ ] Change URL scheme from /{slug}/ to /comic/
+- [ ] Comments embed via Discourse topics
+  - [ ] Only if discourse URL is configured at the comic level
+  - [ ] Procedurally style based on the main stylesheet
 - [ ] Management Convenience
   - [ ] Easy backup and restore management commands
 - [ ] Cache invalidation

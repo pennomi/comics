@@ -7,9 +7,20 @@ from markdown import markdown
 
 
 class Comic(models.Model):
+    # Routing information
+    domain = models.CharField(
+        max_length=128, unique=True, blank=True,
+        help_text="The domain used to view this comic, in the format `subdomain.example.com`. "
+                  "If this is blank, the comic will not be able to be viewed.")
+    slug = models.CharField(max_length=128, unique=True, help_text="Deprecated.")
+
+    # Comic information
     title = models.CharField(max_length=128)
-    slug = models.CharField(max_length=128, unique=True)
     author = models.CharField(max_length=128, blank=True)
+    genre = models.CharField(max_length=64, blank=True)
+
+    # Style & Images
+    # TODO: Add documentation on preferred pixel sizes
     header_image = models.ImageField(blank=True)
     hr_image = models.ImageField(blank=True)
     post_border_image = models.ImageField(blank=True)
@@ -20,12 +31,9 @@ class Comic(models.Model):
         blank=True, help_text="A square PNG to be used as a favicon. Ideally 192x192px.")
     font = models.FileField(blank=True)
     background = models.TextField(
-        default="white",
-        help_text="a valid CSS `background` configuration")
+        default="white", help_text="a valid CSS `background` configuration")
     overflow = models.TextField(
-        default="white",
-        help_text="a valid CSS `background` configuration")
-    genre = models.CharField(max_length=64, blank=True)
+        default="white", help_text="a valid CSS `background` configuration")
 
     # Social Links
     patreon_link = models.URLField(blank=True)
@@ -34,11 +42,14 @@ class Comic(models.Model):
     twitter_link = models.URLField(blank=True)
     instagram_link = models.URLField(blank=True)
 
-    # Ad Configuration
+    # Third-party integrations
+    # TODO: Add Google Analytics
     adsense_publisher_account = models.CharField(
         max_length=32, blank=True, help_text="Looks like `pub-1234567891234567`")
     adsense_ad_slot = models.CharField(
         max_length=10, blank=True, help_text="Looks like `1234567890`")
+    discourse_url = models.URLField(
+        blank=True, help_text="Link to a Discourse forum, for example `https://forum.example.com/`")
 
     def get_absolute_url(self):
         return reverse("reader-redirect", kwargs={"comic": self.slug})
