@@ -1,7 +1,8 @@
+from django.conf.urls.static import static
+from django.core.exceptions import ValidationError
 from django.db import models
 from django.urls import reverse
 from django.utils.timezone import now
-from django.contrib.staticfiles.templatetags.staticfiles import static
 
 from markdown import markdown
 
@@ -62,6 +63,11 @@ class Comic(models.Model):
 
     def __str__(self):
         return self.title
+
+    def clean(self):
+        if AliasUrl.objects.filter(domain=self.domain):
+            raise ValidationError("Comic cannot have the same domain as an AliasUrl.")
+        return super().clean()
 
 
 class TagType(models.Model):
@@ -159,3 +165,18 @@ class Ad(models.Model):
 
     def __str__(self):
         return f'{self.comic} | {self.url}'
+
+
+class AliasUrl(models.Model):
+    comic = models.ForeignKey(Comic, on_delete=models.CASCADE, related_name="alias_urls")
+    domain = models.CharField(
+        max_length=128, unique=True,
+        help_text="Any request going to this domain will be redirected to the canonical domain of the comic.")
+
+    def __str__(self):
+        return f'{self.domain} → {self.comic}'
+
+    def clean(self):
+        if Comic.objects.filter(domain=self.domain):
+            raise ValidationError("AliasUrl cannot have the same domain as a Comic.")
+        super().clean()

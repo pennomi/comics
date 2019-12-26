@@ -17,7 +17,7 @@ If you're unfamiliar with Docker, this might be a little tricky for you. It's wo
 - Run `docker-compose up -d`
 - Enter a shell on the docker django machine `docker-compose exec comics_django bash`
 - Create the database `python3 manage.py migrate`
-- Add a superuser `python3 manage.py createsuperuser`
+- Add a superuser `python3 manage.py createsuperuser`. Follow the prompts.
 - Collect static files `python3 manage.py collectstatic`
 - The site will now be running on `http://localhost`
 - Add Data into the [Django Admin](http://localhost/admin/). Set up at least one Comic and then give it at least one Page.
@@ -28,6 +28,7 @@ Sometimes we change this process and forget to update the readme. If it's not wo
 
 # Roadmap
 
+- [ ] Fix static files in development
 - [ ] New URL-based Router
   - [ ] Google Analytics per domain
   - [ ] AliasUrl model that redirects to the primary

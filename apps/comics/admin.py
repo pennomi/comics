@@ -1,10 +1,11 @@
 from django.contrib import admin
 from django.utils.safestring import mark_safe
 
-from apps.comics.models import Comic, Page, TagType, Tag, Ad
+from apps.comics.models import Comic, Page, TagType, Tag, Ad, AliasUrl
 
 admin.site.register(Comic)
 admin.site.register(TagType)
+admin.site.register(AliasUrl)
 
 
 @admin.register(Page)
