@@ -17,6 +17,7 @@ class Comic(models.Model):
 
     # Comic information
     title = models.CharField(max_length=128)
+    description = models.TextField(blank=True)
     author = models.CharField(max_length=128, blank=True)
     genre = models.CharField(max_length=64, blank=True)
 
@@ -55,18 +56,14 @@ class Comic(models.Model):
     def get_absolute_url(self):
         return reverse("reader-redirect", kwargs={"comic": self.slug})
 
-    @property
-    def favicon_url(self):
-        if self.favicon_image:
-            return self.favicon_image.url
-        return static("comics/default-favicon/192.png")
-
     def __str__(self):
         return self.title
 
     def clean(self):
         if AliasUrl.objects.filter(domain=self.domain):
             raise ValidationError("Comic cannot have the same domain as an AliasUrl.")
+        if IndexUrl.objects.filter(domain=self.domain):
+            raise ValidationError("Comic cannot have the same domain as an IndexUrl.")
         return super().clean()
 
 
@@ -126,12 +123,14 @@ class PageQuerySet(models.QuerySet):
 
 
 class Page(models.Model):
+    """A Page is a single image of a Comic, with associated position (ordering) data."""
     comic = models.ForeignKey(Comic, on_delete=models.PROTECT, related_name="pages")
     slug = models.CharField(max_length=32)
     title = models.CharField(max_length=128)
-    ordering = models.FloatField()
+    ordering = models.FloatField(
+        help_text="Lower numbers appear first. You can use negative numbers and decimals (eg. -2.5).")
     posted_at = models.DateTimeField(
-        default=now, help_text="If this is in the future, it won't be visible until that time")
+        default=now, help_text="If this is in the future, it won't be visible until that time.")
     post = models.TextField(blank=True, help_text="Accepts Markdown")
     transcript = models.TextField(blank=True, help_text="Accepts Markdown")
     image = models.ImageField()
@@ -158,16 +157,20 @@ class Page(models.Model):
 
 
 class Ad(models.Model):
+    """Ad objects show a custom banner at the bottom of the comic."""
     comic = models.ForeignKey(Comic, on_delete=models.PROTECT, related_name="ads")
     image = models.ImageField()
     url = models.URLField()
-    active = models.BooleanField(default=True)
+    active = models.BooleanField(
+        default=True, help_text="The ad shown on the page is randomly chosen from all active ads.")
 
     def __str__(self):
         return f'{self.comic} | {self.url}'
 
 
 class AliasUrl(models.Model):
+    """AliasUrl objects are used to redirect domains to the canonical URL for the attached Comic object."""
+
     comic = models.ForeignKey(Comic, on_delete=models.CASCADE, related_name="alias_urls")
     domain = models.CharField(
         max_length=128, unique=True,
@@ -179,4 +182,24 @@ class AliasUrl(models.Model):
     def clean(self):
         if Comic.objects.filter(domain=self.domain):
             raise ValidationError("AliasUrl cannot have the same domain as a Comic.")
+        if IndexUrl.objects.filter(domain=self.domain):
+            raise ValidationError("AliasUrl cannot have the same domain as an IndexUrl.")
+        super().clean()
+
+
+class IndexUrl(models.Model):
+    """This model exists for ensuring automatic SSL is generated for the index domains."""
+
+    domain = models.CharField(
+        max_length=128, unique=True,
+        help_text="Any request going to this domain will be shown the comic index pages.")
+
+    def __str__(self):
+        return f'{self.domain}'
+
+    def clean(self):
+        if Comic.objects.filter(domain=self.domain):
+            raise ValidationError("IndexUrl cannot have the same domain as a Comic.")
+        if AliasUrl.objects.filter(domain=self.domain):
+            raise ValidationError("IndexUrl cannot have the same domain as an AliasUrl.")
         super().clean()

@@ -1,8 +1,9 @@
 <!DOCTYPE html>
+{% load static %}
 <html lang="en">
 <head>
     <!-- Favicon -->
-    <link rel="shortcut icon" type="image/png" href="{{ request.scheme }}://{{request.get_host}}{{ comic.favicon_url }}"/>
+    <link rel="shortcut icon" type="image/png" href="{{ request.scheme }}://{{request.get_host}}{% if comic.favicon_image %}{{ comic.favicon_image.url }}{% else %}{% static 'comics/default-favicon/192.png' %}{% endif %}"/>
 
     <!-- Global site tag (gtag.js) - Google Analytics -->
     <script async src="https://www.googletagmanager.com/gtag/js?id=UA-126098960-1"></script>
@@ -15,8 +16,9 @@
 
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="keywords" content="webcomic,comic{% if comic.genre %},{{ comic.genre }}{% endif %}">
     <title>{{ comic.title }}{% block page_title %} | A webcomic by {{ comic.author }}{% endblock %}</title>
-    <meta name="description" content="{% block page_description %}{% endblock %}" />
+    <meta name="description" content="{% block page_description %}{{ comic.description }}{% endblock %}" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/meyer-reset/2.0/reset.min.css">
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.2.0/css/all.css" integrity="sha384-hWVjflwFxL6sNzntih27bfxkr27PmbbK/iSvJ+a4+0owXq79v+lsFkW54bOGbiDQ" crossorigin="anonymous">
     <style>
@@ -61,7 +63,9 @@
                 {% if comic.instagram_link %}
                 <a href="{{ comic.instagram_link }}"><div class="social-icon"><i class="fab fa-instagram"></i></div></a>
                 {% endif %}
+                {% if comic %}
                 <a href="{% url 'feed' comic.slug %}"><div class="social-icon"><i class="fas fa-rss"></i></div></a>
+                {% endif %}
             </div>
         </div>
         <div class="footer-subsection">

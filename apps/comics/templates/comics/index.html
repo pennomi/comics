@@ -1,10 +1,24 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-</head>
-<body>
-<h1>We haven't built this page yet. Please proceed to <a href="/swords/">Swords</a>!</h1>
-</body>
-</html>
+{% extends 'comics/base.html' %}
+{% block page_title %}Comics Index{% endblock %}
+{% block content %}
+    <div>
+        <br/>
+        <h1>Comics Platform</h1>
+        <br/>
+    </div>
+    {% for comic in comics %}
+    <div class="index-section">
+        <h2>{{ comic.title }}</h2>
+        <p>by {{ comic.author }}</p>
+        <p>{{ comic.genre }}</p>
+        <p>{{ comic.pages.active.count }} pages</p>
+
+        <a href="{{request.scheme}}://{{ comic.domain }}">
+            <img style="width: 100%" src="{% if comic.header_image %}{{ comic.header_image.url }}{% endif %}" alt="{{ comic.title }}">
+        </a>
+        <p>{{ comic.description }}</p>
+
+    </div>
+    {% endfor %}
+
+{% endblock %}

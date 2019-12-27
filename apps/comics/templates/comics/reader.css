@@ -423,3 +423,15 @@ footer a:active {
     margin-top: 24px;
     margin-bottom: 24px;
 }
+
+
+/* Index Page */
+.index-section {
+    background-color: #ddd;
+    padding: 24px;
+    margin: 0;
+    text-decoration: wavy;
+}
+.index-section:nth-child(even) {
+    background-color: #aaa;
+}

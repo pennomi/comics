@@ -1,8 +1,8 @@
 import itertools
 import json
 
-from django.http import HttpResponse, Http404
-from django.shortcuts import get_object_or_404
+from django.http import HttpResponse, Http404, HttpResponseRedirect
+from django.shortcuts import get_object_or_404, render
 from django.template.defaultfilters import date
 from django.urls import reverse
 from django.utils.timezone import now
@@ -15,16 +15,35 @@ from django.utils.decorators import method_decorator
 from apps.comics.models import Comic, Page, TagType, Tag, Ad
 
 
-class ComicsIndexView(RedirectView):
-    permanent = False
+def require_comic(cls):
+    def outside(func):
+        def wrapper(self, *args, **kwargs):
+            if self.request.comic is None:
+                return HttpResponseRedirect(reverse("index"))
+            return func(self, *args, **kwargs)
+        return wrapper
+    cls.get = outside(cls.get)
+    return cls
 
-    def get_redirect_url(self, *args, **kwargs):
-        page = Page.objects.order_by('-ordering').first()
-        if page is None:
-            return reverse("admin:index")
-        return reverse("reader", kwargs={"comic": page.comic.slug, "page": page.slug})
+
+class ComicsIndexView(View):
+    """This view redirects the user to the latest comic if we're on a configured domain, otherwise it goes to a
+    list page that shows what comics are available.
+    """
+    def get(self, request):
+        # If we are on a domain that has a comic configured, take us to the most recent page
+        if request.comic:
+            page = Page.objects.filter(comic=request.comic).order_by('-ordering').first()
+            if page is None:
+                # But if there's no page, take us to the admin, I guess. TODO: Have a "no content" template
+                return HttpResponseRedirect(reverse("admin:index"))
+            return HttpResponseRedirect(reverse("reader", kwargs={"comic": page.comic.slug, "page": page.slug}))
+
+        # If we are on any other domain, instead show the index.
+        return render(request, 'comics/index.html', {'comics': Comic.objects.all()})
 
 
+@require_comic
 class ReaderRedirectView(RedirectView):
     """ If the user comes to visit the site without a specific page, redirect
     that user to the most recent comic available.
@@ -51,6 +70,7 @@ def _get_navigation_pages(current_page):
     }
 
 
+@require_comic
 class ReaderView(TemplateView):
     template_name = "comics/reader.html"
 
@@ -123,6 +143,7 @@ class PageAjaxView(View):
         return response
 
 
+@require_comic
 class ArchiveView(TemplateView):
     template_name = "comics/archive.html"
 
@@ -133,6 +154,7 @@ class ArchiveView(TemplateView):
         return context
 
 
+@require_comic
 class TagTypeView(TemplateView):
     template_name = "comics/tagtype.html"
 
@@ -145,6 +167,7 @@ class TagTypeView(TemplateView):
         return context
 
 
+@require_comic
 class TagView(TemplateView):
     template_name = "comics/tag.html"
 

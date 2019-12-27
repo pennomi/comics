@@ -19,7 +19,7 @@ If you're unfamiliar with Docker, this might be a little tricky for you. It's wo
 - Create the database `python3 manage.py migrate`
 - Add a superuser `python3 manage.py createsuperuser`. Follow the prompts.
 - Collect static files `python3 manage.py collectstatic`
-- The site will now be running on `http://localhost`
+- The site will now be running on `http://localhost`. (Note that this is running on port 80 unlike many development servers.)
 - Add Data into the [Django Admin](http://localhost/admin/). Set up at least one Comic and then give it at least one Page.
 - Open [the Site](http://localhost) in a Web Browser.
 
@@ -30,16 +30,16 @@ Sometimes we change this process and forget to update the readme. If it's not wo
 
 - [ ] New URL-based Router
   - [ ] Google Analytics per domain
-  - [ ] AliasUrl model that redirects to the primary
+  - [x] AliasUrl model that redirects to the primary
+  - [ ] Change URL scheme from /{slug}/ to /comic/
   - [ ] Blacklisted comic slugs
   - [ ] Blacklisted page slugs
-  - [ ] Admin filters
-  - [ ] Catch unconfigured domains and redirect
+  - [ ] Admin permissions for artists
   - [ ] Index page for exploring comics
+  - [ ] Catch unconfigured domains and redirect to comic index
   - [ ] Automate NGINX configuration as a management command
   - [ ] Automate SSL certs through LetsEncrypt as a management command
   - [ ] Autorenew certs where applicable
-  - [ ] Change URL scheme from /{slug}/ to /comic/
 - [ ] Comments embed via Discourse topics
   - [ ] Only if discourse URL is configured at the comic level
   - [ ] Procedurally style based on the main stylesheet
