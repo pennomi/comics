@@ -54,7 +54,7 @@ class Comic(models.Model):
         blank=True, help_text="Link to a Discourse forum, for example `https://forum.example.com/`")
 
     def get_absolute_url(self):
-        return reverse("reader-redirect", kwargs={"comic": self.slug})
+        return reverse("reader-redirect")
 
     def __str__(self):
         return self.title
@@ -81,7 +81,6 @@ class TagType(models.Model):
 
     def get_absolute_url(self):
         return reverse("tagtype", kwargs={
-            "comic": self.comic.slug,
             "type": self.title
         })
 
@@ -111,7 +110,6 @@ class Tag(models.Model):
 
     def get_absolute_url(self):
         return reverse("tag", kwargs={
-            "comic": self.type.comic.slug,
             "type": self.type.title,
             "tag": self.title,
         })
@@ -145,7 +143,6 @@ class Page(models.Model):
 
     def get_absolute_url(self):
         return reverse("reader", kwargs={
-            "comic": self.comic.slug,
             "page": self.slug,
         })
 

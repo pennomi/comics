@@ -50,19 +50,19 @@
     <div class="comic-text-wrapper">
         <div class="comic-navigation">
             <div class="nav-box">
-                <a href="{% url 'reader' comic.slug nav.first.slug %}" id="navigation-first" class="navigation-button navigation-first" onclick="COMICS.firstButtonPressed(); return false;"></a>
+                <a href="{% url 'reader' nav.first.slug %}" id="navigation-first" class="navigation-button navigation-first" onclick="COMICS.firstButtonPressed(); return false;"></a>
             </div>
             <div class="nav-box">
-                <a href="{%if nav.previous %}{% url 'reader' comic.slug nav.previous.slug %}{% endif %}" id="navigation-previous" class="navigation-button navigation-previous" onclick="COMICS.previousButtonPressed(); return false;"></a>
+                <a href="{%if nav.previous %}{% url 'reader' nav.previous.slug %}{% endif %}" id="navigation-previous" class="navigation-button navigation-previous" onclick="COMICS.previousButtonPressed(); return false;"></a>
             </div>
             <div class="nav-box">
-                <a href="{% url 'archive' comic.slug %}"><button id="navigation-archive" class="navigation-button navigation-archive"></button></a>
+                <a href="{% url 'archive' %}"><button id="navigation-archive" class="navigation-button navigation-archive"></button></a>
             </div>
             <div class="nav-box">
-                <a href="{%if nav.next %}{% url 'reader' comic.slug nav.next.slug %}{% endif %}" id="navigation-next" class="navigation-button navigation-next" onclick="COMICS.nextButtonPressed(); return false;"></a>
+                <a href="{%if nav.next %}{% url 'reader' nav.next.slug %}{% endif %}" id="navigation-next" class="navigation-button navigation-next" onclick="COMICS.nextButtonPressed(); return false;"></a>
             </div>
             <div class="nav-box">
-                <a href="{% url 'reader' comic.slug nav.last.slug %}" id="navigation-last" class="navigation-button navigation-last" onclick="COMICS.lastButtonPressed(); return false;"></a>
+                <a href="{% url 'reader' nav.last.slug %}" id="navigation-last" class="navigation-button navigation-last" onclick="COMICS.lastButtonPressed(); return false;"></a>
             </div>
         </div>
 
@@ -91,7 +91,7 @@
                     <div class="tag-group">
                         <p>{{group.grouper.title}}:</p>
                         {% for tag in group.list %}
-                        <a class="tag" href="{% url 'tag' comic.slug tag.type.title tag.title %}">
+                        <a class="tag" href="{% url 'tag' tag.type.title tag.title %}">
                             {% if tag.icon_url %}<div style="background-image:url({{ tag.icon_url }});"></div>{% endif %}
                             {{ tag.title }}
                         </a>

@@ -6,7 +6,6 @@ var COMICS = function () {
     var MARKDOWN = window.markdownit();
     var CACHE = {};
     var COMIC = {
-        "slug": "{{ comic.slug }}",
         "title": "{{ comic.title }}",
     };
     var NUM_ACTIVE_REQUESTS = 0;
@@ -108,7 +107,7 @@ var COMICS = function () {
 
     // Kickstart the page load
     function initializePage() {
-        requestPageData(COMIC.slug, getComicAndPageFromActiveUrl().pageSlug, function (response) {
+        requestPageData(getComicAndPageFromActiveUrl().pageSlug, function (response) {
             navigateToPage(response.slug, false);
         });
     };
@@ -129,7 +128,7 @@ var COMICS = function () {
                 console.log("Can't navigate, " + NUM_ACTIVE_REQUESTS + " active requests.");
                 return;
             }
-            window.history.pushState(pageData, pageData.title, '/' + COMIC.slug + '/' + pageData.slug + "/");
+            window.history.pushState(pageData, pageData.title, '/comic/' + pageData.slug + "/");
         }
 
         // Render the new page
@@ -155,10 +154,10 @@ var COMICS = function () {
         refreshDiscourseComments();
 
         // Cache all the pages we can navigate to from this page
-        requestPageData(COMIC.slug, pageData.first, function (response) { });
-        requestPageData(COMIC.slug, pageData.previous, function (response) { });
-        requestPageData(COMIC.slug, pageData.next, function (response) { });
-        requestPageData(COMIC.slug, pageData.last, function (response) { });
+        requestPageData(pageData.first, function (response) { });
+        requestPageData(pageData.previous, function (response) { });
+        requestPageData(pageData.next, function (response) { });
+        requestPageData(pageData.last, function (response) { });
     }
 
     // The next 4 functions perform the navigation.
@@ -183,7 +182,7 @@ var COMICS = function () {
     }
 
     // Make an AJAX request to get data
-    function requestPageData(comicSlug, pageSlug, callback) {
+    function requestPageData(pageSlug, callback) {
         // Don't try to get missing pages
         if (pageSlug === null) {
             return;
@@ -200,7 +199,7 @@ var COMICS = function () {
         recalculateNavigationVisibility();
 
         // Execute the request
-        var url = "/" + comicSlug + "/data/" + pageSlug + "/";
+        var url = "/comic/data/" + pageSlug + "/";
         var request = new XMLHttpRequest();
         request.onreadystatechange = function() {
             if (request.readyState == 4 && request.status == 200) {
@@ -319,7 +318,7 @@ var COMICS = function () {
     function getComicAndPageFromActiveUrl() {
         var url = new URL(document.location).pathname;
         var split = url.split('/');
-        return {"comicSlug": split[1], "pageSlug": split[2]};
+        return {"pageSlug": split[2]};
     }
 
     // TODO: handle routing like this instead. This captures only back/forward navigation, so we need to also capture

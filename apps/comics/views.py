@@ -16,6 +16,7 @@ from apps.comics.models import Comic, Page, TagType, Tag, Ad
 
 
 def require_comic(cls):
+    """A View class decorator that redirects the page to the comics index if no comic is found."""
     def outside(func):
         def wrapper(self, *args, **kwargs):
             if self.request.comic is None:
@@ -37,7 +38,7 @@ class ComicsIndexView(View):
             if page is None:
                 # But if there's no page, take us to the admin, I guess. TODO: Have a "no content" template
                 return HttpResponseRedirect(reverse("admin:index"))
-            return HttpResponseRedirect(reverse("reader", kwargs={"comic": page.comic.slug, "page": page.slug}))
+            return HttpResponseRedirect(reverse("reader", kwargs={"page": page.slug}))
 
         # If we are on any other domain, instead show the index.
         return render(request, 'comics/index.html', {'comics': Comic.objects.all()})
@@ -51,7 +52,7 @@ class ReaderRedirectView(RedirectView):
     permanent = False
 
     def get_redirect_url(self, *args, **kwargs):
-        comic = get_object_or_404(Comic, slug=kwargs['comic'])
+        comic = self.request.comic
         page = comic.pages.active().order_by('-ordering').first()
         return self.request.build_absolute_uri(page.get_absolute_url())
 
@@ -76,7 +77,7 @@ class ReaderView(TemplateView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        comic = get_object_or_404(Comic, slug=kwargs['comic'])
+        comic = self.request.comic
         page = get_object_or_404(Page, comic=comic, slug=kwargs['page'])
         if page.posted_at > now():
             raise Http404()
@@ -92,7 +93,7 @@ class FeedView(TemplateView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        comic = get_object_or_404(Comic, slug=kwargs['comic'])
+        comic = self.request.comic
         context['comic'] = comic
         context['pages'] = comic.pages.active().order_by('-ordering')[:10]
         return context
@@ -101,7 +102,7 @@ class FeedView(TemplateView):
 @method_decorator(cache_page(60 * 60), name='dispatch')
 class PageAjaxView(View):
     def get(self, request, *args, **kwargs):
-        comic = get_object_or_404(Comic, slug=kwargs['comic'])
+        comic = request.comic
         page = get_object_or_404(Page, comic=comic, slug=kwargs['page'])
         if page.posted_at > now():
             raise Http404()
@@ -112,7 +113,7 @@ class PageAjaxView(View):
         tags = page.tags.order_by('type__title', 'title')
         tag_types = itertools.groupby(tags, lambda _: _.type)
         tag_type_data = [{"title": key.title, "tags": [{
-            "url": reverse("tag", kwargs={"comic": comic.slug, "type": t.type.title, "tag": t.title}),
+            "url": reverse("tag", kwargs={"type": t.type.title, "tag": t.title}),
             "title": t.title,
             "icon": t.icon_url if t.icon_url else ""
         } for t in value]} for key, value in tag_types]
@@ -149,7 +150,7 @@ class ArchiveView(TemplateView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        comic = get_object_or_404(Comic, slug=kwargs['comic'])
+        comic = self.request.comic
         context['comic'] = comic
         return context
 
@@ -160,7 +161,7 @@ class TagTypeView(TemplateView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        comic = get_object_or_404(Comic, slug=kwargs['comic'])
+        comic = self.request.comic
         tag_type = get_object_or_404(TagType, comic=comic, title=kwargs['type'])
         context['comic'] = comic
         context['tag_type'] = tag_type
@@ -173,7 +174,7 @@ class TagView(TemplateView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        comic = get_object_or_404(Comic, slug=kwargs['comic'])
+        comic = self.request.comic
         tag_type = get_object_or_404(TagType, comic=comic, title=kwargs['type'])
         tag = get_object_or_404(Tag, type=tag_type, title=kwargs['tag'])
         context['comic'] = comic
@@ -190,3 +191,12 @@ class AdsTxt(TemplateView):
         comic = Comic.objects.first()  # TODO: Make this use the inevitable URL router
         context['comic'] = comic
         return context
+
+
+class LegacyPageRedirectView(RedirectView):
+    permanent = True
+
+    def get_redirect_url(self, *args, **kwargs):
+        url = self.request.build_absolute_uri()
+        url = url.replace("/swords/", "/comic/")
+        return url

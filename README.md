@@ -34,12 +34,14 @@ Sometimes we change this process and forget to update the readme. If it's not wo
   - [ ] Change URL scheme from /{slug}/ to /comic/
   - [ ] Blacklisted comic slugs
   - [ ] Blacklisted page slugs
-  - [ ] Admin permissions for artists
+  - [ ] Restricted admin permissions for artists
   - [ ] Index page for exploring comics
-  - [ ] Catch unconfigured domains and redirect to comic index
+  - [x] Catch unconfigured domains and redirect to comic index
   - [ ] Automate NGINX configuration as a management command
   - [ ] Automate SSL certs through LetsEncrypt as a management command
   - [ ] Autorenew certs where applicable
+- [ ] Onboarding
+  - [ ] Add a "no content" placeholder template for comics that have no pages yet
 - [ ] Comments embed via Discourse topics
   - [ ] Only if discourse URL is configured at the comic level
   - [ ] Procedurally style based on the main stylesheet

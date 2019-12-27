@@ -37,7 +37,7 @@
     <div class="content">
         {% if comic.header_image %}
         <header>
-            <a href="{% url 'reader-redirect' comic.slug %}"><img class="header-image" src="{{ comic.header_image.url }}"/></a>
+            <a href="{% url 'reader-redirect' %}"><img class="header-image" src="{{ comic.header_image.url }}"/></a>
         </header>
         {% endif %}
 
@@ -64,7 +64,7 @@
                 <a href="{{ comic.instagram_link }}"><div class="social-icon"><i class="fab fa-instagram"></i></div></a>
                 {% endif %}
                 {% if comic %}
-                <a href="{% url 'feed' comic.slug %}"><div class="social-icon"><i class="fas fa-rss"></i></div></a>
+                <a href="{% url 'feed' %}"><div class="social-icon"><i class="fas fa-rss"></i></div></a>
                 {% endif %}
             </div>
         </div>
