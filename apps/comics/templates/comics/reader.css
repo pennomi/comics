@@ -1,29 +1,42 @@
 {% load static %}
 
 :root {
-    /* 728px should be the minimum for this value, because Google's AdSense gets the most competition at that size. */
-    --comic-max-width: 728px;  /* Goblins is 892px, S&W 980px, Gaia 770px, Schlock Mercenary 780px, Swords 700px */
-    --overflow-max-width: 892px;
+    /* Configurable settings */
+
+    /* Base Colors */
+    --overflow-background: #ECEFF1;
+    --content-background: #FFFFFF;
+    --primary-text-color: #212121;
+    --footer-background-color: #B0BEC5;
+
+    /* Tag Colors */
+    --tag-background-color: #B0BEC5;
+    --tag-text-color: #212121;
+
+    /* Images */
+    --spinner-image: url({% static "comics/default-spinner.png" %});
+    --navigation-spritesheet: url({% static "comics/default-sprites.png" %});
+    --post-border-image: url({% static "comics/default-container.png" %});
+
+    /* Unconfigurable settings */
+
+    /* TODO: Add some nice margin/padding standards in here. */
+
+    /* Page sizing */
+    --comic-max-width: 728px;  /* 728px minimum, because Google's AdSense gets the most competition at that size. */
+    --overflow-max-width: 892px;  /* Whatever is comfortable for wide screen viewing. */
     --ad-height: 0px;
+
+    /* Markdown Styling */
     --blockquote-border-color: #00000044;
     --blockquote-background-color: #FFFFFF44;
-    --tag-background-color: #585039;
-    --tag-text-hover-color: #978b65;
-    --footer-background-dark-color: #585039;
-    --footer-background-light-color: #585039;
 }
+
 
 ::-webkit-scrollbar {
     display: none;
 }
 
-
-{% if comic.font %}
-@font-face {
-  font-family: 'ComicFont';
-  src: url({{ comic.font.url }});
-}
-{% endif %}
 
 /* Additional resets */
 h1 { font-size: 32px; font-weight: bold; margin-bottom: 8px; }
@@ -43,10 +56,10 @@ blockquote {
 
 /* LINK STYLING */
 a:link {
-    color: black;
+    color: var(--primary-text-color);
 }
 a:visited {
-    color: black;
+    color: var(--primary-text-color);
 }
 
 body {
@@ -54,22 +67,12 @@ body {
     padding: 0;
     margin: 0;
     width: 100vw;
-    background: {{ comic.overflow }};
+    background: var(--overflow-background);
     display: flex;
     justify-content: center;
     overflow-y: scroll;
-    scrollbar-width: none;  // Firefox
-}
-
-hr {
-    display: block;
-    padding-top: 24px;
-    padding-bottom: 24px;
-    height: 10px;
-    border: 0px;
-    {% if comic.hr_image %}
-    background-image: url({{ comic.hr_image.url }});
-    {% endif %}
+    scrollbar-width: none;  /* Firefox */
+    color: var(--primary-text-color);
 }
 
 .cta-footer {
@@ -83,13 +86,14 @@ hr {
 }
 
 .content-background {
-    background: {{ comic.background }};
+    background: var(--content-background);
     display: flex;
     flex-direction: column;
     align-items: center;
     max-width: var(--overflow-max-width);
     width: 100vw;
     box-sizing: border-box;
+    box-shadow: 0 0 10px #00000044;
 }
 
 .content {
@@ -118,14 +122,9 @@ header {
     width: 120px;
     height: 120px;
     animation: spin 2s linear infinite;
-    {% if comic.spinner_image %}
-      background: url({{ comic.spinner_image.url}}) no-repeat;
-      background-size: contain;
-    {% else %}
-      border-radius: 50%;
-      border: 8px solid white;
-      border-color: white transparent white transparent;
-    {% endif %}
+    background-image: var(--spinner-image);
+    background-repeat: no-repeat;
+    background-size: contain;
     transition: opacity 0.1s ease-out;
     opacity: 0;
 }
@@ -224,17 +223,17 @@ header {
 
 
 #comic-tags a:link {
-    color: black;
+    color: var(--tag-text-color);
     text-decoration: none;
 }
 #comic-tags a:visited {
-    color: black;
+    color: var(--tag-text-color);
 }
 #comic-tags a:hover {
-    color: var(--tag-text-hover-color);
+    filter: brightness(125%);
 }
 #comic-tags a:active {
-    color: var(--tag-text-hover-color);
+    filter: brightness(125%);
 }
 
 /* IMAGE SPRITES*/
@@ -244,11 +243,8 @@ header {
     width: 100%;
     border: none;
     outline: none;
-    {% if comic.navigation_spritesheet %}
-    background: url({{ comic.navigation_spritesheet.url }}) no-repeat;
-    {% else %}
-    background: url({% static "comics/default-sprites.png" %}) no-repeat;
-    {% endif %}
+    background: var(--navigation-spritesheet);
+    background-repeat: no-repeat;
     background-size : 500% 200%;
     cursor: pointer;
 }
@@ -283,26 +279,24 @@ header {
 
 /* COMIC BLOG POST SECTION */
 .comic-post {
-    {% if comic.post_border_image %}
     border: 43px solid transparent;
-    border-image: url({{ comic.post_border_image.url }}) fill 43 repeat;
-    {% else %}
-    border: 1px solid black;
-    {% endif %}
+    border-image-source: var(--post-border-image);
+    border-image-slice: 43 fill;
+    border-image-repeat: repeat;
     margin-bottom: 16px;
 }
 .comic-post-content {
     margin: -20px;  /* To undo the very wide image border */
+    margin-bottom: 20px;
 }
+
 
 /* COMMENTS SECTION */
 .comic-comments {
-    {% if comic.post_border_image %}
     border: 43px solid transparent;
-    border-image: url({{ comic.post_border_image.url }}) fill 43 repeat;
-    {% else %}
-    border: 1px solid black;
-    {% endif %}
+    border-image-source: var(--post-border-image);
+    border-image-slice: 43 fill;
+    border-image-repeat: repeat;
     margin-bottom: 16px;
 }
 #discourse-comments {
@@ -322,6 +316,7 @@ header {
 /* COMIC TRANSCRIPT SECTION */
 .comic-transcript-content {
     margin: -20px;
+    margin-top: 20px;
 }
 
 /* FOOTER AND SOCIAL ICONS */
@@ -337,17 +332,15 @@ header {
 .social-icon {
     width: 24px;
     height: 24px;
-    border-radius: 24px;
     font-size: 24px;
     padding: 8px;
     text-align: center;
-    background-color: var(--footer-background-dark-color);
     margin: 8px;
 }
 
 footer {
     color: black;
-    background-color: var(--footer-background-light-color);
+    background-color: var(--footer-background-color);
     width: 100%;
     display: flex;
     justify-content: center;
@@ -364,7 +357,6 @@ footer {
 }
 
 .footer-subsection {
-    background-color: var(--footer-background-dark-color);
     padding: 8px;
     width: 100%;
     box-sizing: border-box;
@@ -427,11 +419,11 @@ footer a:active {
 
 /* Index Page */
 .index-section {
-    background-color: #ddd;
+    background-color: #CFD8DC;
     padding: 24px;
     margin: 0;
     text-decoration: wavy;
 }
 .index-section:nth-child(even) {
-    background-color: #aaa;
+    background-color: #B0BEC5;
 }

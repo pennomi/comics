@@ -21,14 +21,33 @@
     <meta name="description" content="{% block page_description %}{{ comic.description }}{% endblock %}" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/meyer-reset/2.0/reset.min.css">
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.2.0/css/all.css" integrity="sha384-hWVjflwFxL6sNzntih27bfxkr27PmbbK/iSvJ+a4+0owXq79v+lsFkW54bOGbiDQ" crossorigin="anonymous">
+
     <style>
         {% include 'comics/reader.css' %}
     </style>
+
+{% if comic %}
+    <style>
+    {% if comic.font %}
+    @font-face {
+      font-family: 'ComicFont';
+      src: url({{ comic.font.url }});
+    }
+    {% endif %}
+
+    :root {
+        {% for style in comic.style_configurations.all %}
+            --{{ style.property }}: {{ style.value }};
+        {% endfor %}
+    }
+    </style>
+{% endif %}
+
     <script src="https://cdnjs.cloudflare.com/ajax/libs/markdown-it/8.4.1/markdown-it.min.js"></script>
 
     {% block social_media_tags %}{% endblock %}
 </head>
-<body>
+<body data-discourse-url="{{ comic.discourse_url }}">
 <script>
     {% include 'comics/reader.js' %}
 </script>
@@ -45,6 +64,7 @@
     </div>
 
     <footer>
+        {% if comic %}
         <div class="content footer-content">
             <p>Can't get enough {{ comic.title }}? Visit us on your favorite platform!</p>
             <div class="social-container">
@@ -68,9 +88,12 @@
                 {% endif %}
             </div>
         </div>
+        {% endif %}
         <div class="footer-subsection">
-            <p>{{ comic.title }} © 2018 {{ comic.author }}</p>
-            <p>Comics Platform © 2018 Thane Brimhall. <a href="https://github.com/pennomi/comics">Fork us on GitHub!</a></p>
+            {% if comic %}
+            <p>{{ comic.title }} © 2018-2020 {{ comic.author }}</p>
+            {% endif %}
+            <p>Comics Platform © 2018-2020 Thane Brimhall. <a href="https://github.com/pennomi/comics">Fork us on GitHub!</a></p>
         </div>
     </footer>
 

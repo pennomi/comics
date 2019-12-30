@@ -26,8 +26,8 @@ urlpatterns = [
     path('ads.txt', comics_views.AdsTxt.as_view(), name='ads-txt'),
 
     # Comic root
-    path('/', comics_views.ReaderRedirectView.as_view(), name='reader-redirect'),
-    path('comic/', comics_views.ReaderRedirectView.as_view(), name='reader-redirect-2'),
+    path('', comics_views.ReaderRedirectView.as_view(), name='reader-redirect'),
+    path('comic/', comics_views.ReaderRedirectView.as_view(), name='reader-redirect'),
 
     # Legacy redirects
     re_path(r'^swords/', comics_views.LegacyPageRedirectView.as_view(), name='legacy-page-redirect'),

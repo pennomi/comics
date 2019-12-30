@@ -32,14 +32,9 @@ class ComicsIndexView(View):
     list page that shows what comics are available.
     """
     def get(self, request):
-        # If we are on a domain that has a comic configured, take us to the most recent page
+        # If we are on a domain that has a comic configured, take us to the reader
         if request.comic:
-            page = Page.objects.filter(comic=request.comic).order_by('-ordering').first()
-            if page is None:
-                # But if there's no page, take us to the admin, I guess. TODO: Have a "no content" template
-                return HttpResponseRedirect(reverse("admin:index"))
-            return HttpResponseRedirect(reverse("reader", kwargs={"page": page.slug}))
-
+            return HttpResponseRedirect(reverse("reader-redirect"))
         # If we are on any other domain, instead show the index.
         return render(request, 'comics/index.html', {'comics': Comic.objects.all()})
 
@@ -54,6 +49,9 @@ class ReaderRedirectView(RedirectView):
     def get_redirect_url(self, *args, **kwargs):
         comic = self.request.comic
         page = comic.pages.active().order_by('-ordering').first()
+        if page is None:
+            # But if there's no page, take us to the admin, I guess. TODO: Have a "no content" template
+            return reverse("admin:index")
         return self.request.build_absolute_uri(page.get_absolute_url())
 
 

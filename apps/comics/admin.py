@@ -1,19 +1,28 @@
 from django.contrib import admin
 from django.utils.safestring import mark_safe
 
-from apps.comics.models import Comic, Page, TagType, Tag, Ad, AliasUrl, IndexUrl
+from apps.comics.models import Comic, Page, TagType, Tag, Ad, AliasUrl, IndexUrl, StyleConfiguration
 
-admin.site.register(Comic)
 admin.site.register(TagType)
 admin.site.register(AliasUrl)
 admin.site.register(IndexUrl)
+
+
+class StyleInline(admin.TabularInline):
+    model = StyleConfiguration
+    extra = 1
+
+
+@admin.register(Comic)
+class ComicAdmin(admin.ModelAdmin):
+    inlines = (StyleInline, )
 
 
 @admin.register(Page)
 class PageAdmin(admin.ModelAdmin):
     list_display = ('title', 'ordering', 'comic', 'tag_list')
     list_filter = ('comic', 'tags')
-    filter_horizontal = ('tags',)
+    filter_horizontal = ('tags', )
 
     def tag_list(self, obj):
         return ", ".join([t.title for t in obj.tags.all()])

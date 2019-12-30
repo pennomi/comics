@@ -30,23 +30,31 @@ Sometimes we change this process and forget to update the readme. If it's not wo
 
 - [ ] New URL-based Router
   - [ ] Google Analytics per domain
+  - [ ] Comments configuration per domain
   - [x] AliasUrl model that redirects to the primary
-  - [ ] Change URL scheme from /{slug}/ to /comic/
-  - [ ] Blacklisted comic slugs
-  - [ ] Blacklisted page slugs
+  - [x] Change URL scheme from /{slug}/ to /comic/
+  - [ ] Remove comic slug field
+  - [ ] Blacklisted page slugs ("feed", "data")
   - [ ] Restricted admin permissions for artists
-  - [ ] Index page for exploring comics
+  - [x] Index page for exploring comics (gross, but functional)
   - [x] Catch unconfigured domains and redirect to comic index
   - [ ] Automate NGINX configuration as a management command
   - [ ] Automate SSL certs through LetsEncrypt as a management command
   - [ ] Autorenew certs where applicable
+- [ ] Management Convenience
+  - [ ] Use SQLite instead of PostgreSQL? We don't need PostgreSQL and everything would be much simpler (only one container) without it.
+  - [ ] Easy backup and restore management commands
+- [ ] Comments System
+  - [ ] Style the comments section using the page styles
+- Code Cleanliness
+  - [ ] Make the CSS variables load into the template and move the main css file out
+  - [ ] Load any JS variables into the template and move the main js file out
+  - [ ] Inject admin edit button ONLY if the cookie is detected (instead of hiding it)
 - [ ] Onboarding
   - [ ] Add a "no content" placeholder template for comics that have no pages yet
 - [ ] Comments embed via Discourse topics
   - [ ] Only if discourse URL is configured at the comic level
   - [ ] Procedurally style based on the main stylesheet
-- [ ] Management Convenience
-  - [ ] Easy backup and restore management commands
 - [ ] Cache invalidation
   - [ ] Configure CloudFlare per-domain
   - [ ] Split first/last AJAX into a separate request
@@ -102,6 +110,7 @@ Sometimes we change this process and forget to update the readme. If it's not wo
   - [x] No Javascript fallback
   - [ ] Transcript/Tag suggestions
   - [ ] Better reading experience for people with 1366x768 laptop screens
+  - [ ] Nice 404 page. Maybe make it configurable per comic. (404 Sword Not Found)
 - [ ] Search Engine Optimization
   - [ ] Metadata
     - [x] Page

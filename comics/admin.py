@@ -1,4 +1,5 @@
-"""Configure a custom admin page that sets a browser cookie signalling login for editors"""
+"""Configure a custom admin page that sets a browser cookie signalling login for editors."""
+
 from django.contrib import admin
 from django.contrib.admin import apps
 

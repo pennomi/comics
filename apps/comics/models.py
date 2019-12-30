@@ -1,4 +1,3 @@
-from django.conf.urls.static import static
 from django.core.exceptions import ValidationError
 from django.db import models
 from django.urls import reverse
@@ -24,7 +23,6 @@ class Comic(models.Model):
     # Style & Images
     # TODO: Add documentation on preferred pixel sizes
     header_image = models.ImageField(blank=True)
-    hr_image = models.ImageField(blank=True)
     post_border_image = models.ImageField(blank=True)
     navigation_spritesheet = models.ImageField(blank=True)
     spinner_image = models.ImageField(
@@ -65,6 +63,35 @@ class Comic(models.Model):
         if IndexUrl.objects.filter(domain=self.domain):
             raise ValidationError("Comic cannot have the same domain as an IndexUrl.")
         return super().clean()
+
+
+class CssPropertyChoices(models.TextChoices):
+    overflow_background = 'overflow-background'
+    content_background = 'content-background'
+    primary_text_color = 'primary-text-color'
+    footer_background_color = 'footer-background-color'
+    tag_background_color = 'tag-background-color'
+    tag_text_color = 'tag-text-color'
+
+    spinner_image = 'spinner-image'
+    navigation_spritesheet = 'navigation-spritesheet'
+    post_border_image = 'post-border-image'  # TODO: Border image width?
+
+
+class StyleConfiguration(models.Model):
+    """StyleConfiguration objects make it easy to override CSS rules in a safe way."""
+    comic = models.ForeignKey(Comic, on_delete=models.CASCADE, related_name="style_configurations")
+    property = models.CharField(
+        max_length=32, choices=CssPropertyChoices.choices,
+        help_text="Use CSS property values. For colors, that's like `#000000FF` and for images "
+                  "that's like `url(https://placekitten.com/120/120/)`")
+    value = models.CharField(max_length=128)  # TODO: Validate that there's no CSS injection
+
+    def __str__(self):
+        return f"--{self.property}: {self.value};"
+
+    class Meta:
+        unique_together = (('comic', 'property'),)
 
 
 class TagType(models.Model):

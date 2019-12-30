@@ -10,6 +10,9 @@ var COMICS = function () {
     };
     var NUM_ACTIVE_REQUESTS = 0;
 
+    var bodyTag = document.getElementsByTagName("body")[0];
+    var DISCOURSE_URL = bodyTag.dataset.discourseUrl;
+
     // Make the current comic's data appear in the page
     function loadDataIntoDOM(pageData) {
         // Browser State
@@ -289,7 +292,7 @@ var COMICS = function () {
         try {
             var url = new URL(document.location);
             window.DiscourseEmbed = {
-                discourseUrl: 'https://forum.swordscomic.com/',
+                discourseUrl: DISCOURSE_URL,
                 discourseEmbedUrl: url.origin + url.pathname
             };
 
