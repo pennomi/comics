@@ -30,7 +30,7 @@ Sometimes we change this process and forget to update the readme. If it's not wo
 
 - [ ] New URL-based Router
   - [ ] Google Analytics per domain
-  - [ ] Comments configuration per domain
+  - [x] Comments configuration per domain
   - [x] AliasUrl model that redirects to the primary
   - [x] Change URL scheme from /{slug}/ to /comic/
   - [ ] Remove comic slug field
@@ -43,13 +43,15 @@ Sometimes we change this process and forget to update the readme. If it's not wo
   - [ ] Autorenew certs where applicable
 - [ ] Management Convenience
   - [ ] Use SQLite instead of PostgreSQL? We don't need PostgreSQL and everything would be much simpler (only one container) without it.
-  - [ ] Easy backup and restore management commands
+  - [x] Easy backup and restore management commands
 - [ ] Comments System
   - [ ] Style the comments section using the page styles
 - Code Cleanliness
   - [ ] Make the CSS variables load into the template and move the main css file out
   - [ ] Load any JS variables into the template and move the main js file out
   - [ ] Inject admin edit button ONLY if the cookie is detected (instead of hiding it)
+  - [ ] Migrate media files to namespaced paths. Randomize comic page image names so they're not guessable.
+  - [ ] Periodically clean out orphaned media
 - [ ] Onboarding
   - [ ] Add a "no content" placeholder template for comics that have no pages yet
 - [ ] Comments embed via Discourse topics
