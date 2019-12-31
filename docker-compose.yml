@@ -1,20 +1,8 @@
 version: '3'
 
 services:
-  db:
-    container_name: comics_db
-    image: postgres
-    restart: always
-    environment:
-      - POSTGRES_USER=django
-      - POSTGRES_PASSWORD=django
-      - POSTGRES_DB=django
-    logging:
-      options:
-        max-size: "50m"
-        max-file: "2"
-  comics_django:
-    container_name: comics_django
+  comics:
+    container_name: comics
     build: .
     env_file:
       - ./deploy/django.env
@@ -28,8 +16,6 @@ services:
     ports:
       - "80:80"
       - "443:443"
-    depends_on:
-      - db
     logging:
       options:
         max-size: "50m"

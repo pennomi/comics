@@ -165,7 +165,7 @@ sudo chmod 777 /usr/local/bin/docker-compose
 # Get the project
 git clone https://github.com/pennomi/comics.git
 cd comics
-python deploy/generate_env.py  # Generate env variables for the docker build
+python3 deploy/generate_env.py  # Select "n" because this is a production environment
 sudo docker-compose build
 sudo docker-compose up -d
 
