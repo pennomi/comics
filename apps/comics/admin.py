@@ -20,9 +20,15 @@ class ComicAdmin(admin.ModelAdmin):
 
 @admin.register(Page)
 class PageAdmin(admin.ModelAdmin):
-    list_display = ('title', 'ordering', 'comic', 'tag_list')
+    list_display = ('title', 'ordering', 'comic', 'post_transcript_alt', 'tag_list')
     list_filter = ('comic', 'tags')
     filter_horizontal = ('tags', )
+
+    def post_transcript_alt(self, obj):
+        post = "✓" if obj.post else "✗"
+        transcript = "✓" if obj.transcript else "✗"
+        alt_text = "✓" if obj.alt_text else "✗"
+        return post + transcript + alt_text
 
     def tag_list(self, obj):
         return ", ".join([t.title for t in obj.tags.all()])

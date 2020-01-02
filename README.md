@@ -28,6 +28,14 @@ Sometimes we change this process and forget to update the readme. If it's not wo
 
 # Roadmap
 
+- [ ] Nice New Features
+  - [ ] Extended Markdown for tag links; update transcripts and wiki pages
+- [ ] Cache invalidation
+  - [ ] Configure CloudFlare per-domain
+  - [ ] Split first/last AJAX into a separate request
+  - [ ] Ensure JSON XHR is cached by CloudFlare
+  - [ ] On-save Comic/Page trigger that invalidates related URLs (namespace for easier invalidation)
+  - [ ] CTA ad should load using API and invalidate on model change
 - [ ] New URL-based Router
   - [ ] Google Analytics per domain
   - [x] Comments configuration per domain
@@ -41,40 +49,44 @@ Sometimes we change this process and forget to update the readme. If it's not wo
   - [ ] Automate NGINX configuration as a management command
   - [ ] Automate SSL certs through LetsEncrypt as a management command
   - [ ] Autorenew certs where applicable
-- [ ] Management Convenience
-  - [ ] Use SQLite instead of PostgreSQL? We don't need PostgreSQL and everything would be much simpler (only one container) without it.
+- [x] Management Convenience
+  - [x] Use SQLite instead of PostgreSQL? We don't need PostgreSQL and everything would be much simpler (only one container) without it.
   - [x] Easy backup and restore management commands
-- [ ] Comments System
-  - [ ] Style the comments section using the page styles
-- Code Cleanliness
+- [x] Comments System
+  - [x] Style the comments section using the page styles
+- Code Cleanliness & Data Integrity
   - [ ] Make the CSS variables load into the template and move the main css file out
   - [ ] Load any JS variables into the template and move the main js file out
   - [ ] Inject admin edit button ONLY if the cookie is detected (instead of hiding it)
   - [ ] Migrate media files to namespaced paths. Randomize comic page image names so they're not guessable.
-  - [ ] Periodically clean out orphaned media
+  - [ ] Periodically clean out orphaned media. Make sure the forum stuff still links properly.
+  - [ ] Consider making slugs case-insensitive, and have restricted slugs, for pages, tags, and tag types
 - [ ] Onboarding
   - [ ] Add a "no content" placeholder template for comics that have no pages yet
-- [ ] Comments embed via Discourse topics
+- [x] Comments embed via Discourse topics
   - [ ] Only if discourse URL is configured at the comic level
-  - [ ] Procedurally style based on the main stylesheet
-- [ ] Cache invalidation
-  - [ ] Configure CloudFlare per-domain
-  - [ ] Split first/last AJAX into a separate request
-  - [ ] Ensure JSON XHR is cached by cloudflare
-  - [ ] On-save Comic/Page trigger that invalidates related URLs (namespace for easier invalidation)
-  - [ ] CTA ad should load using API and invalidate on model change
+  - [x] Style for Swords
+  - [ ] Automagically generate a discourse template based on the main site.
 - [ ] Font update
   - [ ] Adjust certain punctuation to be lower (apostrophe, quotation, exclamation, question)
   - [ ] Make left margin slightly smaller on O
   - [ ] Slightly smaller space
   - [ ] Russian characters
-- [ ] Social Share Functionality
-- [ ] Browser Push Notifications
-  - [ ] Only present the modal if requested
-  - [ ] Take them to a dedicated page that explains what to expect and then present modal
-  - [ ] Look here: [browser push notifications](https://developers.google.com/web/updates/2016/07/web-push-interop-wins)
-- [ ] Data integrity
-  - [ ] Consider making slugs case-insensitive, and have restricted slugs, for pages, tags, and tag types
+- [ ] New Reader "Quests" Section
+  - [ ] Subscribe to RSS feed
+  - [ ] Social Share Functionality
+  - [ ] Vote for me on TopWebComics
+  - [ ] Patreon integration
+    - [ ] Become a Patron
+    - [ ] Remove Ads if user is authed
+    - [ ] Google Analytics tracking for conversion
+  - [ ] Browser Push Notifications
+    - [ ] Only present the modal if requested
+    - [ ] Take them to a dedicated page that explains what to expect and then present modal
+    - [ ] Look here: [browser push notifications](https://developers.google.com/web/updates/2016/07/web-push-interop-wins)
+  - [ ] Join the Conversation on Discord
+  - [ ] Tip me on Ko-Fi
+  - [ ] GA event tracking
 - [ ] Auto-post to various social media
   - [ ] General OAuth login
   - [ ] Reddit
@@ -88,20 +100,6 @@ Sometimes we change this process and forget to update the readme. If it's not wo
   - [ ] One product beta
   - [ ] Upload image with strict specifications
   - [ ] Google Analytics tracking for conversion
-- [ ] Patreon integration
-  - [ ] Adjust UI if user is authed
-  - [ ] Google Analytics tracking for conversion
-- [ ] Floating Banner Ad
-  - [ ] Hide for Patrons
-- [ ] Call to Action section of the site
-  - [ ] Become a Patron
-  - [ ] Join the Conversation on Discord
-  - [ ] Get notified when a new comic is posted
-  - [ ] Subscribe to RSS feed
-  - [ ] Tip me on Ko-Fi
-  - [ ] Vote for me on TopWebComics
-  - [ ] GA event tracking
-  - [ ] How are these presented. Rotate through or show all?
 - [ ] QoL improvements
   - [x] Scroll to top of page when navigating
   - [ ] Error handling for failed AJAX requests
@@ -126,10 +124,12 @@ Sometimes we change this process and forget to update the readme. If it's not wo
     - [ ] Character section
     - [ ] Distinguish between cover art, etc
     - [ ] Javascript changing of values where appropriate
+    - [ ] Tags might want a nullable "schema type"
+- [ ] Ad Optimization
+  - [ ] Look into Header Bidding
 - [ ] Other Wishlist
-  - [ ] Order by Chronological vs Release vs whatever
-  - [ ] Extended Markdown for tag links; update transcripts and wiki pages
   - [ ] Translations
+  - [ ] Order by Chronological vs Release vs whatever
 
 # Other ideas:
 
@@ -152,11 +152,16 @@ sudo add-apt-repository "deb [arch=amd64] https://download.docker.com/linux/ubun
 sudo apt-get update
 sudo apt-get install docker-ce
 
-# OPTIONAL: if you don't want to use docker with sudo
-# sudo groupadd docker
-# sudo usermod -aG docker $USER
-# sudo systemctl enable docker
-# REBOOT HERE
+# Make it so we don't have to use docker with sudo
+sudo groupadd docker
+sudo usermod -aG docker $USER
+sudo systemctl enable docker
+
+# Apply security updates
+sudo apt-get upgrade
+
+# Reboot to apply changes
+sudo reboot now
 
 # Get docker-compose
 sudo curl -L https://github.com/docker/compose/releases/download/1.22.0/docker-compose-`uname -s`-`uname -m` -o /usr/local/bin/docker-compose
@@ -166,18 +171,34 @@ sudo chmod 777 /usr/local/bin/docker-compose
 git clone https://github.com/pennomi/comics.git
 cd comics
 python3 deploy/generate_env.py  # Select "n" because this is a production environment
-sudo docker-compose build
-sudo docker-compose up -d
+docker-compose build
+docker-compose up -d
 
 # Configure SSL Cert with Let's Encrypt
 # First, set your DNS to the public IP address of the server
-sudo docker exec -it <container_id> bash
-certbot --nginx -d <your_domain_name>
+docker-compose exec comics bash
 
-# Create the database for administration
-./manage.py migrate
-./manage.py createsuperuser
-./manage.py collectstatic
+# Set up the temporary challenge folder
+mkdir /var/www/letsencrypt
+certbot certonly --cert-name comics --webroot-path /var/www/letsencrypt -d <your_domain_name>,<another_domain>
+# To renew
+certbot renew --pre-hook "service nginx stop" --post-hook "service nginx start"
+
+
+# Create the database and initialize the static files
+python manage.py migrate
+python manage.py collectstatic
+
+# EITHER initialize the data
+python manage.py createsuperuser
+# OR load from a data dump
+python manage.py backup load <dumpfile.zip>
+
+# Exit out of the shell
+<ctrl-d>
+
+# Restart the server
+docker-compose restart
 ```
 
 # Notes on comfortable reading
