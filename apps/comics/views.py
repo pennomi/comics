@@ -94,6 +94,7 @@ class FeedView(TemplateView):
         comic = self.request.comic
         context['comic'] = comic
         context['pages'] = comic.pages.active().order_by('-ordering')[:10]
+        context['feed_url'] = reverse('feed')
         return context
 
 

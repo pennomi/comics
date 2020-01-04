@@ -1,10 +1,11 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<rss version="2.0">
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
 
 <channel>
   <title>{{ comic.title }}</title>
   <link>{{ request.scheme }}://{{request.get_host}}{{ comic.get_absolute_url }}</link>
   <description>Read {{ comic.title }} online!</description>
+  <category>Comics</category>
   <image>
     <url>{{ request.scheme }}://{{request.get_host}}{{ comic.header_image.url }}</url>
     <title>{{ comic.title }}</title>
@@ -14,14 +15,35 @@
   <item>
     <title><![CDATA[{{ page.title }}]]></title>
     <link>{{ request.scheme }}://{{request.get_host}}{{ page.get_absolute_url }}</link>
+    <guid>{{ request.scheme }}://{{request.get_host}}{{ page.get_absolute_url }}</guid>
     <description><![CDATA[
+      <style>
+        .tag {
+          background-color: var(--tag-background-color);
+          margin: 1px 2px;
+          padding: 4px;
+          padding-left: 24px;
+          height: 16px;
+          line-height: 16px;
+          font-size: 12px;
+          text-align: center;
+          text-decoration: none;
+          display: inline-block;
+          background-image: var(--default-tag-icon);
+          background-size: 16px 16px;
+          background-position: 4px 4px;
+          background-repeat: no-repeat;
+        }
+      </style>
       <img src="{{ request.scheme }}://{{request.get_host}}{{ page.image.url }}"></img>
+      {{ page.transcript_html | safe }}
     ]]>
-      {{ page.transcript_html }}</description>
+    </description>
     <author>{{ comic.author }}</author>
     <pubDate>{{ page.posted_at }}</pubDate>
   </item>
   {% endfor %}
+  <atom:link href="{{ request.scheme }}://{{request.get_host}}{{ feed_url }}" rel="self" type="application/rss+xml" />
 </channel>
 
 </rss>

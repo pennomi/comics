@@ -28,10 +28,9 @@ Sometimes we change this process and forget to update the readme. If it's not wo
 
 # Roadmap
 
-- [ ] Bug Fixes
-  - [ ] Run nginx server in development, but disable SSL if the certs don't exist
 - [ ] Nice New Features
-  - [ ] Extended Markdown for tag links; update transcripts and wiki pages
+  - [x] Extended Markdown for tag links; update transcripts and wiki pages
+    - [ ] Auto-migrate tags when they are renamed.
   - [ ] Revamp navigation between archive -> tag types -> tags and back.
   - [ ] Configurable 404 pages
 - [ ] Cache invalidation
@@ -65,6 +64,7 @@ Sometimes we change this process and forget to update the readme. If it's not wo
   - [ ] Migrate media files to namespaced paths. Randomize comic page image names so they're not guessable.
   - [ ] Periodically clean out orphaned media. Make sure the forum stuff still links properly.
   - [ ] Consider making slugs case-insensitive, and have restricted slugs, for pages, tags, and tag types
+  - [ ] Reduce code duplication in nginx configs
 - [ ] Onboarding
   - [ ] Add a "no content" placeholder template for comics that have no pages yet
 - [x] Comments embed via Discourse topics
