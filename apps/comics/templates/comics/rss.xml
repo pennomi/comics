@@ -2,6 +2,7 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
 
 <channel>
+  <atom:link href="{{ request.scheme }}://{{request.get_host}}{{ feed_url }}" rel="self" type="application/rss+xml" />
   <title>{{ comic.title }}</title>
   <link>{{ request.scheme }}://{{request.get_host}}{{ comic.get_absolute_url }}</link>
   <description>Read {{ comic.title }} online!</description>
@@ -43,7 +44,6 @@
     <pubDate>{{ page.posted_at }}</pubDate>
   </item>
   {% endfor %}
-  <atom:link href="{{ request.scheme }}://{{request.get_host}}{{ feed_url }}" rel="self" type="application/rss+xml" />
 </channel>
 
 </rss>
