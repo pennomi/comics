@@ -28,8 +28,12 @@ Sometimes we change this process and forget to update the readme. If it's not wo
 
 # Roadmap
 
+- [ ] Bug Fixes
+  - [ ] Run nginx server in development, but disable SSL if the certs don't exist
 - [ ] Nice New Features
   - [ ] Extended Markdown for tag links; update transcripts and wiki pages
+  - [ ] Revamp navigation between archive -> tag types -> tags and back.
+  - [ ] Configurable 404 pages
 - [ ] Cache invalidation
   - [ ] Configure CloudFlare per-domain
   - [ ] Split first/last AJAX into a separate request
@@ -72,6 +76,7 @@ Sometimes we change this process and forget to update the readme. If it's not wo
   - [ ] Make left margin slightly smaller on O
   - [ ] Slightly smaller space
   - [ ] Russian characters
+  - [ ] Adjust everything down a pixel or so
 - [ ] New Reader "Quests" Section
   - [ ] Subscribe to RSS feed
   - [ ] Social Share Functionality
@@ -181,9 +186,9 @@ docker-compose exec comics bash
 # Set up the temporary challenge folder
 mkdir /var/www/letsencrypt
 certbot certonly --cert-name comics --webroot-path /var/www/letsencrypt -d <your_domain_name>,<another_domain>
-# To renew
+# To renew  TODO: This is wrong, move to a management command
 certbot renew --pre-hook "service nginx stop" --post-hook "service nginx start"
-
+# Make sure to restart nginx
 
 # Create the database and initialize the static files
 python manage.py migrate
@@ -206,9 +211,9 @@ docker-compose restart
 The theory behind the design on the site is that it should be a perfectly comfortable reading experience for all of
 the following screen sizes:
 
-- [ ] 1024x768 (iPad landscape. This also covers smallish laptops, which are typically just wider with the same height.
+- [ ] 1024x768 (iPad landscape. This also covers smallish laptops, which are typically wider with the same height.
  In this case, the vertical height is the limitation.)
-- [ ] 329x568 (iPhone 5 portrait. This also covers )
-- [ ] (Large screens. This covers the case where neither the height nor width are bounded.)
+- [ ] 329x568 (iPhone 5 portrait. This also covers most Android phones)
+- [ ] (Very large screens. This covers the case where neither the height nor width are bounded.)
 
 These need to have the comic fill the majority of the screen, while still exposing the navigation buttons.

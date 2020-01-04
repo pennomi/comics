@@ -120,9 +120,9 @@ class PageAjaxView(View):
         data = json.dumps({
             "slug": page.slug,
             "title": page.title,
-            "post": page.post,
+            "post": page.post_html,
             "posted_at": date(page.posted_at),
-            "transcript": page.transcript,
+            "transcript": page.transcript_html,
             "image": page.image.url,
             "alt_text": page.alt_text,
             "tag_types": tag_type_data,

@@ -3,7 +3,6 @@
 var COMICS = function () {
 
     // Set up some global variables
-    var MARKDOWN = window.markdownit();
     var CACHE = {};
     var COMIC = {
         "title": "{{ comic.title }}",
@@ -25,29 +24,22 @@ var COMICS = function () {
             var tagStrings = "";
             tagType.tags.forEach(function (tag){
                 if (tag.icon !== "") {
-                    tagStrings += `
-                    <a class="tag" href="${tag.url}">
-                        <div style="background-image: url(${tag.icon});"></div>&nbsp;${tag.title}
-                    </a>`;
+                    tagStrings += `<a class="tag" style="background-image: url(${tag.icon});" href="${tag.url}">${tag.title}</a>`;
                 } else {
                     tagStrings += `<a class="tag" href="${tag.url}">${tag.title}</a>`;
                 }
             });
 
-            tagHTML += `
-            <div class="tag-group">
-                <p>${tagType.title}:</p>
-                ${tagStrings}
-            </div>`;
+            tagHTML += `<p>${tagType.title}: ${tagStrings}</p>`;
         });
 
         // Page Content
         document.getElementById("comic-title").innerHTML = pageData.title;
         document.getElementById("comic-tags").innerHTML = tagHTML;
         document.getElementById("comic-post-date").innerHTML = pageData.posted_at;
-        document.getElementById("comic-post").innerHTML = MARKDOWN.render(pageData.post);
-        document.getElementById("comic-transcript").innerHTML = MARKDOWN.render(pageData.transcript);
-        document.getElementById("comic-image").src = pageData.image;  // TODO: Preload data so it's cached
+        document.getElementById("comic-post").innerHTML = pageData.post;
+        document.getElementById("comic-transcript").innerHTML = pageData.transcript;
+        document.getElementById("comic-image").src = pageData.image;
         document.getElementById("comic-image").title = pageData.alt_text;
         document.getElementById("comic-image").style.opacity = 0.5;
         document.getElementById("comic-image-spinner").style.opacity = 1.0;

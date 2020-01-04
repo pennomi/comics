@@ -3,7 +3,7 @@ from django.db import models
 from django.urls import reverse
 from django.utils.timezone import now
 
-from markdown import markdown
+from apps.comics import custom_markdown
 
 
 class Comic(models.Model):
@@ -135,6 +135,10 @@ class Tag(models.Model):
         else:
             return None
 
+    @property
+    def post_html(self):
+        return custom_markdown.render(self.post)
+
     def get_absolute_url(self):
         return reverse("tag", kwargs={
             "type": self.type.title,
@@ -176,8 +180,13 @@ class Page(models.Model):
     def __str__(self):
         return f'{self.comic} | {self.title}'
 
+    @property
+    def post_html(self):
+        return custom_markdown.render(self.post)
+
+    @property
     def transcript_html(self):
-        return markdown(self.transcript)
+        return custom_markdown.render(self.transcript)
 
 
 class Ad(models.Model):

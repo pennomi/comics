@@ -88,23 +88,18 @@
                     <!-- If you edit this, you also need to update the templates in the reader.js -->
                     {% regroup page.tags.all by type as tag_groups %}
                     {% for group in tag_groups %}
-                    <div class="tag-group">
-                        <p>{{group.grouper.title}}:</p>
-                        {% for tag in group.list %}
-                        <a class="tag" href="{% url 'tag' tag.type.title tag.title %}">
-                            {% if tag.icon_url %}<div style="background-image:url({{ tag.icon_url }});"></div>{% endif %}
-                            {{ tag.title }}
-                        </a>
-                        {% endfor %}
-                    </div>
-
+                        <p>{{group.grouper.title}}:
+                            {% for tag in group.list %}
+                            <a class="tag" style="background-image: url({{ tag.icon_url }});" href="{% url 'tag' tag.type.title tag.title %}">{{ tag.title }}</a>
+                            {% endfor %}
+                        </p>
                     {% endfor %}
                 </div>
-                <div id="comic-post" class="comic-post-body">{{ page.post }}</div>
+                <div id="comic-post" class="comic-post-body">{{ page.post_html | safe }}</div>
             </div>
             <div class="comic-transcript-content">
                 <h2>Transcript</h2>
-                <div id="comic-transcript">{{ page.transcript }}</div>
+                <div id="comic-transcript">{{ page.transcript_html | safe }}</div>
             </div>
         </div>
 

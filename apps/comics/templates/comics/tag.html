@@ -5,7 +5,7 @@
     <meta property="og:type" content="article" />
     <meta property="og:url" content="{{ request.scheme }}://{{request.get_host}}{{ tag.get_absolute_url }}" />
     {% if tag.icon_url %}<meta property="og:image" content="{{ request.scheme }}://{{request.get_host}}{{ tag.icon_url }}" />{% endif %}
-    <meta property="og:description" content="{{ tag.post}}" />
+    <meta property="og:description" content="{{ tag.post }}" />
     <meta property="og:site_name" content="{{ comic.title }} | A webcomic by {{ comic.author }}" />
 {% endblock %}
 
@@ -19,7 +19,7 @@
             </div>
         </div>
 
-        <div id="tag-post">{{ tag.post }}</div>
+        <div id="tag-post">{{ tag.post_html | safe }}</div>
 
         <h2>{{ tag.title }} appearances:</h2>
 
@@ -31,17 +31,5 @@
             </tr>
             {% endfor %}
         </table>
-
-        <script>
-            function htmlDecode(input){
-                var e = document.createElement('div');
-                e.innerHTML = input;
-                return e.childNodes.length === 0 ? "" : e.childNodes[0].nodeValue;
-            }
-            var MARKDOWN = window.markdownit();
-            var post = document.getElementById("tag-post");
-            console.log(post.innerHTML);
-            post.innerHTML = MARKDOWN.render(htmlDecode(post.innerHTML));
-        </script>
     </div>
 {% endblock %}

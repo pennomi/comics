@@ -19,8 +19,11 @@
     --post-border-image: url({% static "comics/default-container.png" %});
 
     /* Unconfigurable settings */
+    --tag-error-color: #B00020;
+    --default-tag-icon: url({% static "comics/default-tag-icon.png" %});
 
-    /* TODO: Add some nice margin/padding standards in here. */
+    /* Padding standards */
+    --paragraph-padding: 8px;
 
     /* Page sizing */
     --comic-max-width: 728px;  /* 728px minimum, because Google's AdSense gets the most competition at that size. */
@@ -39,17 +42,18 @@
 
 
 /* Additional resets */
-h1 { font-size: 32px; font-weight: bold; margin-bottom: 8px; }
-h2 { font-size: 24px; font-weight: bold; margin-bottom: 8px; }
-h3 { font-size: 20px; font-weight: bold; margin-bottom: 8px; }
-p { margin-top: 8px; margin-bottom: 8px; }
+h1 { font-size: 32px; font-weight: bold; margin-bottom: var(--paragraph-padding); }
+h2 { font-size: 24px; font-weight: bold; margin-bottom: var(--paragraph-padding); }
+h3 { font-size: 20px; font-weight: bold; margin-bottom: var(--paragraph-padding); }
+p { margin-bottom: var(--paragraph-padding); }
 em { font-style: italic; }
 strong { font-weight: bold; }
 img { vertical-align:bottom; }
 blockquote {
     border-left: 4px solid var(--blockquote-border-color);
     background-color: var(--blockquote-background-color);
-    padding: 4px;
+    padding: calc(var(--paragraph-padding) + 1px) 8px 1px 8px;
+    margin-bottom: var(--paragraph-padding);
     width: auto;
     box-sizing: border-box;
 }
@@ -182,27 +186,29 @@ header {
     font-size: 12px;
 }
 
-.tag-group {
-    display: flex;
-    flex-direction: row;
-    flex-wrap: wrap;
-    width: 100%;
-}
-
 .tag {
     background-color: var(--tag-background-color);
-    margin: 2px;
+    margin: 1px 2px;
     padding: 4px;
+    padding-left: 24px;
     height: 16px;
     line-height: 16px;
+    font-size: 12px;
     text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    background-image: var(--default-tag-icon);
+    background-size: 16px 16px;
+    background-position: 4px 4px;
+    background-repeat: no-repeat;
 }
 
-.tag div {
-    height: 16px;
-    width: 16px;
-    background-size: cover;
-    float: left;
+.tag:hover {
+    filter: brightness(125%);
+}
+
+.tag.error {
+    background-color: var(--tag-error-color);
 }
 
 .tag-list-entry {
