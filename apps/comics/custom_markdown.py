@@ -35,11 +35,13 @@ class BetterMarkdown(Markdown):
 
         from apps.comics.models import Tag
         tag_objects = Tag.objects.filter(query).select_related("type")
-        tags_and_icons = {(t.type.title, t.title): t.icon_url for t in tag_objects}
+        tags_and_icons = {(t.type.title.lower(), t.title.lower()): t.icon_url for t in tag_objects}
 
         # Iterate over the objects again to replace the areas with the correct markup
         new_text = ""
         for markdown_chunk, tag_type, tag in grouper(parts, 3):
+            tag_type = tag_type.lower() if tag_type else None
+            tag = tag.lower() if tag else None
             if not tag_type or not tag:
                 tag_html = ""
             elif (tag_type, tag) in tags_and_icons:

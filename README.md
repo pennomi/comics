@@ -31,6 +31,7 @@ Sometimes we change this process and forget to update the readme. If it's not wo
 - [ ] Nice New Features
   - [x] Extended Markdown for tag links; update transcripts and wiki pages
     - [ ] Auto-migrate tags when they are renamed.
+    - [x] One-time migration of transcripts
   - [ ] Revamp navigation between archive -> tag types -> tags and back.
   - [ ] Configurable 404 pages
 - [ ] Cache invalidation
@@ -58,6 +59,7 @@ Sometimes we change this process and forget to update the readme. If it's not wo
 - [x] Comments System
   - [x] Style the comments section using the page styles
 - Code Cleanliness & Data Integrity
+  - [ ] Ensure RSS feed has no issues. Validate with http://www.feedvalidator.org/
   - [ ] Make the CSS variables load into the template and move the main css file out
   - [ ] Load any JS variables into the template and move the main js file out
   - [ ] Inject admin edit button ONLY if the cookie is detected (instead of hiding it)

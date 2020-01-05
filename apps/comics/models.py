@@ -1,5 +1,7 @@
 from django.core.exceptions import ValidationError
 from django.db import models
+from django.db.models.signals import post_save
+from django.dispatch import receiver
 from django.urls import reverse
 from django.utils.timezone import now
 
@@ -144,6 +146,12 @@ class Tag(models.Model):
             "type": self.type.title,
             "tag": self.title,
         })
+
+#
+# @receiver(post_save, sender=Tag, dispatch_uid="migrate_tags")
+# def update_stock(sender, instance, **kwargs):
+#     instance.product.stock -= instance.amount
+#     instance.product.save()
 
 
 class PageQuerySet(models.QuerySet):

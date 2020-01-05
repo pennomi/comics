@@ -11,7 +11,6 @@ from django.views.decorators.cache import cache_page
 from django.views.generic import TemplateView, RedirectView
 from django.utils.decorators import method_decorator
 
-
 from apps.comics.models import Comic, Page, TagType, Tag, Ad
 
 
@@ -22,6 +21,24 @@ def require_comic(cls):
             if self.request.comic is None:
                 return HttpResponseRedirect(reverse("index"))
             return func(self, *args, **kwargs)
+        return wrapper
+    cls.get = outside(cls.get)
+    return cls
+
+
+class Redirect(Exception):
+    def __init__(self, url):
+        self.url = url
+
+
+def handle_redirect_exception(cls):
+    """A View class decorator that redirects the page to the comics index if no comic is found."""
+    def outside(func):
+        def wrapper(self, *args, **kwargs):
+            try:
+                return func(self, *args, **kwargs)
+            except Redirect as e:
+                return HttpResponseRedirect(e.url)
         return wrapper
     cls.get = outside(cls.get)
     return cls
@@ -69,6 +86,7 @@ def _get_navigation_pages(current_page):
     }
 
 
+@handle_redirect_exception
 @require_comic
 class ReaderView(TemplateView):
     template_name = "comics/reader.html"
@@ -76,9 +94,13 @@ class ReaderView(TemplateView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         comic = self.request.comic
-        page = get_object_or_404(Page, comic=comic, slug=kwargs['page'])
+        page = get_object_or_404(Page, comic=comic, slug__iexact=kwargs['page'])
         if page.posted_at > now():
             raise Http404()
+        # If we have an improper capitalization of the slug, instead redirect to the canonical capitalization
+        if page.slug != kwargs['page']:
+            raise Redirect(reverse('reader', kwargs={'page': page.slug}))
+
         context['comic'] = comic
         context['page'] = page
         context['nav'] = _get_navigation_pages(page)
@@ -99,12 +121,16 @@ class FeedView(TemplateView):
 
 
 @method_decorator(cache_page(60 * 60), name='dispatch')
+@handle_redirect_exception
 class PageAjaxView(View):
     def get(self, request, *args, **kwargs):
         comic = request.comic
         page = get_object_or_404(Page, comic=comic, slug=kwargs['page'])
         if page.posted_at > now():
             raise Http404()
+        # If we have an improper capitalization of the slug, instead redirect to the canonical capitalization
+        if page.slug != kwargs['page']:
+            raise Redirect(reverse('reader', kwargs={'page': page.slug}))
 
         pages = _get_navigation_pages(page)
 
@@ -154,6 +180,7 @@ class ArchiveView(TemplateView):
         return context
 
 
+@handle_redirect_exception
 @require_comic
 class TagTypeView(TemplateView):
     template_name = "comics/tagtype.html"
@@ -161,12 +188,18 @@ class TagTypeView(TemplateView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         comic = self.request.comic
-        tag_type = get_object_or_404(TagType, comic=comic, title=kwargs['type'])
+        tag_type = get_object_or_404(TagType, comic=comic, title__iexact=kwargs['type'])
+
+        # If we have an improper capitalization of the tag, instead redirect to the canonical capitalization
+        if tag_type.title != kwargs['type']:
+            raise Redirect(reverse('tagtype', kwargs={'type': tag_type.title}))
+
         context['comic'] = comic
         context['tag_type'] = tag_type
         return context
 
 
+@handle_redirect_exception
 @require_comic
 class TagView(TemplateView):
     template_name = "comics/tag.html"
@@ -174,8 +207,13 @@ class TagView(TemplateView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         comic = self.request.comic
-        tag_type = get_object_or_404(TagType, comic=comic, title=kwargs['type'])
-        tag = get_object_or_404(Tag, type=tag_type, title=kwargs['tag'])
+        tag_type = get_object_or_404(TagType, comic=comic, title__iexact=kwargs['type'])
+        tag = get_object_or_404(Tag, type=tag_type, title__iexact=kwargs['tag'])
+
+        # If we have an improper capitalization of the tag, instead redirect to the canonical capitalization
+        if tag_type.title != kwargs['type'] or tag.title != kwargs['tag']:
+            raise Redirect(reverse('tag', kwargs={'type': tag_type.title, 'tag': tag.title}))
+
         context['comic'] = comic
         context['tag_type'] = tag_type
         context['tag'] = tag
