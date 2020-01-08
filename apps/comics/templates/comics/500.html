@@ -4,11 +4,5 @@
 {% block page_title %} | Server Error {% endblock %}
 
 {% block content %}
-<img class="comic-image" src="
-{% if comic and comic.error_500_image %}
-{{ comic.error_500_image.url }}
-{% else %}
-{% static 'comics/default-500.png' %}
-{% endif %}
-"/>
+<img class="comic-image" src="{% if comic and comic.error_500_image %}{{ comic.error_500_image.url }}{% else %}{% static 'comics/default-500.png' %}{% endif %}"/>
 {% endblock %}
