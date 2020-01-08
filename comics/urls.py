@@ -1,24 +1,10 @@
-"""comics URL Configuration
-
-The `urlpatterns` list routes URLs to views. For more information please see:
-    https://docs.djangoproject.com/en/2.0/topics/http/urls/
-Examples:
-Function views
-    1. Add an import:  from my_app import views
-    2. Add a URL to urlpatterns:  path('', views.home, name='home')
-Class-based views
-    1. Add an import:  from other_app.views import Home
-    2. Add a URL to urlpatterns:  path('', Home.as_view(), name='home')
-Including another URLconf
-    1. Import the include() function: from django.urls import include, path
-    2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
-"""
 from django.conf import settings
 from django.contrib import admin
 from django.urls import path, re_path
 from django.conf.urls.static import static
 
 from apps.comics import views as comics_views
+
 
 urlpatterns = [
     path('', comics_views.ComicsIndexView.as_view(), name='index'),
@@ -41,4 +27,8 @@ urlpatterns = [
     path('archive/', comics_views.ArchiveView.as_view(), name='archive'),
     path('archive/<str:type>/', comics_views.TagTypeView.as_view(), name='tagtype'),
     path('archive/<str:type>/<str:tag>/', comics_views.TagView.as_view(), name='tag'),
+    path('500/', comics_views.comic_500_view),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+
+handler404 = comics_views.comic_404_view
+handler500 = comics_views.comic_500_view

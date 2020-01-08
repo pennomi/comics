@@ -1,0 +1,14 @@
+{% extends 'comics/base.html' %}
+{% load static %}
+
+{% block page_title %} | Not Found{% endblock %}
+
+{% block content %}
+<img class="comic-image" src="
+{% if comic and comic.error_404_image %}
+{{ comic.error_404_image.url }}
+{% else %}
+{% static 'comics/default-404.png' %}
+{% endif %}
+"/>
+{% endblock %}

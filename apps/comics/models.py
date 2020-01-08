@@ -36,6 +36,10 @@ class Comic(models.Model):
         default="white", help_text="a valid CSS `background` configuration")
     overflow = models.TextField(
         default="white", help_text="a valid CSS `background` configuration")
+    error_404_image = models.ImageField(
+        blank=True, help_text="A square PNG to be used as a 404 message. Ideally 1000x1000px.")
+    error_500_image = models.ImageField(
+        blank=True, help_text="A square PNG to be used as a 500 message. Ideally 1000x1000px.")
 
     # Social Links
     patreon_link = models.URLField(blank=True)

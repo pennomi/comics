@@ -28,12 +28,17 @@ Sometimes we change this process and forget to update the readme. If it's not wo
 
 # Roadmap
 
+- [ ] Bug Fixes
+  - [ ] I noticed one iPhone having trouble with the spinner getting stuck active. Is this a widespread problem?
 - [ ] Nice New Features
   - [x] Extended Markdown for tag links; update transcripts and wiki pages
     - [ ] Auto-migrate tags when they are renamed.
     - [x] One-time migration of transcripts
   - [ ] Revamp navigation between archive -> tag types -> tags and back.
-  - [ ] Configurable 404 pages
+  - [x] Configurable 404 and 500 pages
+  - [ ] Landscape side-by-side navigation
+  - [ ] Search functionality for archive (returns tags and pages)
+  - [ ] Dedicated "Pages" archive section
 - [ ] Cache invalidation
   - [ ] Configure CloudFlare per-domain
   - [ ] Split first/last AJAX into a separate request
@@ -42,9 +47,6 @@ Sometimes we change this process and forget to update the readme. If it's not wo
   - [ ] CTA ad should load using API and invalidate on model change
 - [ ] New URL-based Router
   - [ ] Google Analytics per domain
-  - [x] Comments configuration per domain
-  - [x] AliasUrl model that redirects to the primary
-  - [x] Change URL scheme from /{slug}/ to /comic/
   - [ ] Remove comic slug field
   - [ ] Blacklisted page slugs ("feed", "data")
   - [ ] Restricted admin permissions for artists
@@ -67,6 +69,11 @@ Sometimes we change this process and forget to update the readme. If it's not wo
   - [ ] Periodically clean out orphaned media. Make sure the forum stuff still links properly.
   - [ ] Consider making slugs case-insensitive, and have restricted slugs, for pages, tags, and tag types
   - [ ] Reduce code duplication in nginx configs
+- [ ] Optimization
+  - [ ] Run everything through an SEO checker
+  - [ ] Google PageSpeed Insights
+  - [ ] User Timing API for real user data
+  - [ ] Look into Header Bidding for Ad revenue optimization
 - [ ] Onboarding
   - [ ] Add a "no content" placeholder template for comics that have no pages yet
 - [x] Comments embed via Discourse topics
@@ -132,8 +139,6 @@ Sometimes we change this process and forget to update the readme. If it's not wo
     - [ ] Distinguish between cover art, etc
     - [ ] Javascript changing of values where appropriate
     - [ ] Tags might want a nullable "schema type"
-- [ ] Ad Optimization
-  - [ ] Look into Header Bidding
 - [ ] Other Wishlist
   - [ ] Translations
   - [ ] Order by Chronological vs Release vs whatever

@@ -13,6 +13,10 @@
 {% endblock %}
 
 {% block content %}
+    <script>
+        {% include 'comics/reader.js' %}
+    </script>
+
     <!-- JSON-ld schema -->
     {% if comic.header_image %}
     <script type="application/ld+json">

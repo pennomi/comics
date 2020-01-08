@@ -237,3 +237,18 @@ class LegacyPageRedirectView(RedirectView):
         url = self.request.build_absolute_uri()
         url = url.replace("/swords/", "/comic/")
         return url
+
+
+def comic_404_view(request):
+    return render(request, "comics/404.html", {'comic': request.comic})
+
+
+def comic_500_view(request):
+    print(request)
+    print(request.comic)
+    return render(request, "comics/500.html", {'comic': request.comic})
+
+
+class Test500View(View):
+    def get(self, request, *args, **kwargs):
+        raise Exception("Ouch")
