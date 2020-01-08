@@ -239,7 +239,7 @@ class LegacyPageRedirectView(RedirectView):
         return url
 
 
-def comic_404_view(request):
+def comic_404_view(request, exception):
     return render(request, "comics/404.html", {'comic': request.comic})
 
 
