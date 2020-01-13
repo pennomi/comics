@@ -36,6 +36,7 @@ Sometimes we change this process and forget to update the readme. If it's not wo
     - [x] One-time migration of transcripts
   - [ ] Revamp navigation between archive -> tag types -> tags and back.
   - [x] Configurable 404 and 500 pages
+    - [ ] Maybe add a nice "Return to Home Page" button
   - [ ] Landscape side-by-side navigation
   - [ ] Search functionality for archive (returns tags and pages)
   - [ ] Dedicated "Pages" archive section
@@ -69,6 +70,7 @@ Sometimes we change this process and forget to update the readme. If it's not wo
   - [ ] Periodically clean out orphaned media. Make sure the forum stuff still links properly.
   - [ ] Consider making slugs case-insensitive, and have restricted slugs, for pages, tags, and tag types
   - [ ] Reduce code duplication in nginx configs
+  - [ ] Remove fontawesome
 - [ ] Optimization
   - [ ] Run everything through an SEO checker
   - [ ] Google PageSpeed Insights

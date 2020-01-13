@@ -383,14 +383,7 @@ footer a:active {
 }
 
 
-/* ARCHIVE PAGE */
-.archive-tagtype-container {
-    display: flex;
-    justify-content: center;
-}
-.archive-tagtype-container a {
-    padding: 8px;
-}
+/* ARCHIVE PAGES */
 .archive-page-td-date {
     min-width: 128px;
     padding-top: 4px;
@@ -402,6 +395,14 @@ footer a:active {
     padding-bottom: 4px;
     padding-left: 24px;
 }
+
+.archive-tile {
+    width: 128px;
+    background-color: var(--tag-background-color);
+    padding: var(--paragraph-padding);
+    margin: var(--paragraph-padding);
+}
+
 
 /* TAG DETAIL PAGE */
 .tag-detail-header {

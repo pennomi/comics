@@ -2,10 +2,14 @@
 
 {% block content %}
     <div class="comic-post">
-        <h1 style="text-align: center;">{{ comic.title }} Archive</h1>
+        <h1 style="text-align: center;">Archive</h1>
+        <a class="tag" href="{% url 'index' %}">Back to the comic</a> <!-- TODO: Add a back arrow icon -->
         <div class="archive-tagtype-container">
         {% for type in comic.tag_types.all %}
-            <a href="{{ type.get_absolute_url }}">{{ type.title }}</a>
+            <div class="archive-tile">
+                <img height="128px" width="128px" src="{{ type.default_icon.url }}"/>
+                <a href="{{ type.get_absolute_url }}">{{ type.title }}</a>
+            </div>
         {% endfor %}
         </div>
         <table style="margin-left: -10px; margin-right: -10px">
