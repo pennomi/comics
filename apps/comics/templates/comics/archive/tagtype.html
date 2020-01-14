@@ -1,0 +1,12 @@
+{% extends 'comics/archive/base.html' %}
+
+{% block title %}{{ tag_type.title }}{% endblock %}
+{% block archive_content %}
+    <div class="archive-tile-container">
+        {% for tag in tag_type.tags.all %}
+        <a class="archive-tile" href="{{ tag.get_absolute_url }}" style="background-image: url({{tag.icon_url}});">{{ tag.title }}</a>
+        {% endfor %}
+    </div>
+{% endblock %}
+
+

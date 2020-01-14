@@ -138,7 +138,7 @@ class PageAjaxView(View):
         tags = page.tags.order_by('type__title', 'title')
         tag_types = itertools.groupby(tags, lambda _: _.type)
         tag_type_data = [{"title": key.title, "tags": [{
-            "url": reverse("tag", kwargs={"type": t.type.title, "tag": t.title}),
+            "url": reverse("archive-tag", kwargs={"type": t.type.title, "tag": t.title}),
             "title": t.title,
             "icon": t.icon_url if t.icon_url else ""
         } for t in value]} for key, value in tag_types]
@@ -171,7 +171,7 @@ class PageAjaxView(View):
 
 @require_comic
 class ArchiveView(TemplateView):
-    template_name = "comics/archive.html"
+    template_name = "comics/archive/index.html"
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -180,10 +180,24 @@ class ArchiveView(TemplateView):
         return context
 
 
+@require_comic
+class PageListView(TemplateView):
+    template_name = "comics/archive/pages.html"
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        comic = self.request.comic
+        context['comic'] = comic
+        context['breadcrumbs'] = [
+            {'title': 'Archive', 'url': reverse('archive-index'), 'icon': None},
+        ]
+        return context
+
+
 @handle_redirect_exception
 @require_comic
 class TagTypeView(TemplateView):
-    template_name = "comics/tagtype.html"
+    template_name = "comics/archive/tagtype.html"
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -192,17 +206,20 @@ class TagTypeView(TemplateView):
 
         # If we have an improper capitalization of the tag, instead redirect to the canonical capitalization
         if tag_type.title != kwargs['type']:
-            raise Redirect(reverse('tagtype', kwargs={'type': tag_type.title}))
+            raise Redirect(reverse('archive-tagtype', kwargs={'type': tag_type.title}))
 
         context['comic'] = comic
         context['tag_type'] = tag_type
+        context['breadcrumbs'] = [
+            {'title': 'Archive', 'url': reverse('archive-index'), 'icon': None},
+        ]
         return context
 
 
 @handle_redirect_exception
 @require_comic
 class TagView(TemplateView):
-    template_name = "comics/tag.html"
+    template_name = "comics/archive/tag.html"
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -212,11 +229,17 @@ class TagView(TemplateView):
 
         # If we have an improper capitalization of the tag, instead redirect to the canonical capitalization
         if tag_type.title != kwargs['type'] or tag.title != kwargs['tag']:
-            raise Redirect(reverse('tag', kwargs={'type': tag_type.title, 'tag': tag.title}))
+            raise Redirect(reverse('archive-tag', kwargs={'type': tag_type.title, 'tag': tag.title}))
 
         context['comic'] = comic
         context['tag_type'] = tag_type
         context['tag'] = tag
+        context['breadcrumbs'] = [
+            {'title': 'Archive', 'url': reverse('archive-index'), 'icon': None},
+            {'title': tag_type.title,
+             'url': reverse('archive-tagtype', kwargs={'type': tag_type.title}),
+             'icon': tag_type.default_icon.url if tag_type.default_icon else None},
+        ]
         return context
 
 

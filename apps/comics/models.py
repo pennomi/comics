@@ -113,7 +113,7 @@ class TagType(models.Model):
         ordering = ('title', )
 
     def get_absolute_url(self):
-        return reverse("tagtype", kwargs={
+        return reverse("archive-tagtype", kwargs={
             "type": self.title
         })
 
@@ -146,7 +146,7 @@ class Tag(models.Model):
         return custom_markdown.render(self.post)
 
     def get_absolute_url(self):
-        return reverse("tag", kwargs={
+        return reverse("archive-tag", kwargs={
             "type": self.type.title,
             "tag": self.title,
         })

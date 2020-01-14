@@ -24,9 +24,10 @@
 
     /* Padding standards */
     --paragraph-padding: 8px;
+    --tile-size: 105px;  /* At current settings, 105px is good for iPhone size and desktop size */
 
     /* Page sizing */
-    --comic-max-width: 728px;  /* 728px minimum, because Google's AdSense gets the most competition at that size. */
+    --comic-max-width: 728px;  /* 728px because Google's AdSense gets the most competition at that size. */
     --overflow-max-width: 892px;  /* Whatever is comfortable for wide screen viewing. */
     --ad-height: 0px;
 
@@ -36,16 +37,10 @@
 }
 
 
-::-webkit-scrollbar {
-    display: none;
-}
-
-
-/* Additional resets */
-h1 { font-size: 32px; font-weight: bold; margin-bottom: var(--paragraph-padding); }
-h2 { font-size: 24px; font-weight: bold; margin-bottom: var(--paragraph-padding); }
-h3 { font-size: 20px; font-weight: bold; margin-bottom: var(--paragraph-padding); }
-p { margin-bottom: var(--paragraph-padding); }
+/* RESET CSS AND GLOBAL STYLING */
+h1 { font-size: 28px; font-weight: bold; margin-bottom: var(--paragraph-padding); }
+h2 { font-size: 20px; font-weight: bold; margin-bottom: var(--paragraph-padding); }
+p { font-size: 14px; margin-bottom: var(--paragraph-padding); }
 em { font-style: italic; }
 strong { font-weight: bold; }
 img { vertical-align:bottom; }
@@ -57,8 +52,6 @@ blockquote {
     width: auto;
     box-sizing: border-box;
 }
-
-/* LINK STYLING */
 a:link {
     color: var(--primary-text-color);
 }
@@ -66,17 +59,55 @@ a:visited {
     color: var(--primary-text-color);
 }
 
+
+/* CORE PAGE LAYOUT */
+html {
+    height: 100%;
+    overflow-x: hidden;
+}
 body {
+    overflow-x: hidden;
     font-family: 'ComicFont', 'Arial', sans-serif;
     padding: 0;
     margin: 0;
-    width: 100vw;
     background: var(--overflow-background);
     display: flex;
     justify-content: center;
-    overflow-y: scroll;
-    scrollbar-width: none;  /* Firefox */
     color: var(--primary-text-color);
+    min-height: 100%;
+}
+.overflow {
+    background: var(--content-background);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    max-width: var(--overflow-max-width);
+    width: 100%;
+    box-sizing: border-box;
+    box-shadow: 0 0 10px #00000044;
+}
+.content {
+    display: inline-block;
+    width: 100%;
+    max-width: var(--comic-max-width);
+    overflow: hidden;
+}
+
+.content-frame {
+    box-sizing: border-box;
+    border: 20px solid transparent;
+    border-image-source: var(--post-border-image);
+    border-image-slice: 20 fill;
+    border-image-repeat: repeat;
+    margin-bottom: calc(var(--paragraph-padding)*2);
+}
+
+header {
+    padding: 0;
+    margin: 0;
+}
+.header-image {
+    width: 100%;
 }
 
 .cta-footer {
@@ -89,32 +120,55 @@ body {
     background-color: #cccccc;
 }
 
-.content-background {
-    background: var(--content-background);
+
+/* FOOTER AND SOCIAL ICONS */
+.social-container {
     display: flex;
+    align-items: center;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    padding: 8px;
+    max-width: 100%;
+}
+.social-icon {
+    width: 24px;
+    height: 24px;
+    font-size: 24px;
+    padding: 8px;
+    text-align: center;
+    margin: 8px;
+}
+footer {
+    background-color: var(--footer-background-color);
+    width: 100%;
+    display: flex;
+    justify-content: center;
     flex-direction: column;
     align-items: center;
-    max-width: var(--overflow-max-width);
-    width: 100vw;
+    margin-top: auto;
+    text-align: center;
+    padding-bottom: var(--ad-height);
+}
+.footer-content {
+    padding: 8px;
     box-sizing: border-box;
-    box-shadow: 0 0 10px #00000044;
 }
-
-.content {
-    display: inline-block;
+.footer-subsection {
+    padding: 8px;
     width: 100%;
-    max-width: var(--comic-max-width);
+    box-sizing: border-box;
+    text-align: center;
+}
+footer a:hover {
+    color: #978b65;
+}
+footer a:active {
+    color: #978b65;
 }
 
-header {
-    padding: 0;
-    margin: 0;
-}
 
-.header-image {
-    width: 100%;
-}
-
+/* READER PAGE */
 #staff-text {
     display: none;
 }
@@ -124,6 +178,7 @@ header {
     top: calc(50% - 120px);
     left: calc(50% - 120px / 2);
     width: 120px;
+    max-width: 100%;
     height: 120px;
     animation: spin 2s linear infinite;
     background-image: var(--spinner-image);
@@ -141,6 +196,7 @@ header {
     width: 100%;
     max-width: var(--comic-max-width);
     overflow: hidden;
+    margin-bottom: calc(var(--paragraph-padding)*2);
 }
 
 .comic-image {
@@ -152,9 +208,6 @@ header {
 #comic-post-date {
     margin-bottom: 16px;
     font-size: 12px;
-}
-
-.comic-text-wrapper {
 }
 
 
@@ -178,71 +231,7 @@ header {
 }
 
 
-/* TAGS */
-#comic-tags {
-    display: flex;
-    flex-direction: column;
-    width: 100%;
-    font-size: 12px;
-}
-
-.tag {
-    background-color: var(--tag-background-color);
-    margin: 1px 2px;
-    padding: 4px;
-    padding-left: 24px;
-    height: 16px;
-    line-height: 16px;
-    font-size: 12px;
-    text-align: center;
-    text-decoration: none;
-    display: inline-block;
-    background-image: var(--default-tag-icon);
-    background-size: 16px 16px;
-    background-position: 4px 4px;
-    background-repeat: no-repeat;
-}
-
-.tag:hover {
-    filter: brightness(125%);
-}
-
-.tag.error {
-    background-color: var(--tag-error-color);
-}
-
-.tag-list-entry {
-    margin: 8px;
-}
-
-.tag-list-entry img{
-    height: 24px;
-    width: 24px;
-}
-
-.tag-list-entry span{
-    height: 24px;
-    margin-left: 8px;
-    line-height: 24px;
-    text-align: center;
-}
-
-
-#comic-tags a:link {
-    color: var(--tag-text-color);
-    text-decoration: none;
-}
-#comic-tags a:visited {
-    color: var(--tag-text-color);
-}
-#comic-tags a:hover {
-    filter: brightness(125%);
-}
-#comic-tags a:active {
-    filter: brightness(125%);
-}
-
-/* IMAGE SPRITES*/
+/* NAVIGATION BUTTONS */
 .navigation-button {
     position: absolute;
     top: 0; bottom: 0;
@@ -283,107 +272,77 @@ header {
 }
 
 
-/* COMIC BLOG POST SECTION */
-.comic-post {
-    border: 43px solid transparent;
-    border-image-source: var(--post-border-image);
-    border-image-slice: 43 fill;
-    border-image-repeat: repeat;
-    margin-bottom: 16px;
-}
-.comic-post-content {
-    margin: -20px;  /* To undo the very wide image border */
-    margin-bottom: 20px;
-}
-
-
-/* COMMENTS SECTION */
-.comic-comments {
-    border: 43px solid transparent;
-    border-image-source: var(--post-border-image);
-    border-image-slice: 43 fill;
-    border-image-repeat: repeat;
-    margin-bottom: 16px;
-}
-#discourse-comments {
-    margin: -20px;  /* To undo the very wide image border */
-}
-
 /* COMIC INVITATION SECTION */
 .invitation {
     width: 100%;
+    margin-bottom: calc(var(--paragraph-padding)*2);
 }
 .invitation img {
     width: 100%;
-    margin-bottom: 24px;
 }
 
 
-/* COMIC TRANSCRIPT SECTION */
-.comic-transcript-content {
-    margin: -20px;
-    margin-top: 20px;
-}
-
-/* FOOTER AND SOCIAL ICONS */
-.social-container {
+/* TAGS */
+#comic-tags {
     display: flex;
-    align-items: center;
-    flex-direction: row;
-    justify-content: center;
-    align-items: center;
-    padding: 8px;
-    max-width: 100%;
-}
-.social-icon {
-    width: 24px;
-    height: 24px;
-    font-size: 24px;
-    padding: 8px;
-    text-align: center;
-    margin: 8px;
-}
-
-footer {
-    color: black;
-    background-color: var(--footer-background-color);
-    width: 100%;
-    display: flex;
-    justify-content: center;
     flex-direction: column;
-    align-items: center;
-    margin-top: auto;
-    text-align: center;
-    padding-bottom: var(--ad-height);
-}
-
-.footer-content {
-    padding: 8px;
-    box-sizing: border-box;
-}
-
-.footer-subsection {
-    padding: 8px;
     width: 100%;
-    box-sizing: border-box;
+    font-size: 12px;
+}
+.tag {
+    background-color: var(--tag-background-color);
+    margin: 1px 2px;
+    padding: 4px;
+    padding-left: 24px;
+    height: 16px;
+    line-height: 16px;
+    font-size: 12px;
     text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    background-image: var(--default-tag-icon);
+    background-size: 16px 16px;
+    background-position: 4px 4px;
+    background-repeat: no-repeat;
+}
+.tag:hover {
+    filter: brightness(125%);
+}
+.tag.error {
+    background-color: var(--tag-error-color);
 }
 
-footer a:link {
-    color: black;
+
+/* ARCHIVE TILES */
+.archive-tile-container {
+    width: 100%;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
 }
-footer a:visited {
-    color: black;
+.archive-tile {
+    width: var(--tile-size);
+    background-color: var(--tag-background-color);
+    padding: var(--paragraph-padding);
+    padding-top: calc(var(--tile-size) + var(--paragraph-padding) * 2);
+    margin: var(--paragraph-padding);
+    background-image: var(--default-tag-icon);
+    background-size: var(--tile-size) var(--tile-size);
+    background-position: var(--paragraph-padding) var(--paragraph-padding);
+    background-repeat: no-repeat;
+    text-align: center;
+    text-decoration: none;
+    word-wrap: break-word;
+    font-size: 14px;
+    font-weight: bold;
+
 }
-footer a:hover {
-    color: #978b65;
-}
-footer a:active {
-    color: #978b65;
+.archive-tile:hover {
+    filter: brightness(125%);
 }
 
 
-/* ARCHIVE PAGES */
+/* ARCHIVE PAGE TABLE */
 .archive-page-td-date {
     min-width: 128px;
     padding-top: 4px;
@@ -394,13 +353,6 @@ footer a:active {
     padding-top: 4px;
     padding-bottom: 4px;
     padding-left: 24px;
-}
-
-.archive-tile {
-    width: 128px;
-    background-color: var(--tag-background-color);
-    padding: var(--paragraph-padding);
-    margin: var(--paragraph-padding);
 }
 
 
@@ -424,7 +376,7 @@ footer a:active {
 }
 
 
-/* Index Page */
+/* GLOBAL INDEX PAGE */
 .index-section {
     background-color: #CFD8DC;
     padding: 24px;

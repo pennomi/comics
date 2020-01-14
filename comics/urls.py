@@ -24,9 +24,10 @@ urlpatterns = [
     path('comic/data/<slug:page>/', comics_views.PageAjaxView.as_view(), name='page'),
 
     # Tag Wiki Pages
-    path('archive/', comics_views.ArchiveView.as_view(), name='archive'),
-    path('archive/<str:type>/', comics_views.TagTypeView.as_view(), name='tagtype'),
-    path('archive/<str:type>/<str:tag>/', comics_views.TagView.as_view(), name='tag'),
+    path('archive/', comics_views.ArchiveView.as_view(), name='archive-index'),
+    path('archive/pages/', comics_views.PageListView.as_view(), name='archive-pages'),
+    path('archive/<str:type>/', comics_views.TagTypeView.as_view(), name='archive-tagtype'),
+    path('archive/<str:type>/<str:tag>/', comics_views.TagView.as_view(), name='archive-tag'),
     path('500/', comics_views.comic_500_view),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 

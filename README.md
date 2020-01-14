@@ -30,6 +30,9 @@ Sometimes we change this process and forget to update the readme. If it's not wo
 
 - [ ] Bug Fixes
   - [ ] I noticed one iPhone having trouble with the spinner getting stuck active. Is this a widespread problem?
+  - [ ] Alt text doesn't dynamically change with page switch on Chrome
+  - [ ] Cycle the forum's IP address. The current one is banned in Russia for no reason.
+  - [ ] Fonts need о̄ ñ
 - [ ] Nice New Features
   - [x] Extended Markdown for tag links; update transcripts and wiki pages
     - [ ] Auto-migrate tags when they are renamed.
@@ -71,6 +74,7 @@ Sometimes we change this process and forget to update the readme. If it's not wo
   - [ ] Consider making slugs case-insensitive, and have restricted slugs, for pages, tags, and tag types
   - [ ] Reduce code duplication in nginx configs
   - [ ] Remove fontawesome
+  - [ ] Use proper HTML template elements for dynamic sections
 - [ ] Optimization
   - [ ] Run everything through an SEO checker
   - [ ] Google PageSpeed Insights

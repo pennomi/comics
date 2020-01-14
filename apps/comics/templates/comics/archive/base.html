@@ -1,0 +1,18 @@
+{% extends 'comics/base.html' %}
+{% load static %}
+
+{% block content %}
+<div class="content-frame">
+    <p>
+        Back to: <a class="tag" {% if comic.favicon_image %}style="background-image: url({{ comic.favicon_image.url }})"{% endif %} href="{% url 'index' %}">Comic</a>
+        {% for crumb in breadcrumbs %}
+            &gt;
+            <a class="tag" href="{{ crumb.url }}" {% if crumb.icon %}style="background-image: url({{ crumb.icon }})"{% endif %}>
+                {{ crumb.title }}
+            </a>
+        {% endfor %}
+    </p>
+    <h1 style="text-align: center;">{% block title %}{% endblock %}</h1>
+    {% block archive_content %}{% endblock %}
+</div>
+{% endblock %}

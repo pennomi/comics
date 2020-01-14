@@ -45,7 +45,7 @@ class BetterMarkdown(Markdown):
             if not tag_type or not tag:
                 tag_html = ""
             elif (tag_type, tag) in tags_and_icons:
-                url = reverse("tag", kwargs={"type": tag_type, "tag": tag})
+                url = reverse("archive-tag", kwargs={"type": tag_type, "tag": tag})
                 tag_html = f'<a style="background-image: url({tags_and_icons[(tag_type, tag)]});" class="tag" href="{url}">{tag}</a>'
             else:
                 tag_html = f'<a class="tag error" href="">{tag}</a>'

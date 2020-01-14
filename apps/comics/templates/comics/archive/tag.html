@@ -1,0 +1,33 @@
+{% extends 'comics/archive/base.html' %}
+
+{% block social_media_tags %}
+    <meta property="og:title" content="{{ tag.title }}" />
+    <meta property="og:type" content="article" />
+    <meta property="og:url" content="{{ request.scheme }}://{{request.get_host}}{{ tag.get_absolute_url }}" />
+    {% if tag.icon_url %}<meta property="og:image" content="{{ request.scheme }}://{{request.get_host}}{{ tag.icon_url }}" />{% endif %}
+    <meta property="og:description" content="{{ tag.post }}" />
+    <meta property="og:site_name" content="{{ comic.title }} | A webcomic by {{ comic.author }}" />
+{% endblock %}
+
+{% block archive_content %}
+    <div class="tag-detail-header">
+        <img {% if tag.icon_url %}src="{{ tag.icon_url }}"{% endif %}/>
+        <div>
+            <h1>{{ tag.title }}</h1>
+            <p><a href="{{ tag.type.get_absolute_url }}">{{ tag.type.title }}</a></p>
+        </div>
+    </div>
+
+    <div id="tag-post">{{ tag.post_html | safe }}</div>
+
+    <h2>{{ tag.title }} appearances:</h2>
+
+    <table>
+        {% for page in tag.pages.active %}
+        <tr>
+            <td class="archive-page-td-date">{{ page.posted_at | date:"M d Y" }}</td>
+            <td class="archive-page-td-title"><a href="{{ page.get_absolute_url }}">{{ page.title }}</a></td>
+        </tr>
+        {% endfor %}
+    </table>
+{% endblock %}

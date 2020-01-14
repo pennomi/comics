@@ -1,0 +1,13 @@
+{% extends 'comics/archive/base.html' %}
+
+{% block title %}Pages{% endblock %}
+{% block archive_content %}
+    <table>
+        {% for page in comic.pages.active %}
+        <tr>
+            <td class="archive-page-td-date">{{ page.posted_at | date:"M d Y" }}</td>
+            <td class="archive-page-td-title"><a href="{{ page.get_absolute_url }}">{{ page.title }}</a></td>
+        </tr>
+        {% endfor %}
+    </table>
+{% endblock %}
