@@ -41,9 +41,10 @@
 h1 { font-size: 28px; font-weight: bold; margin-bottom: var(--paragraph-padding); }
 h2 { font-size: 20px; font-weight: bold; margin-bottom: var(--paragraph-padding); }
 p { font-size: 14px; margin-bottom: var(--paragraph-padding); }
+small { font-size: 12px; }
 em { font-style: italic; }
 strong { font-weight: bold; }
-img { vertical-align:bottom; }
+img { vertical-align: bottom; }
 blockquote {
     border-left: 4px solid var(--blockquote-border-color);
     background-color: var(--blockquote-background-color);
@@ -334,11 +335,12 @@ footer a:active {
     text-decoration: none;
     word-wrap: break-word;
     font-size: 14px;
-    font-weight: bold;
-
 }
 .archive-tile:hover {
     filter: brightness(125%);
+}
+.archive-tile > strong, .archive-tile > small {
+    display: block;
 }
 
 

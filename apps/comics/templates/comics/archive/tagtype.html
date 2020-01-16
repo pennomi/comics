@@ -2,11 +2,28 @@
 
 {% block title %}{{ tag_type.title }}{% endblock %}
 {% block archive_content %}
-    <div class="archive-tile-container">
-        {% for tag in tag_type.tags.all %}
-        <a class="archive-tile" href="{{ tag.get_absolute_url }}" style="background-image: url({{tag.icon_url}});">{{ tag.title }}</a>
-        {% endfor %}
-    </div>
+<script>
+function filterResults(inputElement) {
+    // Declare variables
+    var query = inputElement.value.toLowerCase();
+
+    var tiles = document.querySelectorAll(".archive-tile");
+    tiles.forEach(function (tile) {
+        tile.hidden = tile.dataset.title.toLowerCase().indexOf(query) == -1;
+    });
+}
+</script>
+<div>
+    <input type="text" onkeyup="filterResults(this)" placeholder="Search for {{ type.title }}...">
+</div>
+<div class="archive-tile-container">
+    {% for tag in tag_type.tags.all %}
+    {% with count=tag.pages.count %}
+    <a data-count="{{ count }}" data-title="{{ tag.title }}" class="archive-tile" href="{{ tag.get_absolute_url }}" style="background-image: url({{tag.icon_url}});">
+        <strong>{{ tag.title }}</strong>
+        <small>{{ count }} Page{{ count|pluralize:",s" }}</small>
+    </a>
+    {% endwith %}
+    {% endfor %}
+</div>
 {% endblock %}
-
-

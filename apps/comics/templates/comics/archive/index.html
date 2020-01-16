@@ -4,8 +4,16 @@
 {% block archive_content %}
     <div class="archive-tile-container">
         {% for type in comic.tag_types.all %}
-        <a class="archive-tile" href="{{ type.get_absolute_url }}" style="background-image: url({{ type.default_icon.url }});">{{ type.title }}</a>
+        {% with count=type.tags.count %}
+        <a class="archive-tile" href="{{ type.get_absolute_url }}" style="background-image: url({{ type.default_icon.url }});">
+            <strong>{{ type.title }}</strong>
+            <small>{{ count }} Tag{{ count|pluralize:",s" }}</small>
+        </a>
+        {% endwith %}
         {% endfor %}
-        <a class="archive-tile" href="{% url 'archive-pages' %}">Pages</a>
+        <a class="archive-tile" href="{% url 'archive-pages' %}">
+            <strong>Pages</strong>
+            <small>{{ comic.pages.count }} Pages</small>
+        </a>
     </div>
 {% endblock %}
