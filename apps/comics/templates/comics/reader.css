@@ -61,6 +61,36 @@ a:visited {
 }
 
 
+/* GLOBAL STYLING FOR FORM ELEMENTS */
+input, select {
+    font-family: 'ComicFont', 'Arial', sans-serif;
+    box-sizing: border-box;
+    vertical-align:top;
+    height: 32px;
+    width: 200px;
+    padding: 6px;
+    margin: var(--paragraph-padding);
+    color: var(--primary-text-color);
+    background-color: var(--blockquote-background-color);
+    border: 2px solid var(--blockquote-border-color);
+}
+input:focus, select:focus {
+    outline: none;
+}
+input::-webkit-search-cancel-button {
+    -webkit-appearance: none;
+    background-image: url({% static "comics/icons/delete.svg" %});
+    background-size: contain;
+    height: 14px;
+    width: 14px;
+    margin: 0;
+}
+select option {
+    background-color: var(--blockquote-background-color);
+    border: 2px solid var(--blockquote-border-color);
+}
+
+
 /* CORE PAGE LAYOUT */
 html {
     height: 100%;
