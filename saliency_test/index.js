@@ -4,23 +4,14 @@
  * and https://github.com/tensorflow/tfjs-models/tree/master/posenet/demos
  */
 
-const image = document.getElementById("swordsImage");
-const webcam = document.getElementById("webcam");
-const canvas = document.getElementById("canvas");
-const ctx = canvas.getContext("2d");
-
 let model;
 let modelURL;
-let imageDims;
-let canvasDims = [image.height, image.width];
-let modelChange;
-
 /**
  * This function captures an image from the webcam, resizes it to the preferred
  * dimensions of the selected model, and represents it in a format suitable for
  * input to the network.
  */
-function fetchInputImage() {
+function fetchInputImage(image, imageDims) {
   return tf.tidy(() => {
     loadedImage = tf.browser.fromPixels(image);
     const batchedImage = loadedImage.toFloat().expandDims();
@@ -31,23 +22,51 @@ function fetchInputImage() {
   });
 }
 
-function predictSaliency() {
+function predictSaliency(image, model, imageDims) {
   return tf.tidy(() => {
-    const modelOutput = model.predict(fetchInputImage());
-    const resizedOutput = tf.image.resizeBilinear(modelOutput, canvasDims, true);
+    const modelOutput = model.predict(fetchInputImage(image, imageDims));
+    const resizedOutput = tf.image.resizeBilinear(modelOutput, [image.height, image.width], true);
     const clippedOutput = tf.clipByValue(resizedOutput, 0.0, 255.0);
     return clippedOutput.squeeze();
   });
 }
 
-function getMax(arr) {
-    let len = arr.length;
-    let max = -Infinity;
+function brightestRect(tensor, rectSize, ctx) {
+    console.log("Calculating brightest rect...");
+    // How roughly are we guessing. If this is bigger, it will run faster
+    const stepSize = rectSize / 5;
 
-    while (len--) {
-        max = arr[len] > max ? arr[len] : max;
+    var maxWidth = tensor.shape[0];
+    var maxHeight = tensor.shape[1];
+
+    var bestValue = 0;
+    var bestPosition = undefined;
+    // Iterate over chunks by stepSize, limited by bounds
+    for (var col = 0; col < maxWidth - rectSize + 1; col += stepSize) {
+        for (var row = 0; row < maxHeight - rectSize + 1; row += stepSize) {
+
+            // Slice the tensor to get the submatrix of [rectSize, rectSize] starting at this chunk.
+            var submatrix = tf.slice(tensor, [col, row], [rectSize, rectSize]);
+            // Calculate the sum of the submatrix
+            var value = submatrix.mean().dataSync()[0];
+            if (value > bestValue) {
+                bestValue = value;
+                bestPosition = [row, col];
+            }
+
+            // Draw selected bounding box
+            ctx.globalCompositeOperation = "source-over";
+            ctx.beginPath();
+            ctx.rect(row, col, rectSize, rectSize);
+            ctx.strokeStyle = "#ffff0011";
+            ctx.stroke();
+
+            ctx.font = "10px Arial";
+            ctx.fillStyle = "#ffff00";
+            ctx.fillText("" + Math.round(value * 100) / 100, row, col + 12);
+        }
     }
-    return max;
+    return bestPosition;
 }
 
 /**
@@ -57,65 +76,57 @@ function getMax(arr) {
  * selected. The results are automatically drawn to the canvas.
  */
 async function runModel() {
-    showLoadingScreen();
+    // Initialize
+    const canvas = document.getElementById("canvas");
+    const ctx = canvas.getContext("2d");
+    const image = document.getElementById("swordsImage");
 
+    // Keep aspect ratio, but have a maximum size for the network input
+    let canvasDims = [image.height, image.width];
+    const maxSize = 128;
+    var scaleFactor;
+    if (canvasDims[0] > canvasDims[1]) {
+      scaleFactor = maxSize / canvasDims[0];
+    } else {
+      scaleFactor = maxSize / canvasDims[1];
+    }
+    const imageDims = [Math.floor(canvasDims[0] * scaleFactor), Math.floor(canvasDims[1] * scaleFactor)];
+    console.log(imageDims);
+
+    // Load the model
+    const modelURL = "https://storage.googleapis.com/msi-net/model/low/model.json";
     model = await tf.loadGraphModel(modelURL);
-    const saliencyMap = predictSaliency();
+    console.log(model);
 
-    var i = tf.argMax(saliencyMap.flatten()).dataSync()[0]
-    var row = Math.floor(i / saliencyMap.shape[1]);
-    var col = i % saliencyMap.shape[1];
+    // Calculate the saliency
+    var saliencyMap = predictSaliency(image, model, imageDims);
+    var dropLow = 0.75;
+//    saliencyMap = saliencyMap.clipByValue(dropLow, 1.0);
+//    saliencyMap = saliencyMap.sub(tf.scalar(dropLow)).mul(tf.scalar(1 / (1-dropLow)));
+//    saliencyMap = saliencyMap.clipByValue(0.5, 0.9)
 
-    console.log("yolo " + i + " " + row + "," + col);
-
-    // Draw
+    // Draw saliency map
     await tf.browser.toPixels(saliencyMap, canvas);
 
-    const ctx = canvas.getContext("2d");
+    // Multiply in the original image
     ctx.globalCompositeOperation = "multiply";
     ctx.drawImage(image, 0, 0);
 
+    // Calculate the row/col of the center of the rectangle.
     const clipSize = Math.floor(Math.min(...canvasDims) / 3);
-    ctx.globalCompositeOperation = "source-over";
-    ctx.beginPath();
-    ctx.rect(col-Math.floor(clipSize/2), row-Math.floor(clipSize/2), clipSize, clipSize);
-    ctx.strokeStyle = "#ff0000";
-    ctx.stroke();
-    saliencyMap.dispose();
+    var corner = brightestRect(saliencyMap, clipSize, ctx);
 
+    // Calculate the most salient point as the center instead.
+    var i = tf.argMax(saliencyMap.flatten()).dataSync()[0]
+    var row = Math.floor(i / saliencyMap.shape[1]);
+    var col = i % saliencyMap.shape[1];
+    corner = [col - (clipSize / 2), row - (clipSize / 2)];
+
+    // Draw selected bounding box
+    ctx.globalCompositeOperation = "source-over";
+    ctx.drawImage(image, corner[0], corner[1], clipSize, clipSize, corner[0], corner[1], clipSize, clipSize);
+
+    // Cleanup
+    saliencyMap.dispose();
     model.dispose();
 }
-
-/**
- * When a new model is currently loading, the canvas signals a message
- * to the user.
- */
-function showLoadingScreen() {
-  ctx.fillStyle = "white";
-  ctx.textAlign = "center";
-  ctx.font = "1.7em Alegreya Sans SC", "1.7em sans-serif";
-  ctx.fillText("loading model...", canvas.width / 2, canvas.height / 2);
-}
-
-/**
- * The main function that first defines the default model, adds mouse click
- * listeners that interrupt the current prediction loop and invoke the loading
- * of a different model, and tries to set up a webcam stream for input to the
- * model.
- */
-async function app() {
-  modelURL = "https://storage.googleapis.com/msi-net/model/very_low/model.json";
-  // Keep aspect ratio, but have a maximum size
-  const maxSize = 128;
-  var scaleFactor;
-  if (canvasDims[0] > canvasDims[1]) {
-    scaleFactor = maxSize / canvasDims[0];
-  } else {
-    scaleFactor = maxSize / canvasDims[1];
-  }
-  imageDims = [Math.floor(canvasDims[0] * scaleFactor), Math.floor(canvasDims[1] * scaleFactor)];
-  console.log(imageDims);
-  runModel();
-}
-
-app();
