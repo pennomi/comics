@@ -2,16 +2,71 @@
 
 <head>
   <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@1.1.2"></script>
-  <link rel="stylesheet" href="./style.css">
   <script src="index.js"></script>
-</head>
+<style>
+body {
+    background: rgb(48, 48, 48);
+    margin: 0;
+}
 
+#error {
+    color: rgb(255, 255, 255);
+    font-size: 1.8em;
+    padding: 0.6em;
+    overflow: hidden;
+    text-align: center;
+    visibility: hidden;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+#inputs {
+  display: flex;
+  flex-wrap: wrap;
+  padding: 5px;
+}
+#inputs img {
+  max-width: 128px;
+  max-height: 128px;
+  width: auto;
+  height: auto;
+  display: block;
+  object-fit: contain;
+  margin: 2px;
+}
+#cropped canvas {
+  margin: 2px;
+}
+#saliency canvas {
+  margin: 2px;
+}
+</style>
+</head>
 <body>
-  <div id="videos">
-<!--    <img id="swordsImage" src="../deploy/media/SchlockTest.jpg" onload="runModel();"/>-->
-    <img id="swordsImage" src="../deploy/media/Swords359t.png" onload="runModel();"/>
+  <div id="inputs">
+    <img src="../deploy/media/133t.png"/>
+    <img src="../deploy/media/134t.png"/>
+    <img src="../deploy/media/135t.png"/>
+    <img src="../deploy/media/136t.png"/>
+    <img src="../deploy/media/137t.png"/>
+    <img src="../deploy/media/138t.png"/>
+    <img src="../deploy/media/Swords100FullT.png"/>
+    <img src="../deploy/media/cover.png"/>
+    <img src="../deploy/media/GGTest.jpg"/>
+    <img src="../deploy/media/GGTest2.jpg"/>
+    <img src="../deploy/media/GoblinsTest.jpg"/>
+    <img src="../deploy/media/SchlockTest.jpg"/>
+    <img src="../deploy/media/GaiaTest.jpg"/>
+    <img src="../deploy/media/GaiaTest2.jpg"/>
+    <img src="../deploy/media/GaiaTest3.jpg"/>
+    <img src="../deploy/media/CalvinTest.gif"/>
+  </div>
+  <div id="cropped"></div>
+  <div id="saliency"></div>
+  <div id="output">
     <canvas id="canvas"></canvas>
   </div>
+  <button onclick="runModel();">Run Process</button>
 </body>
 
 </html>
