@@ -1,34 +1,34 @@
 /**
- * This script is adapted from the two tensorflowjs examples hosted at
- * https://github.com/tensorflow/tfjs-examples/tree/master/webcam-transfer-learning
- * and https://github.com/tensorflow/tfjs-models/tree/master/posenet/demos
- */
-
-let model;
-let modelURL;
-/**
  * This function captures an image from the webcam, resizes it to the preferred
  * dimensions of the selected model, and represents it in a format suitable for
  * input to the network.
  */
-function fetchInputImage(image, networkInputSize) {
-  return tf.tidy(() => {
-    loadedImage = tf.browser.fromPixels(image);
-    const batchedImage = loadedImage.toFloat().expandDims();
-    const resizedImage = tf.image.resizeBilinear(batchedImage, networkInputSize, true);
-    const clippedImage = tf.clipByValue(resizedImage, 0.0, 255.0);
-    const reversedImage = tf.reverse(clippedImage, 2);
-    return reversedImage;
-  });
-}
 
 function predictSaliency(image, model, networkInputSize) {
   return tf.tidy(() => {
-    const modelOutput = model.predict(fetchInputImage(image, networkInputSize));
+    // Fetch input image
+    loadedImage = tf.browser.fromPixels(image);
+    const batchedImage = loadedImage.toFloat().expandDims();
+    const resizedImage = tf.image.resizeBilinear(batchedImage, networkInputSize, true);
+    const clippedImage = tf.clipByValue(resizedImage, 0.0, 255.0);  // TODO: Does this actually do anything?
+    const reversedImage = tf.reverse(clippedImage, 2);
+
+    // Make a prediction
+    const modelOutput = model.predict(reversedImage);
     const resizedOutput = tf.image.resizeBilinear(modelOutput, [image.height, image.width], true);
-    const clippedOutput = tf.clipByValue(resizedOutput, 0.0, 255.0);
+    const clippedOutput = tf.clipByValue(resizedOutput, 0.0, 255.0);  // TODO: Does this actually do anything?
     return clippedOutput.squeeze();
   });
+}
+
+function injectCanvas(query, width, height) {
+    // Generate a new canvas element with the target size and put it into the dom under the queried element
+    var cropContainer = document.querySelector(query);
+    const newCanvas = document.createElement("canvas");
+    newCanvas.width = width;
+    newCanvas.height = height;
+    cropContainer.appendChild(newCanvas);
+    return newCanvas;
 }
 
 function brightestRect(tensor, rectSize, ctx) {
@@ -63,82 +63,69 @@ function brightestRect(tensor, rectSize, ctx) {
 
             ctx.font = "6px Arial";
             ctx.fillStyle = "#ffff00";
-            ctx.fillText("" + Math.round(value * 100) / 100, row, col + 12);
+            ctx.fillText("" + Math.round(value * 100), row, col + 12);
         }
     }
     return bestPosition;
 }
 
 
-function cropRotateAndScale(targetSize) {
-    var cropContainer = document.querySelector("#cropped");
-    document.querySelectorAll("#inputs img").forEach(function (img) {
-        // Generate a new canvas element at the target network size
-        const newCanvas = document.createElement("canvas");
-        newCanvas.width = newCanvas.height = targetSize;
-        cropContainer.appendChild(newCanvas);
+function cropRotateAndScale(img, targetSize) {
+    var newCanvas = injectCanvas("#cropped", targetSize, targetSize);
 
-        // Determine the portion of the panel we want to target
-        var sourceRect = [0, 0, img.naturalWidth, img.naturalHeight];
+    // Determine the portion of the panel we want to target
+    var sourceRect = [0, 0, img.naturalWidth, img.naturalHeight];
 
-        // If we're very wide, take the leftmost quarter (it's probably a single row strip)
-        if (img.naturalWidth > 2*img.naturalHeight) {
-            sourceRect = [0, 0, Math.floor(img.naturalWidth/4), img.naturalHeight];
-        // If we're very tall, take the topmost quarter (it's probably a very long page)
-        } else if (img.naturalHeight > 2*img.naturalWidth) {
-            sourceRect = [0, 0, img.naturalWidth, Math.floor(img.naturalHeight/4)];
-        } else {
-            sourceRect = [0, 0, Math.floor(img.naturalWidth/2), Math.floor(img.naturalHeight/2)];
-        }
+    // If we're very wide, take the leftmost quarter (it's probably a single row strip)
+    if (img.naturalWidth > 2*img.naturalHeight) {
+        sourceRect = [0, 0, Math.floor(img.naturalWidth/4), img.naturalHeight];
+    // If we're very tall, take the topmost quarter (it's probably a very long page)
+    } else if (img.naturalHeight > 2*img.naturalWidth) {
+        sourceRect = [0, 0, img.naturalWidth, Math.floor(img.naturalHeight/4)];
+    } else {
+        sourceRect = [0, 0, Math.floor(img.naturalWidth/2), Math.floor(img.naturalHeight/2)];
+    }
 
-        // Make sure the aspect ratio stays correct for the targetSize
-        var targetRect = [0, 0, targetSize, targetSize];
-        if (sourceRect[2] > sourceRect[3]) {
-            let size = targetSize / sourceRect[2] * sourceRect[3];
-            targetRect = [0, (targetSize - size) / 2, targetSize, size];
-        } else if (sourceRect[3] > sourceRect[2]) {
-            let size = targetSize / sourceRect[3] * sourceRect[2];
-            targetRect = [(targetSize - size) / 2, 0, size, targetSize];
-        }
+    // Make sure the aspect ratio stays correct for the targetSize
+    var targetRect = [0, 0, targetSize, targetSize];
+    if (sourceRect[2] > sourceRect[3]) {
+        let size = targetSize / sourceRect[2] * sourceRect[3];
+        targetRect = [0, (targetSize - size) / 2, targetSize, size];
+    } else if (sourceRect[3] > sourceRect[2]) {
+        let size = targetSize / sourceRect[3] * sourceRect[2];
+        targetRect = [(targetSize - size) / 2, 0, size, targetSize];
+    }
 
-        // Draw the target part of the image onto the canvas, and fill the rest of the area with black
-        const ctx = newCanvas.getContext("2d");
-        ctx.fillStyle = 'black';
-        ctx.fillRect(0, 0, targetSize, targetSize);
-        ctx.drawImage(img, ...sourceRect, ...targetRect);
-    });
+    // TODO: Try shaving a tiny bit off the top and left, since those are probably panel borders
+
+    // Draw the target part of the image onto the canvas, and fill the rest of the area with black
+    const ctx = newCanvas.getContext("2d");
+    ctx.fillStyle = 'black';
+    ctx.fillRect(0, 0, targetSize, targetSize);
+    ctx.drawImage(img, ...sourceRect, ...targetRect);
+
+    // TODO: try applying a vignette to block out some comic border spam?
+//    var grd = ctx.createRadialGradient(targetSize / 2, targetSize / 2, targetSize / 3, targetSize / 2, targetSize / 2, targetSize / 2);
+//    grd.addColorStop(0, "#00000000");
+//    grd.addColorStop(1, "#000000ff");
+//    ctx.fillStyle = grd;
+//    ctx.fillRect(0, 0, targetSize, targetSize);
+
+    return newCanvas;
 }
 
 
-/**
- * Here the model is loaded and fed with an initial image to warm up the
- * graph execution such that the next prediction will run faster. Afterwards,
- * the network keeps on predicting saliency as long as no other model is
- * selected. The results are automatically drawn to the canvas.
- */
-async function runModel() {
-    var networkSize = 128;
-
-    // Capture the portion of the image we're interested in
-    cropRotateAndScale(networkSize);
-
-    // Initialize
-    const canvas = document.getElementById("canvas");
-    const ctx = canvas.getContext("2d");
-    const image = document.querySelector("#cropped canvas");
-
-    // Load the model
-    const modelURL = "https://storage.googleapis.com/msi-net/model/low/model.json";
-    model = await tf.loadGraphModel(modelURL);
-    console.log(model);
-
+async function predictSaliencyAndRender(image, model, networkSize) {
+    console.log("Predicting saliency...");
     // Calculate the saliency
-    const networkInputSize = [networkSize, networkSize];
-    var saliencyMap = predictSaliency(image, model, networkInputSize);
-//    var dropLow = 0.75;
+    var saliencyMap = predictSaliency(image, model, [networkSize, networkSize]);
+//    var dropLow = 0.25;
 //    saliencyMap = saliencyMap.clipByValue(dropLow, 1.0);
 //    saliencyMap = saliencyMap.sub(tf.scalar(dropLow)).mul(tf.scalar(1 / (1-dropLow)));
-//    saliencyMap = saliencyMap.clipByValue(0.5, 0.9)
+
+    // Initialize random trash
+    const canvas = injectCanvas("#saliency", networkSize, networkSize);
+    const ctx = canvas.getContext("2d");
 
     // Draw saliency map
     await tf.browser.toPixels(saliencyMap, canvas);
@@ -147,21 +134,52 @@ async function runModel() {
     ctx.globalCompositeOperation = "multiply";
     ctx.drawImage(image, 0, 0);
 
-    // Calculate the row/col of the center of the rectangle.
-    const clipSize = Math.floor(Math.min(...networkInputSize) / 2);
-    var corner = brightestRect(saliencyMap, clipSize, ctx);
+    return saliencyMap;
+}
 
-    // Calculate the most salient point as the center instead.
-    var i = tf.argMax(saliencyMap.flatten()).dataSync()[0]
-    var row = Math.floor(i / saliencyMap.shape[1]);
-    var col = i % saliencyMap.shape[1];
-    corner = [col - (clipSize / 2), row - (clipSize / 2)];
+
+function getThumbnailOptions(croppedImage, saliencyMap) {
+    thumbSize = Math.floor(croppedImage.width / 1.75);
+    const canvas = injectCanvas("#thumbnails", thumbSize, thumbSize);
+    const ctx = canvas.getContext("2d");
+
+    // Calculate the row/col of the center of the rectangle. Most effective solution, currently.
+    var corner = brightestRect(saliencyMap, thumbSize, ctx);
+
+    // Calculate the most salient point as the center instead. Not as effective.
+//    var i = tf.argMax(saliencyMap.flatten()).dataSync()[0]
+//    var row = Math.floor(i / saliencyMap.shape[1]);
+//    var col = i % saliencyMap.shape[1];
+//    corner = [col - (thumbSize / 2), row - (thumbSize / 2)];
+
+    // TODO: Calculate the size of the blob originating around the most salient point, and capture that in a square?
 
     // Draw selected bounding box
-    ctx.globalCompositeOperation = "source-over";
-    ctx.drawImage(image, corner[0], corner[1], clipSize, clipSize, corner[0], corner[1], clipSize, clipSize);
+    ctx.drawImage(croppedImage, corner[0], corner[1], thumbSize, thumbSize, 0, 0, thumbSize, thumbSize);
+}
 
-    // Cleanup
-    saliencyMap.dispose();
+
+
+async function runModel() {
+    // Load model
+    console.log("Loading model...");
+    var networkSize = 128;
+    const modelURL = "https://storage.googleapis.com/msi-net/model/high/model.json";
+    const model = await tf.loadGraphModel(modelURL);
+    console.log("Model loaded!");
+
+    document.querySelectorAll("#inputs img").forEach(async function (img) {
+        // Capture the portion of the image we're interested in
+        var croppedImage = cropRotateAndScale(img, networkSize);
+        // Calculate the saliency map and render it
+        var saliencyMap = await predictSaliencyAndRender(croppedImage, model, networkSize);
+        // Render thumbnails using different possible algorithms
+        getThumbnailOptions(croppedImage, saliencyMap);
+        // TODO: Make this return from the original source, if possible.
+
+        // Cleanup
+        saliencyMap.dispose();
+    });
+
     model.dispose();
 }
