@@ -14,20 +14,20 @@
         <img {% if tag.icon_url %}src="{{ tag.icon_url }}"{% endif %}/>
         <div>
             <h1>{{ tag.title }}</h1>
-            <p><a href="{{ tag.type.get_absolute_url }}">{{ tag.type.title }}</a></p>
         </div>
     </div>
 
     <div id="tag-post">{{ tag.post_html | safe }}</div>
 
-    <h2>{{ tag.title }} appearances:</h2>
-
-    <table>
+    {% with count=tag.pages.active.count %}
+    <h2>{{ tag.title }} appears on {{ count }} Page{{ count|pluralize:",s" }}:</h2>
+    {% endwith %}
+    <div class="archive-tile-container">
         {% for page in tag.pages.active %}
-        <tr>
-            <td class="archive-page-td-date">{{ page.posted_at | date:"M d Y" }}</td>
-            <td class="archive-page-td-title"><a href="{{ page.get_absolute_url }}">{{ page.title }}</a></td>
-        </tr>
+            <a data-title="{{ page.title }}" class="archive-tile archive-tile-short" href="{{ page.get_absolute_url }}" style="background-image: url({{page.thumb_url}});">
+                <strong>{{ page.title }}</strong>
+                <small>{{ page.posted_at | date:"d M Y" }}</small>
+            </a>
         {% endfor %}
-    </table>
+    </div>
 {% endblock %}
