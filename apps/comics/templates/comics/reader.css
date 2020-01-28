@@ -372,6 +372,9 @@ footer a:active {
 .archive-tile > strong, .archive-tile > small {
     display: block;
 }
+.archive-tile-short {
+    padding-top: var(--paragraph-padding);
+}
 
 
 /* ARCHIVE PAGE TABLE */

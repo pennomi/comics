@@ -10,10 +10,9 @@
     {% for page in pages_and_chapters %}
         {% if page.posted_at %}
             {# This is a Page #}
-
-            <a data-title="{{ page.title }}" class="archive-tile" href="{{ page.get_absolute_url }}" style="background-image: url({{page.thumb_url}});">
+            <a data-title="{{ page.title }}" class="archive-tile archive-tile-short" href="{{ page.get_absolute_url }}" style="background-image: url({{page.thumb_url}});">
                 <strong>{{ page.title }}</strong>
-                <small>{{ page.posted_at | date:"M d Y" }}</small>
+                <small>{{ page.posted_at | date:"d M Y" }}</small>
             </a>
         {% else %}
             {# This is a Chapter Heading instead #}
