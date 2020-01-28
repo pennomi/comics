@@ -185,9 +185,15 @@ class PageListView(TemplateView):
     template_name = "comics/archive/pages.html"
 
     def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
         comic = self.request.comic
+        pages = comic.pages.active()
+        chapters = comic.chapters.all()
+        pages_and_chapters = list(pages) + list(chapters)
+        pages_and_chapters.sort(key=lambda x: x.ordering)
+
+        context = super().get_context_data(**kwargs)
         context['comic'] = comic
+        context['pages_and_chapters'] = pages_and_chapters
         context['breadcrumbs'] = [
             {'title': 'Archive', 'url': reverse('archive-index'), 'icon': None},
         ]
@@ -267,11 +273,23 @@ def comic_404_view(request, exception):
 
 
 def comic_500_view(request):
-    print(request)
-    print(request.comic)
     return render(request, "comics/500.html", {'comic': request.comic})
 
 
 class Test500View(View):
     def get(self, request, *args, **kwargs):
         raise Exception("Ouch")
+
+
+class SitemapView(View):
+    def get(self, request, *args, **kwargs):
+        pass
+
+
+class RobotsTxtView(View):
+    def get(self, request, *args, **kwargs):
+        data = f"""User-agent: *
+Disallow: 
+Sitemap: {reverse('sitemap')}
+        """
+        return HttpResponse(data)

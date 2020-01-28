@@ -143,8 +143,7 @@ Sometimes we change this process and forget to update the readme. If it's not wo
     - [ ] Archive
     - [ ] Tag
     - [ ] TagType
-  - [ ] robots.txt
-  - [ ] sitemap
+  - [ ] robots.txt & sitemap (These are stubbed out. Please finish.)
   - [ ] Schema.org tagging for our pages, tags
     - [ ] About the author section
     - [ ] Character section

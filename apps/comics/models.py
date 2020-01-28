@@ -57,6 +57,9 @@ class Comic(models.Model):
     discourse_url = models.URLField(
         blank=True, help_text="Link to a Discourse forum, for example `https://forum.example.com/`")
 
+    # Misc
+    changed_at = models.DateTimeField(auto_now=True, help_text="Records the last edit of this Comic.")
+
     def get_absolute_url(self):
         return reverse("reader-redirect")
 
@@ -104,6 +107,7 @@ class TagType(models.Model):
     comic = models.ForeignKey(Comic, on_delete=models.CASCADE, related_name="tag_types")
     title = models.CharField(max_length=16)  # TODO: Make sure this is URL-safe?
     default_icon = models.ImageField(blank=True, help_text="Tags without an image will use this instead.")
+    changed_at = models.DateTimeField(auto_now=True, help_text="Records the last edit of this TagType.")
 
     def __str__(self):
         return f"{self.title} ({self.comic})"
@@ -124,6 +128,7 @@ class Tag(models.Model):
     title = models.CharField(max_length=32)  # TODO: Make sure this is URL-safe?
     type = models.ForeignKey(TagType, on_delete=models.CASCADE, related_name="tags")
     post = models.TextField(blank=True, help_text="Accepts Markdown")
+    changed_at = models.DateTimeField(auto_now=True, help_text="Records the last edit of this Tag.")
 
     def __str__(self):
         return self.title
@@ -172,6 +177,7 @@ class Page(models.Model):
         help_text="Lower numbers appear first. You can use negative numbers and decimals (eg. -2.5).")
     posted_at = models.DateTimeField(
         default=now, help_text="If this is in the future, it won't be visible until that time.")
+    changed_at = models.DateTimeField(auto_now=True, help_text="Records the last edit of this Page.")
     post = models.TextField(blank=True, help_text="Accepts Markdown")
     transcript = models.TextField(blank=True, help_text="Accepts Markdown")
     image = models.ImageField()
@@ -199,6 +205,24 @@ class Page(models.Model):
     @property
     def transcript_html(self):
         return custom_markdown.render(self.transcript)
+
+
+class Chapter(models.Model):
+    """
+    A Chapter is a section that splits the page list by 'ordering', and used for quick navigation shortcuts.
+    It doesn't include an image; use a Page for that.
+    """
+    comic = models.ForeignKey(Comic, on_delete=models.PROTECT, related_name="chapters")
+    title = models.CharField(max_length=128)
+    ordering = models.FloatField(
+        help_text="Lower numbers appear first. You can use negative numbers and decimals (eg. -2.5).")
+
+    class Meta:
+        unique_together = (("comic", "ordering"), )
+        ordering = ('ordering', )
+
+    def __str__(self):
+        return f'{self.comic} | {self.title}'
 
 
 class Ad(models.Model):

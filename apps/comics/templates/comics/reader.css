@@ -107,7 +107,7 @@ body {
     color: var(--primary-text-color);
     min-height: 100%;
 }
-.overflow {
+.content-background {
     background: var(--content-background);
     display: flex;
     flex-direction: column;
@@ -115,7 +115,7 @@ body {
     max-width: var(--overflow-max-width);
     width: 100%;
     box-sizing: border-box;
-    box-shadow: 0 0 10px #00000044;
+    box-shadow: 0 0 10px #00000088;
 }
 .content {
     display: inline-block;

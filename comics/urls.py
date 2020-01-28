@@ -10,6 +10,8 @@ urlpatterns = [
     path('', comics_views.ComicsIndexView.as_view(), name='index'),
     path('admin/', admin.site.urls),
     path('ads.txt', comics_views.AdsTxt.as_view(), name='ads-txt'),
+    # path('robots.txt', comics_views.RobotsTxtView.as_view(), name='robots'),
+    # path('sitemap.xml', comics_views.SitemapView.as_view(), name='sitemap'),
 
     # Comic root
     path('', comics_views.ReaderRedirectView.as_view(), name='reader-redirect'),
