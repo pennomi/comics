@@ -6,7 +6,7 @@ from django.urls import reverse
 from markdown2 import Markdown
 
 
-TAG_REFERENCE_RE = re.compile(r"<([\w ]+):([\w ]+)>", re.I)
+TAG_REFERENCE_RE = re.compile(r"<([\w\- ]+):([\w\- ]+)>", re.I)
 
 
 def grouper(iterable, n):

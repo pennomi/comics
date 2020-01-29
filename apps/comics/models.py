@@ -31,6 +31,8 @@ class Comic(models.Model):
         blank=True, help_text="A square PNG that can spin about its center. Ideally 120x120px.")
     favicon_image = models.ImageField(
         blank=True, help_text="A square PNG to be used as a favicon. Ideally 192x192px.")
+    overflow_background_image = models.ImageField(
+        blank=True, help_text="A large JPG. Ideally 2048px wide by 1024px tall or larger.")
     font = models.FileField(blank=True)
     background = models.TextField(
         default="white", help_text="a valid CSS `background` configuration")

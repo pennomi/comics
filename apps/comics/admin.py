@@ -23,6 +23,7 @@ class PageAdmin(admin.ModelAdmin):
     list_display = ('title', 'ordering', 'comic', 'post_transcript_alt', 'tag_list')
     list_filter = ('comic', 'tags')
     filter_horizontal = ('tags', )
+    search_fields = ('title', 'slug', )
 
     def post_transcript_alt(self, obj):
         post = "✓" if obj.post else "✗"
@@ -38,6 +39,7 @@ class PageAdmin(admin.ModelAdmin):
 class TagAdmin(admin.ModelAdmin):
     list_display = ('thumbnail', 'type')
     list_filter = ('type',)
+    search_fields = ('title', )
 
     def thumbnail(self, obj):
         if obj.icon:
