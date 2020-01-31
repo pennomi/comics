@@ -51,7 +51,18 @@
     <div class="content">
         {% if comic.header_image %}
         <header>
-            <a href="{% url 'reader-redirect' %}"><img class="header-image" src="{{ comic.header_image.url }}"/></a>
+            <div>
+                <a href="{% url 'reader-redirect' %}"><img class="header-image" src="{{ comic.header_image.url }}"/></a>
+                <div class="ad-mobile-leaderboard"></div>
+            </div>
+            <div>
+                <a class="header-link" href="{% url 'archive-index' %}">Comic</a>
+                <a class="header-link" href="{% url 'archive-index' %}">Archive</a>
+                <a class="header-link" href="{% url 'archive-index' %}">Shop</a>
+                <a class="header-link" href="{% url 'archive-index' %}">Games</a>
+                <a class="header-link" href="{% url 'archive-index' %}">Community</a>
+                <a class="header-link" href="{% url 'archive-index' %}">RSS</a>
+            </div>
         </header>
         {% endif %}
 

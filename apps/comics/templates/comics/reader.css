@@ -24,12 +24,21 @@
 
     /* Padding standards */
     --paragraph-padding: 8px;
-    --tile-size: 105px;  /* At current settings, 105px is good for iPhone size and desktop size */
+    --tile-size: 105px;  /* At current settings, 105px is good for both iPhone size and desktop size */
 
     /* Page sizing */
-    --comic-max-width: 728px;  /* 728px because Google's AdSense gets the most competition at that size. */
+    --comic-max-width: 728px;  /* 728px because that fits the widest ad size */
+    --comic-min-width: 320px;  /* 728px because that fits the widest ad size */
     --overflow-max-width: 892px;  /* Whatever is comfortable for wide screen viewing. */
     --ad-height: 0px;
+    /* Most common ad sizes globally:
+    300x250 (Medium Rectangle) - 40%
+    728x90 (Leaderboard) - 25%
+    320x50 (Mobile Leaderboard) - 12%
+    160x600 (Wide Skyscraper) - 12%
+    300x600 (Half Page) - 5%
+    Everything else represents only 6% of ads, and we ignore them.
+    */
 
     /* Markdown Styling */
     --blockquote-border-color: #00000044;
@@ -101,6 +110,7 @@ body {
     font-family: 'ComicFont', 'Arial', sans-serif;
     padding: 0;
     margin: 0;
+    min-width: var(--comic-min-width);
     background: var(--overflow-background);
     display: flex;
     justify-content: center;
@@ -113,14 +123,15 @@ body {
     flex-direction: column;
     align-items: center;
     max-width: var(--overflow-max-width);
+    min-width: var(--comic-min-width);
     width: 100%;
-    box-sizing: border-box;
     box-shadow: 0 0 10px #00000088;
 }
 .content {
     display: inline-block;
     width: 100%;
     max-width: var(--comic-max-width);
+    min-width: var(--comic-min-width);
     overflow: hidden;
 }
 
@@ -134,11 +145,16 @@ body {
 }
 
 header {
-    padding: 0;
     margin: 0;
 }
 .header-image {
-    width: 100%;
+    width: 33%;
+    margin: var(--paragraph-padding);
+}
+.header-link {
+    color: white !important;
+    text-decoration: none;
+    margin: var(--paragraph-padding);
 }
 
 .cta-footer {
@@ -172,7 +188,9 @@ header {
 }
 footer {
     background-color: var(--footer-background-color);
+    max-width: var(--comic-max-width);
     width: 100%;
+    overflow: hidden;
     display: flex;
     justify-content: center;
     flex-direction: column;
@@ -199,6 +217,22 @@ footer a:active {
 }
 
 
+/* AD SIZES */
+#ad-banner {
+    width: 100%;
+    max-width: var(--comic-max-width);
+    overflow: hidden;
+    margin-bottom: calc(var(--paragraph-padding)*2);
+}
+.ad-mobile-leaderboard {
+    width: 320px;
+    height: 50px;
+    background-color: #ffffff88;
+    display: inline-block;
+    margin-bottom: calc(var(--paragraph-padding));
+}
+
+
 /* READER PAGE */
 #staff-text {
     display: none;
@@ -221,13 +255,6 @@ footer a:active {
 @keyframes spin {
     0% { transform: rotate(0deg); }
     100% { transform: rotate(360deg); }
-}
-
-#ad-banner {
-    width: 100%;
-    max-width: var(--comic-max-width);
-    overflow: hidden;
-    margin-bottom: calc(var(--paragraph-padding)*2);
 }
 
 .comic-image {

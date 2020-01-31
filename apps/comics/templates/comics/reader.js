@@ -53,6 +53,10 @@ var COMICS = function () {
         recalculateNavigationVisibility();
     }
 
+    function adjustDisplayForQuery(querySelector, newDisplay) {
+        document.querySelectorAll(querySelector).forEach(function (e) { e.style.display = newDisplay; });
+    }
+
     // Make the navigation buttons appear or disappear
     function recalculateNavigationVisibility() {
         // TODO: Do this with a CSS class
@@ -71,24 +75,17 @@ var COMICS = function () {
 
         // TODO: Change these into CSS class for "hidden"
         if (page.slug === page.last) {
-            document.getElementById("navigation-next").style.display = "none";
-            document.getElementById("navigation-last").style.display = "none";
+            adjustDisplayForQuery(".navigation-next, .navigation-last", "none");
         } else {
-            document.getElementById("navigation-next").style.display = "";
-            document.getElementById("navigation-last").style.display = "";
+            adjustDisplayForQuery(".navigation-next, .navigation-last", "");
         }
         if (page.slug === page.first) {
-            document.getElementById("navigation-previous").style.display = "none";
-            document.getElementById("navigation-first").style.display = "none";
+            adjustDisplayForQuery(".navigation-previous, .navigation-first", "none");
         } else {
-            document.getElementById("navigation-previous").style.display = "";
-            document.getElementById("navigation-first").style.display = "";
+            adjustDisplayForQuery(".navigation-previous, .navigation-first", "");
         }
 
-        document.getElementById("navigation-first").blur();
-        document.getElementById("navigation-previous").blur();
-        document.getElementById("navigation-next").blur();
-        document.getElementById("navigation-last").blur();
+        document.querySelectorAll(".navigation-first, .navigation-previous, .navigation-next, .navigation-last").forEach(function (e) { e.blur(); });
     }
 
     function imageLoaded() {
@@ -130,8 +127,8 @@ var COMICS = function () {
         loadDataIntoDOM(pageData);
 
         // If we're currently not able to see the top of the next page, scroll up to it
-        var imageElement = document.getElementById("comic-image");
-        imageElement.scrollIntoView({behavior: "smooth"});
+        var readerElement = document.getElementById("reader");
+        readerElement.scrollIntoView({behavior: "smooth"});
 
         // Tell Google Analytics that we successfully loaded the page
         if ("ga" in window && ga.getAll !== undefined) {
@@ -281,6 +278,9 @@ var COMICS = function () {
     }
 
     function refreshDiscourseComments() {
+        if (!DISCOURSE_URL) {
+            return;
+        }
         try {
             var url = new URL(document.location);
             window.DiscourseEmbed = {

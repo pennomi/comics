@@ -34,18 +34,21 @@ Sometimes we change this process and forget to update the readme. If it's not wo
   - [ ] Cycle the forum's IP address. The current one is banned in Russia for no reason.
   - [ ] Fonts need о̄ ñ
   - [ ] Revamp navigation between archive -> tag types -> tags and back.
-    - [ ] Fix archive needing an icon
+    - [ ] Fix "Archive" needing an icon
     - [ ] Fix "Pages" needing an icon
-    - [ ] Find a way to get pages to look beautiful, especially on mobile
-    - [ ] Add client-side filtering on tag type page, pages page.
-    - [ ] Add sorting by alphabetical, # appearances, first appearance?, etc.
-    - [ ] Add number of appearances
+    - [ ] Make the TagType group icons use the most common tag's icon.
+    - [x] Find a way to get pages to look beautiful, especially on mobile
+    - [x] Add client-side filtering on tag type page, pages page.
+    - [x] Add sorting by alphabetical, # appearances, first appearance?, etc.
+    - [x] Add number of appearances
+    - [ ] Add live number of results
 - [ ] Nice New Features
   - [x] Extended Markdown for tag links; update transcripts and wiki pages
     - [ ] Auto-migrate tags when they are renamed.
     - [x] One-time migration of transcripts
   - [x] Configurable 404 and 500 pages
     - [ ] Maybe add a nice "Return to Home Page" button
+  - [ ] Better Header
   - [ ] Landscape side-by-side navigation
   - [ ] Search functionality for archive (returns tags and pages)
   - [ ] Dedicated "Pages" archive section
