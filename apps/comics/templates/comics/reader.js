@@ -12,6 +12,11 @@ var COMICS = function () {
     var bodyTag = document.getElementsByTagName("body")[0];
     var DISCOURSE_URL = bodyTag.dataset.discourseUrl;
 
+    // Convenience function to set opacity on a query
+    function setOpacity(querySelector, newOpacity) {
+        document.querySelectorAll(querySelector).forEach(function (e) { e.style.opacity = newOpacity; });
+    }
+
     // Make the current comic's data appear in the page
     function loadDataIntoDOM(pageData) {
         // Browser State
@@ -41,8 +46,8 @@ var COMICS = function () {
         document.getElementById("comic-transcript").innerHTML = pageData.transcript;
         document.getElementById("comic-image").src = pageData.image;
         document.getElementById("comic-image").title = pageData.alt_text;
-        document.getElementById("comic-image").style.opacity = 0.5;
-        document.getElementById("comic-image-spinner").style.opacity = 1.0;
+        setOpacity("#comic-image", 0.5);
+        setOpacity("#comic-image-spinner", 1);
 
         if (sessionStorage.getItem("admin") === "true") {
             document.getElementById("staff-text").style.display = "block";
@@ -53,17 +58,13 @@ var COMICS = function () {
         recalculateNavigationVisibility();
     }
 
-    function adjustDisplayForQuery(querySelector, newDisplay) {
-        document.querySelectorAll(querySelector).forEach(function (e) { e.style.display = newDisplay; });
-    }
-
     // Make the navigation buttons appear or disappear
     function recalculateNavigationVisibility() {
         // TODO: Do this with a CSS class
         if (NUM_ACTIVE_REQUESTS > 0) {
-            document.getElementsByClassName("comic-navigation")[0].style.opacity = 0.5;
+            setOpacity(".comic-navigation", 0.5);
         } else {
-            document.getElementsByClassName("comic-navigation")[0].style.opacity = 1.0;
+            setOpacity(".comic-navigation", 1);
         }
 
         var page = getActivePageData()
@@ -75,22 +76,22 @@ var COMICS = function () {
 
         // TODO: Change these into CSS class for "hidden"
         if (page.slug === page.last) {
-            adjustDisplayForQuery(".navigation-next, .navigation-last", "none");
+            setOpacity(".navigation-next, .navigation-last", 0);
         } else {
-            adjustDisplayForQuery(".navigation-next, .navigation-last", "");
+            setOpacity(".navigation-next, .navigation-last", 1);
         }
         if (page.slug === page.first) {
-            adjustDisplayForQuery(".navigation-previous, .navigation-first", "none");
+            setOpacity(".navigation-previous, .navigation-first", 0);
         } else {
-            adjustDisplayForQuery(".navigation-previous, .navigation-first", "");
+            setOpacity(".navigation-previous, .navigation-first", 1);
         }
 
         document.querySelectorAll(".navigation-first, .navigation-previous, .navigation-next, .navigation-last").forEach(function (e) { e.blur(); });
     }
 
     function imageLoaded() {
-        document.getElementById("comic-image").style.opacity = 1.0;
-        document.getElementById("comic-image-spinner").style.opacity = 0.0;
+        setOpacity("#comic-image", 1);
+        setOpacity("#comic-image-spinner", 0);
     }
 
     function getActivePageData() {
@@ -316,8 +317,6 @@ var COMICS = function () {
         return {"pageSlug": split[2]};
     }
 
-    // TODO: handle routing like this instead. This captures only back/forward navigation, so we need to also capture
-    // pushstate
     window.onpopstate = function(event) {
         navigateToPage(getComicAndPageFromActiveUrl().pageSlug, false);
     };

@@ -30,6 +30,7 @@
     --comic-max-width: 728px;  /* 728px because that fits the widest ad size */
     --comic-min-width: 320px;  /* 728px because that fits the widest ad size */
     --overflow-max-width: 892px;  /* Whatever is comfortable for wide screen viewing. */
+    --spinner-size: 120px;
     --ad-height: 0px;
     /* Most common ad sizes globally:
     300x250 (Medium Rectangle) - 40%
@@ -104,6 +105,8 @@ select option {
 html {
     height: 100%;
     overflow-x: hidden;
+    -webkit-tap-highlight-color: transparent;
+
 }
 body {
     overflow-x: hidden;
@@ -234,37 +237,34 @@ footer a:active {
 
 
 /* READER PAGE */
+#reader {
+    position: relative;
+}
 #staff-text {
     display: none;
 }
-
 #comic-image-spinner {
     position: absolute;
-    top: calc(50% - 120px);
-    left: calc(50% - 120px / 2);
-    width: 120px;
-    max-width: 100%;
-    height: 120px;
-    animation: spin 2s linear infinite;
+    top: calc(50% - var(--spinner-size) / 2);
+    left: calc(50% - var(--spinner-size) / 2);
+    width: var(--spinner-size);
+    height: var(--spinner-size);
     background-image: var(--spinner-image);
-    background-repeat: no-repeat;
     background-size: contain;
     transition: opacity 0.1s ease-out;
-    opacity: 0;
+    animation: spin 2s linear infinite;
 }
 @keyframes spin {
     0% { transform: rotate(0deg); }
     100% { transform: rotate(360deg); }
 }
-
 .comic-image {
     width: 100%;
     height: auto;
     transition: opacity 0.5s ease-out
 }
-
 #comic-post-date {
-    margin-bottom: 16px;
+    margin-bottom: calc(var(--paragraph-padding) * 2);
     font-size: 12px;
 }
 
@@ -273,38 +273,18 @@ footer a:active {
 .comic-navigation {
     display: flex;
     flex-direction: row;
-    flex-wrap: wrap;
     justify-content: center;
     width: 100%;
     transition: opacity 0.5s ease-out
 }
-.nav-box{
-	position: relative;
-	width: 20%;		/* desired width */
-}
-.nav-box:before{
-	content: "";
-	display: block;
-	padding-top: 100%; 	/* initial ratio of 1:1*/
-}
-
-
-/* NAVIGATION BUTTONS */
 .navigation-button {
-    position: absolute;
-    top: 0; bottom: 0;
-    width: 100%;
-    border: none;
-    outline: none;
+    height: min( calc(100vw / 5), calc(var(--comic-max-width) / 5) );
+    width: min( calc(100vw / 5), calc(var(--comic-max-width) / 5) );
     background: var(--navigation-spritesheet);
     background-repeat: no-repeat;
     background-size : 500% 200%;
-    cursor: pointer;
 }
-.navigation-button:active {
-   background-position-y: 100%;
-}
-.navigation-button:focus {
+.navigation-button:active, .navigation-button:focus {
    background-position-y: 100%;
 }
 @media (pointer:fine) {
