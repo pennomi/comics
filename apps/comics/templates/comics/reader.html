@@ -1,14 +1,14 @@
 {% extends 'comics/base.html' %}
 
 {% block page_title %} | {{ page.title }}{% endblock %}
-{% block page_description %}{{ page.transcript }}{% endblock %}
+{% block page_description %}{{ page.transcript_txt|truncatechars:160 }}{% endblock %}
 
 {% block social_media_tags %}
     <meta property="og:title" content="{{ page.title }}" />
     <meta property="og:type" content="article" />
     <meta property="og:url" content="{{ request.scheme }}://{{request.get_host}}{{ page.get_absolute_url }}" />
     <meta property="og:image" content="{{ request.scheme }}://{{request.get_host}}{{ page.image.url }}" />
-    <meta property="og:description" content="{{ page.transcript }}" />
+    <meta property="og:description" content="{{ page.transcript_txt }}" />
     <meta property="og:site_name" content="{{ comic.title }} | A webcomic by {{ comic.author }}" />
 {% endblock %}
 
@@ -35,7 +35,7 @@
         "position": "{{ page.ordering }}",
         "datePublished": "{{ page.posted_at|date:'Y-m-d' }}",
         "image": "{{ request.scheme }}://{{ request.get_host }}{{ page.image.url }}",
-        "text": "{{ page.transcript }}"
+        "text": "{{ page.transcript_txt }}"
       },
       "author": {
         "@type": "Person",
@@ -45,69 +45,72 @@
     </script>
     {% endif %}
 
-    <div id="reader">
-        <div class="comic-navigation">
-            <a href="{% url 'reader' nav.first.slug %}" class="navigation-button navigation-first" onclick="COMICS.firstButtonPressed(); return false;"></a>
-            <a href="{%if nav.previous %}{% url 'reader' nav.previous.slug %}{% endif %}" class="navigation-button navigation-previous" onclick="COMICS.previousButtonPressed(); return false;"></a>
-            <a href="{%if nav.next %}{% url 'reader' nav.next.slug %}{% endif %}" class="navigation-button navigation-next" onclick="COMICS.nextButtonPressed(); return false;"></a>
-            <a href="{% url 'reader' nav.last.slug %}" class="navigation-button navigation-last" onclick="COMICS.lastButtonPressed(); return false;"></a>
+    <div id="reader-panel" class="panel">
+        <div class="navigation-wrapper">
+                <a href="{% url 'reader' nav.first.slug %}" class="navigation-button navigation-first" onclick="COMICS.firstButtonPressed(); return false;"></a>
+                <a href="{%if nav.previous %}{% url 'reader' nav.previous.slug %}{% endif %}" class="navigation-button navigation-previous" onclick="COMICS.previousButtonPressed(); return false;"></a>
+                <a href="{%if nav.next %}{% url 'reader' nav.next.slug %}{% endif %}" class="navigation-button navigation-next" onclick="COMICS.nextButtonPressed(); return false;"></a>
+                <a href="{% url 'reader' nav.last.slug %}" class="navigation-button navigation-last" onclick="COMICS.lastButtonPressed(); return false;"></a>
         </div>
 
         <img id="comic-image" class="comic-image" src="{{ page.image.url }}" title="{{ page.alt_text }}" onload="COMICS.imageLoaded();"/>
 
-        <div class="comic-navigation">
-            <a href="{% url 'reader' nav.first.slug %}" class="navigation-button navigation-first" onclick="COMICS.firstButtonPressed(); return false;"></a>
-            <a href="{%if nav.previous %}{% url 'reader' nav.previous.slug %}{% endif %}" class="navigation-button navigation-previous" onclick="COMICS.previousButtonPressed(); return false;"></a>
-            <a href="{%if nav.next %}{% url 'reader' nav.next.slug %}{% endif %}" class="navigation-button navigation-next" onclick="COMICS.nextButtonPressed(); return false;"></a>
-            <a href="{% url 'reader' nav.last.slug %}" class="navigation-button navigation-last" onclick="COMICS.lastButtonPressed(); return false;"></a>
+        <div class="navigation-wrapper">
+                <a href="{% url 'reader' nav.first.slug %}" class="navigation-button navigation-first" onclick="COMICS.firstButtonPressed(); return false;"></a>
+                <a href="{%if nav.previous %}{% url 'reader' nav.previous.slug %}{% endif %}" class="navigation-button navigation-previous" onclick="COMICS.previousButtonPressed(); return false;"></a>
+                <a href="{%if nav.next %}{% url 'reader' nav.next.slug %}{% endif %}" class="navigation-button navigation-next" onclick="COMICS.nextButtonPressed(); return false;"></a>
+                <a href="{% url 'reader' nav.last.slug %}" class="navigation-button navigation-last" onclick="COMICS.lastButtonPressed(); return false;"></a>
         </div>
 
         <div id="comic-image-spinner"></div>
-    </div>
 
-    <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
-    <div id="ad-banner">
-        <ins class="adsbygoogle"
-          style="display:block"
-          data-ad-client="ca-{{ comic.adsense_publisher_account }}"
-          data-ad-slot="{{ comic.adsense_ad_slot }}"
-          data-ad-format="auto"
-          data-full-width-responsive="true"></ins>
-        <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
-    </div>
-
-    <div class="content-frame">
-        <h1 id="comic-title">{{ page.title }}</h1>
-        <div id="comic-post-date">{{ page.posted_at|date }}</div>
-
-        <p id="staff-text">Since you're staff, you can <a id="staff-link" href="">EDIT</a> this comic!</p>
-
-        <div id="comic-tags">
-            <!-- If you edit this, you also need to update the templates in the reader.js -->
-            {% regroup page.tags.all by type as tag_groups %}
-            {% for group in tag_groups %}
-                <p>{{group.grouper.title}}:
-                    {% for tag in group.list %}
-                    <a class="tag" style="background-image: url({{ tag.icon_url }});" href="{% url 'archive-tag' tag.type.title tag.title %}">{{ tag.title }}</a>
-                    {% endfor %}
-                </p>
-            {% endfor %}
-        </div>
-
-        <div id="comic-post">{{ page.post_html | safe }}</div>
-        <div class="comic-transcript-content">
-            <h2>Transcript</h2>
-            <div id="comic-transcript">{{ page.transcript_html | safe }}</div>
+        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+        <div id="ad-banner">
+            <ins class="adsbygoogle"
+              style="display:block"
+              data-ad-client="ca-{{ comic.adsense_publisher_account }}"
+              data-ad-slot="{{ comic.adsense_ad_slot }}"
+              data-ad-format="auto"
+              data-full-width-responsive="true"></ins>
+            <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
         </div>
     </div>
 
-    <div class="content-frame">
-        <div id='discourse-comments'></div>
+    <div class="panel">
+        <div class="content-frame">
+            <h1 id="comic-title">{{ page.title }}</h1>
+            <div id="comic-post-date">{{ page.posted_at|date }}</div>
+
+            <p id="staff-text">Since you're staff, you can <a id="staff-link" href="">EDIT</a> this comic!</p>
+
+            <div id="comic-tags">
+                <!-- If you edit this, you also need to update the templates in the reader.js -->
+                {% regroup page.tags.all by type as tag_groups %}
+                {% for group in tag_groups %}
+                    <p>{{group.grouper.title}}:
+                        {% for tag in group.list %}
+                        <a class="tag" style="background-image: url({{ tag.icon_url }});" href="{% url 'archive-tag' tag.type.title tag.title %}">{{ tag.title }}</a>
+                        {% endfor %}
+                    </p>
+                {% endfor %}
+            </div>
+
+            <div id="comic-post">{{ page.post_html | safe }}</div>
+            <div class="comic-transcript-content">
+                <h2>Transcript</h2>
+                <div id="comic-transcript">{{ page.transcript_html | safe }}</div>
+            </div>
+        </div>
+
+        <div class="content-frame">
+            <div id='discourse-comments'></div>
+        </div>
+
+        {% if ad %}
+        <div class="invitation">
+            <a target="_blank" href="{{ ad.url }}"><img src="{{ ad.image.url }}"/></a>
+        </div>
+        {% endif %}
     </div>
 
-    {% if ad %}
-    <div class="invitation">
-        <a target="_blank" href="{{ ad.url }}"><img src="{{ ad.image.url }}"/></a>
-    </div>
-    {% endif %}
 {% endblock %}

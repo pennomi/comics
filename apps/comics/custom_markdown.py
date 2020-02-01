@@ -60,4 +60,16 @@ MARKDOWN_ENGINE = BetterMarkdown()
 
 
 def render(text) -> str:
+    """Render an HTML version of the text."""
     return MARKDOWN_ENGINE.convert(text)
+
+
+def render_txt(text) -> str:
+    """Render a plaintext version of the text. This is naive and should be made more robust, but it works for now."""
+    text = TAG_REFERENCE_RE.sub(r"[\2]", text)
+    text = text.replace("\r\n", "\n")
+    text = text.replace(">", "")
+    text = text.replace("*", "")
+    text = text.replace("\n ", "\n")
+    text = text.replace("\n\n", "\n")
+    return text

@@ -29,7 +29,7 @@
     /* Page sizing */
     --comic-max-width: 728px;  /* 728px because that fits the widest ad size */
     --comic-min-width: 320px;  /* 728px because that fits the widest ad size */
-    --overflow-max-width: 892px;  /* Whatever is comfortable for wide screen viewing. */
+    --overflow-extra-width: 82px;  /* Just a comfortable padding for wider screens. */
     --spinner-size: 120px;
     --ad-height: 0px;
     /* Most common ad sizes globally:
@@ -48,6 +48,51 @@
 
 
 /* RESET CSS AND GLOBAL STYLING */
+html, body, div, span, applet, object, iframe,
+h1, h2, h3, h4, h5, h6, p, blockquote, pre,
+a, abbr, acronym, address, big, cite, code,
+del, dfn, em, img, ins, kbd, q, s, samp,
+small, strike, strong, sub, sup, tt, var,
+b, u, i, center,
+dl, dt, dd, ol, ul, li,
+fieldset, form, label, legend,
+table, caption, tbody, tfoot, thead, tr, th, td,
+article, aside, canvas, details, embed,
+figure, figcaption, footer, header, hgroup,
+menu, nav, output, ruby, section, summary,
+time, mark, audio, video {
+    margin: 0;
+    padding: 0;
+    border: 0;
+    font-size: 100%;
+    font: inherit;
+    vertical-align: baseline;
+}
+article, aside, details, figcaption, figure,
+footer, header, hgroup, menu, nav, section {
+    display: block;
+}
+body {
+    line-height: 1;
+}
+ol, ul {
+    list-style: none;
+}
+blockquote, q {
+    quotes: none;
+}
+blockquote:before, blockquote:after,
+q:before, q:after {
+    content: '';
+    content: none;
+}
+table {
+    border-collapse: collapse;
+    border-spacing: 0;
+}
+
+
+/* GLOBAL STYLING */
 h1 { font-size: 28px; font-weight: bold; margin-bottom: var(--paragraph-padding); }
 h2 { font-size: 20px; font-weight: bold; margin-bottom: var(--paragraph-padding); }
 p { font-size: 14px; margin-bottom: var(--paragraph-padding); }
@@ -106,7 +151,6 @@ html {
     height: 100%;
     overflow-x: hidden;
     -webkit-tap-highlight-color: transparent;
-
 }
 body {
     overflow-x: hidden;
@@ -125,18 +169,43 @@ body {
     display: flex;
     flex-direction: column;
     align-items: center;
-    max-width: var(--overflow-max-width);
+    max-width: calc(var(--comic-max-width) + var(--overflow-extra-width) * 2);
     min-width: var(--comic-min-width);
     width: 100%;
     box-shadow: 0 0 10px #00000088;
 }
+@media (min-width: 728px) and (orientation:landscape) {
+    .content-background {
+        max-width: calc(var(--comic-max-width) * 2 + var(--overflow-extra-width) * 2);
+    }
+}
 .content {
-    display: inline-block;
     width: 100%;
     max-width: var(--comic-max-width);
     min-width: var(--comic-min-width);
     overflow: hidden;
+    display: flex;
+    flex-wrap: wrap;
 }
+@media (min-width: 728px) and (orientation:landscape) {
+    .content {
+        max-width: calc(var(--comic-max-width) * 2);
+    }
+}
+.panel {
+    position: relative;
+    max-width: var(--comic-max-width);
+    min-width: var(--comic-min-width);
+    width: 100%;
+}
+@media (min-width: 728px) and (orientation:landscape) {
+    .panel {
+        width: calc(50% - var(--paragraph-padding));
+        margin-left: calc(var(--paragraph-padding) / 2);
+        margin-right: calc(var(--paragraph-padding) / 2);
+    }
+}
+
 
 .content-frame {
     box-sizing: border-box;
@@ -145,10 +214,15 @@ body {
     border-image-slice: 20 fill;
     border-image-repeat: repeat;
     margin-bottom: calc(var(--paragraph-padding)*2);
+    width: 100%;
 }
 
 header {
-    margin: 0;
+    width: 100%;
+    max-width: var(--comic-max-width);
+    min-width: var(--comic-min-width);
+    overflow: hidden;
+    margin-bottom: calc(var(--paragraph-padding) * 2);
 }
 .header-image {
     width: 33%;
@@ -237,9 +311,6 @@ footer a:active {
 
 
 /* READER PAGE */
-#reader {
-    position: relative;
-}
 #staff-text {
     display: none;
 }
@@ -270,43 +341,44 @@ footer a:active {
 
 
 /* NAV BUTTONS */
-.comic-navigation {
-    display: flex;
-    flex-direction: row;
-    justify-content: center;
+.navigation-wrapper {
+    position: relative;
     width: 100%;
-    transition: opacity 0.5s ease-out
+    padding-top: 10%;
+    transition: opacity 0.5s ease-out;
 }
 .navigation-button {
-    height: min( calc(100vw / 5), calc(var(--comic-max-width) / 5) );
-    width: min( calc(100vw / 5), calc(var(--comic-max-width) / 5) );
+    position: absolute;
+    width: 20%;
+    top: 0;
+    bottom: 0;
     background: var(--navigation-spritesheet);
     background-repeat: no-repeat;
-    background-size : 500% 200%;
+    background-size : 400% 200%;
 }
-.navigation-button:active, .navigation-button:focus {
+.navigation-button:active {
    background-position-y: 100%;
 }
-@media (pointer:fine) {
+@media (pointer:fine) {  /* If we don't do this in a media query, it gets stuck hovered on touch devices */
     .navigation-button:hover {
        background-position-y: 100%;
     }
 }
-
 .navigation-first {
-   background-position-x: 0;
+    background-position-x: 0;
+    left: 10%;
 }
 .navigation-previous {
-   background-position-x: 25%;
+    background-position-x: 33.3%;
+    left: 30%;
 }
 .navigation-next {
-   background-position-x: 50%;
+    background-position-x: 66.6%;
+    left: 50%;
 }
 .navigation-last {
-       background-position-x: 75%;
-}
-.navigation-archive {
-   background-position-x: 100%;
+    background-position-x: 100%;
+    left: 70%;
 }
 
 

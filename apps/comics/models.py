@@ -208,6 +208,10 @@ class Page(models.Model):
     def transcript_html(self):
         return custom_markdown.render(self.transcript)
 
+    @property
+    def transcript_txt(self):
+        return custom_markdown.render_txt(self.transcript)
+
 
 class Chapter(models.Model):
     """

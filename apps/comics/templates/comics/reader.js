@@ -62,9 +62,9 @@ var COMICS = function () {
     function recalculateNavigationVisibility() {
         // TODO: Do this with a CSS class
         if (NUM_ACTIVE_REQUESTS > 0) {
-            setOpacity(".comic-navigation", 0.5);
+            setOpacity(".navigation-wrapper", 0.5);
         } else {
-            setOpacity(".comic-navigation", 1);
+            setOpacity(".navigation-wrapper", 1);
         }
 
         var page = getActivePageData()
@@ -128,7 +128,7 @@ var COMICS = function () {
         loadDataIntoDOM(pageData);
 
         // If we're currently not able to see the top of the next page, scroll up to it
-        var readerElement = document.getElementById("reader");
+        var readerElement = document.getElementById("reader-panel");
         readerElement.scrollIntoView({behavior: "smooth"});
 
         // Tell Google Analytics that we successfully loaded the page

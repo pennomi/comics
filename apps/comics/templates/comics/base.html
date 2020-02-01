@@ -19,7 +19,6 @@
     <meta name="keywords" content="webcomic,comic{% if comic.genre %},{{ comic.genre }}{% endif %}">
     <title>{% if comic %}{{ comic.title }}{% else %}Comics Platform{% endif %}{% block page_title %} | A webcomic by {{ comic.author }}{% endblock %}</title>
     <meta name="description" content="{% block page_description %}{{ comic.description }}{% endblock %}" />
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/meyer-reset/2.0/reset.min.css">
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.2.0/css/all.css" integrity="sha384-hWVjflwFxL6sNzntih27bfxkr27PmbbK/iSvJ+a4+0owXq79v+lsFkW54bOGbiDQ" crossorigin="anonymous">
 
     <style>
@@ -48,24 +47,23 @@
 <body data-discourse-url="{{ comic.discourse_url }}">
 
 <div class="content-background">
+    {% if comic.header_image %}
+    <header>
+        <div>
+            <a href="{% url 'reader-redirect' %}"><img class="header-image" src="{{ comic.header_image.url }}"/></a>
+            <div class="ad-mobile-leaderboard"></div>
+        </div>
+        <div>
+            <a class="header-link" href="{% url 'reader-redirect' %}">Comic</a>
+            <a class="header-link" href="{% url 'archive-index' %}">Archive</a>
+            <a class="header-link" href="{% url 'archive-index' %}">Shop</a>
+            <a class="header-link" href="{% url 'archive-index' %}">Games</a>
+            <a class="header-link" href="{% url 'archive-index' %}">Community</a>
+            <a class="header-link" href="{% url 'archive-index' %}">RSS</a>
+        </div>
+    </header>
+    {% endif %}
     <div class="content">
-        {% if comic.header_image %}
-        <header>
-            <div>
-                <a href="{% url 'reader-redirect' %}"><img class="header-image" src="{{ comic.header_image.url }}"/></a>
-                <div class="ad-mobile-leaderboard"></div>
-            </div>
-            <div>
-                <a class="header-link" href="{% url 'archive-index' %}">Comic</a>
-                <a class="header-link" href="{% url 'archive-index' %}">Archive</a>
-                <a class="header-link" href="{% url 'archive-index' %}">Shop</a>
-                <a class="header-link" href="{% url 'archive-index' %}">Games</a>
-                <a class="header-link" href="{% url 'archive-index' %}">Community</a>
-                <a class="header-link" href="{% url 'archive-index' %}">RSS</a>
-            </div>
-        </header>
-        {% endif %}
-
         {% block content %}{% endblock %}
     </div>
 
