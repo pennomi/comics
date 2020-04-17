@@ -13,6 +13,11 @@
     --tag-background-color: #B0BEC5;
     --tag-text-color: #212121;
 
+    /* Tab Colors */
+    --tab-inactive-color: #B0BEC5;
+    --tab-active-color: #EFEFEF;
+    --tab-text-color: #212121;
+
     /* Images */
     --spinner-image: url({% static "comics/default-spinner.png" %});
     --navigation-spritesheet: url({% static "comics/default-sprites.png" %});
@@ -32,13 +37,14 @@
     --overflow-extra-width: 82px;  /* Just a comfortable padding for wider screens. */
     --spinner-size: 120px;
     --ad-height: 0px;
+    --navigation-height: 48px;
     /* Most common ad sizes globally:
     300x250 (Medium Rectangle) - 40%
     728x90 (Leaderboard) - 25%
     320x50 (Mobile Leaderboard) - 12%
     160x600 (Wide Skyscraper) - 12%
     300x600 (Half Page) - 5%
-    Everything else represents only 6% of ads, and we ignore them.
+    Everything else together represents only 6% of ads, and we ignore them.
     */
 
     /* Markdown Styling */
@@ -338,13 +344,34 @@ footer a:active {
     margin-bottom: calc(var(--paragraph-padding) * 2);
     font-size: 12px;
 }
+.tab-group {
+    display: flex;
+    margin-left: 6px;
+    height: var(--navigation-height);
+    align-items: flex-end;
+}
+.tab {
+    background-color: var(--tab-inactive-color);
+    height: 16px;
+    padding: 6px 12px;
+    margin-left: 3px;
+    margin-right: 3px;
+    margin-bottom: -7px;
+    z-index: 1;
+    border: 3px solid black;
+    border-bottom: 4px solid var(--tab-inactive-color);
+}
+.tab.active {
+    background-color: var(--tab-active-color);
+    border-bottom: 4px solid var(--tab-active-color);
+}
 
 
 /* NAV BUTTONS */
 .navigation-wrapper {
     position: relative;
     width: 100%;
-    padding-top: 10%;
+    height: var(--navigation-height);
     transition: opacity 0.5s ease-out;
 }
 .navigation-button {

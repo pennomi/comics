@@ -49,7 +49,8 @@ var COMICS = function () {
         setOpacity("#comic-image", 0.5);
         setOpacity("#comic-image-spinner", 1);
 
-        if (sessionStorage.getItem("admin") === "true") {
+        if (localStorage.getItem("admin") === "true") {
+            // TODO: instead of showing/hiding this, inject it
             document.getElementById("staff-text").style.display = "block";
             document.getElementById("staff-link").href = pageData.admin;
         }

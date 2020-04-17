@@ -47,19 +47,19 @@
 
     <div id="reader-panel" class="panel">
         <div class="navigation-wrapper">
-                <a href="{% url 'reader' nav.first.slug %}" class="navigation-button navigation-first" onclick="COMICS.firstButtonPressed(); return false;"></a>
-                <a href="{%if nav.previous %}{% url 'reader' nav.previous.slug %}{% endif %}" class="navigation-button navigation-previous" onclick="COMICS.previousButtonPressed(); return false;"></a>
-                <a href="{%if nav.next %}{% url 'reader' nav.next.slug %}{% endif %}" class="navigation-button navigation-next" onclick="COMICS.nextButtonPressed(); return false;"></a>
-                <a href="{% url 'reader' nav.last.slug %}" class="navigation-button navigation-last" onclick="COMICS.lastButtonPressed(); return false;"></a>
+            <a href="{% url 'reader' nav.first.slug %}" class="navigation-button navigation-first" onclick="COMICS.firstButtonPressed(); return false;"></a>
+            <a href="{%if nav.previous %}{% url 'reader' nav.previous.slug %}{% endif %}" class="navigation-button navigation-previous" onclick="COMICS.previousButtonPressed(); return false;"></a>
+            <a href="{%if nav.next %}{% url 'reader' nav.next.slug %}{% endif %}" class="navigation-button navigation-next" onclick="COMICS.nextButtonPressed(); return false;"></a>
+            <a href="{% url 'reader' nav.last.slug %}" class="navigation-button navigation-last" onclick="COMICS.lastButtonPressed(); return false;"></a>
         </div>
 
         <img id="comic-image" class="comic-image" src="{{ page.image.url }}" title="{{ page.alt_text }}" onload="COMICS.imageLoaded();"/>
 
         <div class="navigation-wrapper">
-                <a href="{% url 'reader' nav.first.slug %}" class="navigation-button navigation-first" onclick="COMICS.firstButtonPressed(); return false;"></a>
-                <a href="{%if nav.previous %}{% url 'reader' nav.previous.slug %}{% endif %}" class="navigation-button navigation-previous" onclick="COMICS.previousButtonPressed(); return false;"></a>
-                <a href="{%if nav.next %}{% url 'reader' nav.next.slug %}{% endif %}" class="navigation-button navigation-next" onclick="COMICS.nextButtonPressed(); return false;"></a>
-                <a href="{% url 'reader' nav.last.slug %}" class="navigation-button navigation-last" onclick="COMICS.lastButtonPressed(); return false;"></a>
+            <a href="{% url 'reader' nav.first.slug %}" class="navigation-button navigation-first" onclick="COMICS.firstButtonPressed(); return false;"></a>
+            <a href="{%if nav.previous %}{% url 'reader' nav.previous.slug %}{% endif %}" class="navigation-button navigation-previous" onclick="COMICS.previousButtonPressed(); return false;"></a>
+            <a href="{%if nav.next %}{% url 'reader' nav.next.slug %}{% endif %}" class="navigation-button navigation-next" onclick="COMICS.nextButtonPressed(); return false;"></a>
+            <a href="{% url 'reader' nav.last.slug %}" class="navigation-button navigation-last" onclick="COMICS.lastButtonPressed(); return false;"></a>
         </div>
 
         <div id="comic-image-spinner"></div>
@@ -77,6 +77,11 @@
     </div>
 
     <div class="panel">
+        <div class="tab-group">
+            <div class="tab active">Info</div>
+            <div class="tab">Comments</div>
+            <div class="tab">Quests</div>
+        </div>
         <div class="content-frame">
             <h1 id="comic-title">{{ page.title }}</h1>
             <div id="comic-post-date">{{ page.posted_at|date }}</div>

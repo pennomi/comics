@@ -83,6 +83,9 @@ class CssPropertyChoices(models.TextChoices):
     footer_background_color = 'footer-background-color'
     tag_background_color = 'tag-background-color'
     tag_text_color = 'tag-text-color'
+    tab_inactive_color = 'tab-inactive-color'
+    tab_active_color = 'tab-active-color'
+    tab_text_color = 'tab-text-color'
 
     spinner_image = 'spinner-image'
     navigation_spritesheet = 'navigation-spritesheet'
