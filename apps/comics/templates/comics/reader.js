@@ -101,6 +101,10 @@ var COMICS = function () {
 
     // Kickstart the page load
     function initializePage() {
+        // Bind the tab functionality
+        initializeTabs();
+
+        // Load the page data
         requestPageData(getComicAndPageFromActiveUrl().pageSlug, function (response) {
             navigateToPage(response.slug, false);
         });
@@ -316,6 +320,29 @@ var COMICS = function () {
         var url = new URL(document.location).pathname;
         var split = url.split('/');
         return {"pageSlug": split[2]};
+    }
+
+    function initializeTabs() {
+        document.querySelectorAll('.tab').forEach(function (element) {
+            element.addEventListener('click', handleTabClick);
+        });
+    }
+
+    function handleTabClick(event) {
+        var tabElement = event.target;
+
+        document.querySelectorAll('.tab').forEach(function(element) {
+            element.classList.remove("active");
+        });
+        tabElement.classList.add("active");
+
+        document.querySelectorAll('.tab-content-area').forEach(function(element) {
+            if (element.id === tabElement.dataset.target) {
+                element.style.display = "block";
+            } else {
+                element.style.display = "none";
+            }
+        });
     }
 
     window.onpopstate = function(event) {

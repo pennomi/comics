@@ -211,6 +211,9 @@ body {
     }
 }
 
+.hidden {
+    display: none;
+}
 
 .content-frame {
     box-sizing: border-box;

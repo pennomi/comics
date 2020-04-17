@@ -78,37 +78,41 @@
 
     <div class="panel">
         <div class="tab-group">
-            <div class="tab active">Info</div>
-            <div class="tab">Comments</div>
-            <div class="tab">Quests</div>
+            <div class="tab active" data-target="info-frame">Info</div>
+            <div class="tab" data-target="comments-frame">Comments</div>
+            <div class="tab" data-target="quests-frame">Quests</div>
         </div>
         <div class="content-frame">
-            <h1 id="comic-title">{{ page.title }}</h1>
-            <div id="comic-post-date">{{ page.posted_at|date }}</div>
+            <div class="tab-content-area" id="info-frame">
+                <h1 id="comic-title">{{ page.title }}</h1>
+                <div id="comic-post-date">{{ page.posted_at|date }}</div>
 
-            <p id="staff-text">Since you're staff, you can <a id="staff-link" href="">EDIT</a> this comic!</p>
+                <p id="staff-text">Since you're staff, you can <a id="staff-link" href="">EDIT</a> this comic!</p>
 
-            <div id="comic-tags">
-                <!-- If you edit this, you also need to update the templates in the reader.js -->
-                {% regroup page.tags.all by type as tag_groups %}
-                {% for group in tag_groups %}
-                    <p>{{group.grouper.title}}:
-                        {% for tag in group.list %}
-                        <a class="tag" style="background-image: url({{ tag.icon_url }});" href="{% url 'archive-tag' tag.type.title tag.title %}">{{ tag.title }}</a>
-                        {% endfor %}
-                    </p>
-                {% endfor %}
+                <div id="comic-tags">
+                    <!-- If you edit this, you also need to update the templates in the reader.js -->
+                    {% regroup page.tags.all by type as tag_groups %}
+                    {% for group in tag_groups %}
+                        <p>{{group.grouper.title}}:
+                            {% for tag in group.list %}
+                            <a class="tag" style="background-image: url({{ tag.icon_url }});" href="{% url 'archive-tag' tag.type.title tag.title %}">{{ tag.title }}</a>
+                            {% endfor %}
+                        </p>
+                    {% endfor %}
+                </div>
+
+                <div id="comic-post">{{ page.post_html | safe }}</div>
+                <div class="comic-transcript-content">
+                    <h2>Transcript</h2>
+                    <div id="comic-transcript">{{ page.transcript_html | safe }}</div>
+                </div>
             </div>
-
-            <div id="comic-post">{{ page.post_html | safe }}</div>
-            <div class="comic-transcript-content">
-                <h2>Transcript</h2>
-                <div id="comic-transcript">{{ page.transcript_html | safe }}</div>
+            <div class="tab-content-area" id="comments-frame">
+                <div id='discourse-comments'></div>
             </div>
-        </div>
-
-        <div class="content-frame">
-            <div id='discourse-comments'></div>
+            <div class="tab-content-area" id="quests-frame">
+                <h1>Quests</h1>
+            </div>
         </div>
 
         {% if ad %}
