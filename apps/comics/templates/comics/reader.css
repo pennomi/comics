@@ -36,7 +36,6 @@
     --comic-min-width: 320px;  /* 728px because that fits the widest ad size */
     --overflow-extra-width: 82px;  /* Just a comfortable padding for wider screens. */
     --spinner-size: 120px;
-    --ad-height: 0px;
     --navigation-height: 48px;
     /* Most common ad sizes globally:
     300x250 (Medium Rectangle) - 40%
@@ -229,6 +228,7 @@ header {
     min-width: var(--comic-min-width);
     overflow: hidden;
     margin-bottom: calc(var(--paragraph-padding) * 2);
+    user-select: none;
 }
 .header-image {
     width: 33%;
@@ -238,16 +238,6 @@ header {
     color: white !important;
     text-decoration: none;
     margin: var(--paragraph-padding);
-}
-
-.cta-footer {
-    margin-top: calc(100vh - var(--ad-height));
-    width: 100%;
-    max-width: var(--comic-max-width);
-    height: var(--ad-height);
-    max-height: var(--ad-height);
-    position: fixed;
-    background-color: #cccccc;
 }
 
 
@@ -271,7 +261,6 @@ header {
 }
 footer {
     background-color: var(--footer-background-color);
-    max-width: var(--comic-max-width);
     width: 100%;
     overflow: hidden;
     display: flex;
@@ -284,7 +273,11 @@ footer {
 }
 .footer-content {
     padding: 8px;
+    padding-top: calc(var(--paragraph-padding) * 2);
     box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
 }
 .footer-subsection {
     padding: 8px;
@@ -319,6 +312,9 @@ footer a:active {
 /* READER PAGE */
 #staff-text {
     display: none;
+}
+#reader-panel {
+    user-select: none;
 }
 #comic-image-spinner {
     position: absolute;
@@ -360,6 +356,7 @@ footer a:active {
     z-index: 1;
     border: 3px solid black;
     border-bottom: 4px solid var(--tab-inactive-color);
+    user-select: none;
 }
 .tab.active {
     background-color: var(--tab-active-color);
