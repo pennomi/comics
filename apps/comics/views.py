@@ -181,6 +181,17 @@ class ArchiveView(TemplateView):
 
 
 @require_comic
+class CommunityView(TemplateView):
+    template_name = "comics/community.html"
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        comic = self.request.comic
+        context['comic'] = comic
+        return context
+
+
+@require_comic
 class PageListView(TemplateView):
     template_name = "comics/archive/pages.html"
 

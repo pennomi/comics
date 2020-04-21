@@ -59,10 +59,8 @@
         <div class="header-link-container">
             <a class="header-link" href="{% url 'reader-redirect' %}">Comic</a>
             <a class="header-link" href="{% url 'archive-index' %}">Archive</a>
-            <a class="header-link" href="{% url 'archive-index' %}">Shop</a>
-            <a class="header-link" href="{% url 'archive-index' %}">Games</a>
-            <a class="header-link" href="{% url 'archive-index' %}">Community</a>
-            <a class="header-link" href="{% url 'archive-index' %}">RSS</a>
+            <a class="header-link" href="{% url 'community' %}">Community</a>
+            <a class="header-link" href="{% url 'feed' %}">RSS</a>
         </div>
     </header>
     {% endif %}
@@ -71,31 +69,6 @@
     </div>
 
     <footer>
-        {% if comic %}
-        <div class="content footer-content">
-            <p>Can't get enough {{ comic.title }}? Visit us on your favorite platform!</p>
-            <div class="social-container">
-                {% if comic.patreon_link %}
-                <a href="{{ comic.patreon_link }}"><div class="social-icon"><i class="fab fa-patreon"></i></div></a>
-                {% endif %}
-                {% if comic.discord_link %}
-                <a href="{{ comic.discord_link }}"><div class="social-icon"><i class="fab fa-discord"></i></div></a>
-                {% endif %}
-                {% if comic.reddit_link %}
-                <a href="{{ comic.reddit_link }}"><div class="social-icon"><i class="fab fa-reddit-alien"></i></div></a>
-                {% endif %}
-                {% if comic.twitter_link %}
-                <a href="{{ comic.twitter_link }}"><div class="social-icon"><i class="fab fa-twitter"></i></div></a>
-                {% endif %}
-                {% if comic.instagram_link %}
-                <a href="{{ comic.instagram_link }}"><div class="social-icon"><i class="fab fa-instagram"></i></div></a>
-                {% endif %}
-                {% if comic %}
-                <a href="{% url 'feed' %}"><div class="social-icon"><i class="fas fa-rss"></i></div></a>
-                {% endif %}
-            </div>
-        </div>
-        {% endif %}
         <div class="footer-subsection">
             {% if comic %}
             <p>{{ comic.title }} © 2018-2020 {{ comic.author }}</p>
