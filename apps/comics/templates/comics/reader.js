@@ -324,20 +324,34 @@ var COMICS = function () {
 
     function initializeTabs() {
         document.querySelectorAll('.tab').forEach(function (element) {
-            element.addEventListener('click', handleTabClick);
+            element.addEventListener('click', function (event) {
+                var target = event.target.dataset.target;
+                activateTab(target);
+            });
         });
+
+        var activeTab = localStorage.getItem("comics.activeTab");
+        if (activeTab === null || !["info-frame", "comments-frame", "quests-frame"].includes(activeTab)) {
+            activeTab = "info-frame";
+        }
+        activateTab(activeTab);
     }
 
-    function handleTabClick(event) {
-        var tabElement = event.target;
+    function activateTab(target) {
+        localStorage.setItem("comics.activeTab", target);
 
+        // Set tab styling
         document.querySelectorAll('.tab').forEach(function(element) {
-            element.classList.remove("active");
+            if (element.dataset.target == target) {
+                element.classList.add("active");
+            } else {
+                element.classList.remove("active");
+            }
         });
-        tabElement.classList.add("active");
 
+        // Set content styling
         document.querySelectorAll('.tab-content-area').forEach(function(element) {
-            if (element.id === tabElement.dataset.target) {
+            if (element.id === target) {
                 element.style.display = "block";
             } else {
                 element.style.display = "none";

@@ -36,7 +36,7 @@
     --comic-min-width: 320px;  /* 728px because that fits the widest ad size */
     --overflow-extra-width: 82px;  /* Just a comfortable padding for wider screens. */
     --spinner-size: 120px;
-    --navigation-height: 48px;
+    --navigation-height: 64px;
     /* Most common ad sizes globally:
     300x250 (Medium Rectangle) - 40%
     728x90 (Leaderboard) - 25%
@@ -369,20 +369,35 @@ footer a:active {
 
 /* NAV BUTTONS */
 .navigation-wrapper {
-    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
     width: 100%;
     height: var(--navigation-height);
     transition: opacity 0.5s ease-out;
 }
 .navigation-button {
-    position: absolute;
-    width: 20%;
-    top: 0;
-    bottom: 0;
+    height: var(--navigation-height);
+    width: calc(var(--navigation-height) * 2);
+    max-width: calc(var(--navigation-height) * 2);
     background: var(--navigation-spritesheet);
     background-repeat: no-repeat;
     background-size : 400% 200%;
 }
+
+/* Shrink the button size on very small screens. */
+/* This needs to be anything smaller than calc(--navigation-height * 8), but can't do that in media queries */
+@media (max-width: 512px) {
+    .navigation-wrapper {
+        height: calc(var(--navigation-height) / 1.5);
+    }
+    .navigation-button {
+        height: calc(var(--navigation-height) / 1.5);
+        width: var(--navigation-height * 2 / 1.5);
+        max-width: var(--navigation-height * 2 / 1.5);
+    }
+}
+
 .navigation-button:active {
    background-position-y: 100%;
 }
