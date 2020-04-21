@@ -237,7 +237,12 @@ header {
     width: 33%;
     margin: var(--paragraph-padding);
 }
+.header-link-container {
+    display: flex;
+    flex-wrap: wrap;
+}
 .header-link {
+    display: block;
     color: white !important;
     text-decoration: none;
     margin: var(--paragraph-padding);
@@ -360,6 +365,7 @@ footer a:active {
     border: 3px solid black;
     border-bottom: 4px solid var(--tab-inactive-color);
     user-select: none;
+    cursor: pointer;
 }
 .tab.active {
     background-color: var(--tab-active-color);
@@ -393,8 +399,8 @@ footer a:active {
     }
     .navigation-button {
         height: calc(var(--navigation-height) / 1.5);
-        width: var(--navigation-height * 2 / 1.5);
-        max-width: var(--navigation-height * 2 / 1.5);
+        width: calc(var(--navigation-height) * 2 / 1.5);
+        max-width: calc(var(--navigation-height) * 2 / 1.5);
     }
 }
 
