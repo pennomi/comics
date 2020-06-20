@@ -103,17 +103,16 @@ const COMICS = function () {
     }
 
     // Kickstart the page load
-    function initializePage() {
+    async function initializePage() {
         // Bind the tab functionality
         initializeTabs();
 
         // Load the page data
-        requestPageData(getComicAndPageFromActiveUrl().pageSlug, function (response) {
-            navigateToPage(response.slug, false);
-        });
+        const response = await requestPageData(getComicAndPageFromActiveUrl().pageSlug);
+        await navigateToPage(response.slug, false);
     }
 
-    function navigateToPage(pageSlug, pushState = true) {
+    async function navigateToPage(pageSlug, pushState = true) {
         const pageData = CACHE[pageSlug];
 
         // This should never happen, but it's protection
@@ -136,7 +135,7 @@ const COMICS = function () {
         loadDataIntoDOM(pageData);
 
         // If we're currently not able to see the top of the next page, scroll up to it
-        var readerElement = document.getElementById("reader-panel");
+        const readerElement = document.getElementById("reader-panel");
         readerElement.scrollIntoView({behavior: "smooth"});
 
         // Tell Google Analytics that we successfully loaded the page
@@ -155,10 +154,12 @@ const COMICS = function () {
         refreshDiscourseComments();
 
         // Cache all the pages we can navigate to from this page
-        requestPageData(pageData.first);
-        requestPageData(pageData.previous);
-        requestPageData(pageData.next);
-        requestPageData(pageData.last);
+        await Promise.all([
+            requestPageData(pageData.first),
+            requestPageData(pageData.previous),
+            requestPageData(pageData.next),
+            requestPageData(pageData.last),
+        ])
     }
 
     // The next 4 functions perform the navigation.
@@ -183,20 +184,15 @@ const COMICS = function () {
     }
 
     // Make an AJAX request to get data
-    function requestPageData(pageSlug, callback) {
-        if (!callback) {
-            callback = function (response) {};
-        }
-
+    async function requestPageData(pageSlug) {
         // Don't try to get missing pages
         if (pageSlug === null) {
             return;
         }
 
         if (CACHE[pageSlug] !== undefined) {
-            callback(CACHE[pageSlug]);
             recalculateNavigationVisibility();
-            return;
+            return CACHE[pageSlug];
         }
 
         // Make the nav buttons go transparent
@@ -204,35 +200,24 @@ const COMICS = function () {
         recalculateNavigationVisibility();
 
         // Execute the request
-        const url = "/comic/data/" + pageSlug + "/";
-        const request = new XMLHttpRequest();
-        request.onreadystatechange = function () {
-            if (request.readyState === 4 && request.status === 200) {
-                try {
-                    var data = JSON.parse(request.responseText);
-                } catch (err) {
-                    console.log(err.message + " in " + request.responseText);
-                    return;
-                }
+        const response = await fetch("/comic/data/" + pageSlug + "/");
+        const data = await response.json()
 
-                // Run the callback and update the navigation state
-                CACHE[pageSlug] = data;
-                callback(data);
+        // Run the callback and update the navigation state
+        CACHE[pageSlug] = data;
 
-                // Make the nav buttons go opaque
-                NUM_ACTIVE_REQUESTS -= 1;
-                recalculateNavigationVisibility();
+        // Make the nav buttons go opaque
+        NUM_ACTIVE_REQUESTS -= 1;
+        recalculateNavigationVisibility();
 
-                // Pre-warm the image cache
-                preloadImage(data.image);
-            }
-        };
-        request.open("GET", url, true);
-        request.send();
+        // Pre-warm the image cache
+        preloadImage(data.image);
+
+        return data;
     }
 
     function preloadImage(url) {
-        var img = new Image();
+        let img = new Image();
         img.onload = function () {
             img.src = "";
             img = null;
@@ -266,13 +251,13 @@ const COMICS = function () {
     function refreshAd() {
         try {
             // if the ad has been refreshed recently, ignore this
-            var now = new Date().getTime();
+            const now = new Date().getTime();
             if (now - adLastRefreshed < 30000) {  // 30 seconds
                 return;
             }
 
             // clear the element out entirely and rebind it
-            var adContainer = document.getElementById("ad-banner");
+            const adContainer = document.getElementById("ad-banner");
             adContainer.innerHTML = `
             <ins class="adsbygoogle"
               style="display:block"
@@ -282,7 +267,8 @@ const COMICS = function () {
               data-full-width-responsive="true"></ins>
             `;
 
-            (adsbygoogle = window.adsbygoogle || []).push({});
+            const adsbygoogle = window.adsbygoogle || [];
+            adsbygoogle.push({});
             adLastRefreshed = now;
         } catch (error) {
             console.log("Ad network not loaded, will try again next time the page navigates.");
@@ -301,17 +287,17 @@ const COMICS = function () {
             };
 
             // If the comments chain already exists, remove it
-            var discourseScript = document.getElementById('discourse-script');
+            const discourseScript = document.getElementById('discourse-script');
             if (discourseScript) {
                 discourseScript.remove();
             }
-            var discourseComments = document.getElementById('discourse-comments');
+            const discourseComments = document.getElementById('discourse-comments');
             if (discourseComments) {
                 discourseComments.innerHTML = '';
             }
 
             // Create a script tag that loads the comments into the #discourse-comments tag
-            var d = document.createElement('script');
+            const d = document.createElement('script');
             d.id = 'discourse-script';
             d.type = 'text/javascript';
             d.async = true;
@@ -323,20 +309,20 @@ const COMICS = function () {
     }
 
     function getComicAndPageFromActiveUrl() {
-        var url = new URL(document.location).pathname;
-        var split = url.split('/');
+        const url = new URL(document.location).pathname;
+        const split = url.split('/');
         return {"pageSlug": split[2]};
     }
 
     function initializeTabs() {
         document.querySelectorAll('.tab').forEach(function (element) {
             element.addEventListener('click', function (event) {
-                var target = event.target.dataset.target;
+                const target = event.target.dataset.target;
                 activateTab(target);
             });
         });
 
-        var activeTab = localStorage.getItem("comics.activeTab");
+        let activeTab = localStorage.getItem("comics.activeTab");
         if (activeTab === null || !["info-frame", "comments-frame", "quests-frame"].includes(activeTab)) {
             activeTab = "info-frame";
         }
@@ -348,7 +334,7 @@ const COMICS = function () {
 
         // Set tab styling
         document.querySelectorAll('.tab').forEach(function (element) {
-            if (element.dataset.target == target) {
+            if (element.dataset.target === target) {
                 element.classList.add("active");
             } else {
                 element.classList.remove("active");
