@@ -1,27 +1,16 @@
 "use strict";
 
 
-var QUESTS = function () {
-    var platformConfig = {
-        facebook: {
-            urlTemplate: "https://www.facebook.com/sharer/sharer.php?u=${url}",
-        },
-        twitter: {
-            urlTemplate: "https://twitter.com/home?status=${url} ${message}",
-        },
-        pinterest: {
-            urlTemplate: "https://pinterest.com/pin/create/button/?url=${url}&media=&description=yolo",
-        }
-    };
+const QUESTS = function () {
 
-    var initializePage = function () {
+    const initializePage = function () {
         console.log("Test initialized");
 
         // Bind all the share buttons to the socialShare function
 
     };
 
-    var socialShare = function(platform, url, title, message) {
+    const socialShare = function (platform, url, title, message) {
         if (platform === "navigator") {
 
         }
@@ -33,7 +22,7 @@ var QUESTS = function () {
         return true;
     };
 
-    var navigatorShare = function(url, title, message) {
+    const navigatorShare = function (url, title, message) {
         if (!navigator.share) {
             return false;
         }
@@ -42,7 +31,7 @@ var QUESTS = function () {
             text: text,
             title: title,
         });
-    }
+    };
 
     // Run the initialization and then publish any variables that need to be public.
     return {

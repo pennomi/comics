@@ -1,33 +1,34 @@
 "use strict";
 
-var COMICS = function () {
+const COMICS = function () {
 
     // Set up some global variables
-    var CACHE = {};
-    var COMIC = {
+    const CACHE = {};
+    const COMIC = {
         "title": "{{ comic.title }}",
     };
-    var NUM_ACTIVE_REQUESTS = 0;
+    let NUM_ACTIVE_REQUESTS = 0;
 
-    var bodyTag = document.getElementsByTagName("body")[0];
-    var DISCOURSE_URL = bodyTag.dataset.discourseUrl;
+    const bodyTag = document.getElementsByTagName("body")[0];
+    const DISCOURSE_URL = bodyTag.dataset.discourseUrl;
 
     // Convenience function to set opacity on a query
     function setOpacity(querySelector, newOpacity) {
-        document.querySelectorAll(querySelector).forEach(function (e) { e.style.opacity = newOpacity; });
+        document.querySelectorAll(querySelector).forEach(function (e) {
+            e.style.opacity = newOpacity;
+        });
     }
 
     // Make the current comic's data appear in the page
     function loadDataIntoDOM(pageData) {
         // Browser State
-        var newTitle = pageData.title + " | " + COMIC.title;
-        document.title = pageData.title;
+        document.title = pageData.title + " | " + COMIC.title;
 
         // Compute Tag HTML
-        var tagHTML = "";
+        let tagHTML = "";
         pageData.tag_types.forEach(function (tagType) {
-            var tagStrings = "";
-            tagType.tags.forEach(function (tag){
+            let tagStrings = "";
+            tagType.tags.forEach(function (tag) {
                 if (tag.icon !== "") {
                     tagStrings += `<a class="tag" style="background-image: url(${tag.icon});" href="${tag.url}">${tag.title}</a>`;
                 } else {
@@ -87,7 +88,9 @@ var COMICS = function () {
             setOpacity(".navigation-previous, .navigation-first", 1);
         }
 
-        document.querySelectorAll(".navigation-first, .navigation-previous, .navigation-next, .navigation-last").forEach(function (e) { e.blur(); });
+        document.querySelectorAll(".navigation-first, .navigation-previous, .navigation-next, .navigation-last").forEach(function (e) {
+            e.blur();
+        });
     }
 
     function imageLoaded() {
@@ -108,10 +111,10 @@ var COMICS = function () {
         requestPageData(getComicAndPageFromActiveUrl().pageSlug, function (response) {
             navigateToPage(response.slug, false);
         });
-    };
+    }
 
-    function navigateToPage(pageSlug, pushState=true) {
-        var pageData = CACHE[pageSlug];
+    function navigateToPage(pageSlug, pushState = true) {
+        const pageData = CACHE[pageSlug];
 
         // This should never happen, but it's protection
         if (pageData === undefined) {
@@ -152,10 +155,10 @@ var COMICS = function () {
         refreshDiscourseComments();
 
         // Cache all the pages we can navigate to from this page
-        requestPageData(pageData.first, function (response) { });
-        requestPageData(pageData.previous, function (response) { });
-        requestPageData(pageData.next, function (response) { });
-        requestPageData(pageData.last, function (response) { });
+        requestPageData(pageData.first);
+        requestPageData(pageData.previous);
+        requestPageData(pageData.next);
+        requestPageData(pageData.last);
     }
 
     // The next 4 functions perform the navigation.
@@ -181,6 +184,10 @@ var COMICS = function () {
 
     // Make an AJAX request to get data
     function requestPageData(pageSlug, callback) {
+        if (!callback) {
+            callback = function (response) {};
+        }
+
         // Don't try to get missing pages
         if (pageSlug === null) {
             return;
@@ -197,13 +204,13 @@ var COMICS = function () {
         recalculateNavigationVisibility();
 
         // Execute the request
-        var url = "/comic/data/" + pageSlug + "/";
-        var request = new XMLHttpRequest();
-        request.onreadystatechange = function() {
-            if (request.readyState == 4 && request.status == 200) {
+        const url = "/comic/data/" + pageSlug + "/";
+        const request = new XMLHttpRequest();
+        request.onreadystatechange = function () {
+            if (request.readyState === 4 && request.status === 200) {
                 try {
                     var data = JSON.parse(request.responseText);
-                } catch(err) {
+                } catch (err) {
                     console.log(err.message + " in " + request.responseText);
                     return;
                 }
@@ -226,7 +233,7 @@ var COMICS = function () {
 
     function preloadImage(url) {
         var img = new Image();
-        img.onload = function() {
+        img.onload = function () {
             img.src = "";
             img = null;
         }
@@ -236,12 +243,10 @@ var COMICS = function () {
     // Implement keyboard navigation using the arrow keys
     function keyboardNav(event) {
         // handling Internet Explorer stupidity with window.event
-        // @see http://stackoverflow.com/a/3985882/517705
-        var keyDownEvent = event || window.event;
-        var keycode = (keyDownEvent.which) ? keyDownEvent.which : keyDownEvent.keyCode;
-        var LEFT = 37;
-        var RIGHT = 39;
-        if (keyDownEvent.altKey) {
+        const keycode = (event.which) ? event.which : event.keyCode;
+        const LEFT = 37;
+        const RIGHT = 39;
+        if (event.altKey) {
             return true;
         }
         if (keycode === LEFT) {
@@ -253,9 +258,11 @@ var COMICS = function () {
         }
         return true;
     }
+
     document.onkeydown = keyboardNav;
 
-    var adLastRefreshed = new Date().getTime();
+    let adLastRefreshed = new Date().getTime();
+
     function refreshAd() {
         try {
             // if the ad has been refreshed recently, ignore this
@@ -277,8 +284,7 @@ var COMICS = function () {
 
             (adsbygoogle = window.adsbygoogle || []).push({});
             adLastRefreshed = now;
-        }
-        catch (error) {
+        } catch (error) {
             console.log("Ad network not loaded, will try again next time the page navigates.");
         }
     }
@@ -341,7 +347,7 @@ var COMICS = function () {
         localStorage.setItem("comics.activeTab", target);
 
         // Set tab styling
-        document.querySelectorAll('.tab').forEach(function(element) {
+        document.querySelectorAll('.tab').forEach(function (element) {
             if (element.dataset.target == target) {
                 element.classList.add("active");
             } else {
@@ -350,7 +356,7 @@ var COMICS = function () {
         });
 
         // Set content styling
-        document.querySelectorAll('.tab-content-area').forEach(function(element) {
+        document.querySelectorAll('.tab-content-area').forEach(function (element) {
             if (element.id === target) {
                 element.style.display = "block";
             } else {
@@ -359,7 +365,7 @@ var COMICS = function () {
         });
     }
 
-    window.onpopstate = function(event) {
+    window.onpopstate = function (event) {
         navigateToPage(getComicAndPageFromActiveUrl().pageSlug, false);
     };
 
