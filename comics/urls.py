@@ -30,7 +30,11 @@ urlpatterns = [
     path('archive/pages/', comics_views.PageListView.as_view(), name='archive-pages'),
     path('archive/<str:type>/', comics_views.TagTypeView.as_view(), name='archive-tagtype'),
     path('archive/<str:type>/<str:tag>/', comics_views.TagView.as_view(), name='archive-tag'),
+
+    # Miscellaneous
+    path('community/', comics_views.CommunityView.as_view(), name='community'),
     path('500/', comics_views.comic_500_view),
+
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 
 handler404 = comics_views.comic_404_view

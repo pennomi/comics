@@ -281,3 +281,58 @@ class IndexUrl(models.Model):
         if AliasUrl.objects.filter(domain=self.domain):
             raise ValidationError("IndexUrl cannot have the same domain as an AliasUrl.")
         super().clean()
+
+
+def social_icon_static_path(instance, filename):
+    return f'social_icons/{instance.name}/{filename}'
+
+
+class SocialPlatform(models.Model):
+    """This model holds the technical data to attach a social media or other external link.
+    To attach it to a Comic, you'll use a LinkedSocialPlatform, configured in the Comic admin.
+    """
+    name = models.CharField(max_length=32)
+    cta_text = models.CharField(max_length=32, blank=True)
+    image = models.ImageField(
+        blank=True, null=True, upload_to=social_icon_static_path,
+        help_text="This icon should be a 1:1 aspect ratio, and should be in color.")
+    visit_template = models.CharField(
+        max_length=128, blank=True, help_text="Use {handle} for vars.")
+    share_template = models.CharField(
+        max_length=128, blank=True,
+        help_text="Use {url}, {message} for vars. Leave blank if it doesn't have share functionality.")
+    follow_template = models.CharField(
+        max_length=128, blank=True,
+        help_text="Use {handle} for vars. Leave blank if it doesn't have explicit follow functionality.")
+    call_to_action = models.CharField(max_length=128, blank=True)
+
+    def __str__(self):
+        return self.name
+
+
+class LinkedSocialPlatform(models.Model):
+    comic = models.ForeignKey(Comic, on_delete=models.CASCADE, related_name='social_links')
+    platform = models.ForeignKey(SocialPlatform, on_delete=models.CASCADE)
+    handle = models.CharField(
+        max_length=64, blank=True,
+        help_text="Leave blank if you have no page; it still needs to be connected for people to share to this "
+                  "platform.")
+    title = models.CharField(
+        max_length=64, blank=True, help_text="If not blank, overrides the platform name.")
+    call_to_action = models.CharField(
+        max_length=128, blank=True, help_text="If not blank, overrides the platform CTA.")
+
+    @property
+    def follow_url(self):
+        if not self.handle:
+            return ''
+        return self.platform.follow_template.format(handle=self.handle)
+
+    @property
+    def visit_url(self):
+        if not self.handle:
+            return ''
+        return self.platform.visit_template.format(handle=self.handle)
+
+    def __str__(self):
+        return f"{self.comic} - {self.platform}"

@@ -215,6 +215,10 @@ body {
     display: none;
 }
 
+.center-text {
+    text-align: center;
+}
+
 .content-frame {
     box-sizing: border-box;
     border: 20px solid transparent;

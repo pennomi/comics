@@ -1,61 +1,27 @@
 {% extends 'comics/base.html' %}
 
 {% block page_title %} | Community{% endblock %}
-{% block page_description %}{{ page.transcript_txt|truncatechars:160 }}{% endblock %}
+{% block page_description %}Join us on your favorite social media platform!{% endblock %}
 
 {% block content %}
 <div class="content-frame">
     <p>
         Back to: <a class="tag" {% if comic.favicon_image %}style="background-image: url({{ comic.favicon_image.url }})"{% endif %} href="{% url 'index' %}">Comic</a>
     </p>
-    <h1 style="text-align: center;">Can't Get Enough Swords?</h1>
-    <p style="text-align: center;">Join us on your favorite social platform!</p>
+    <h1 class="center-text">Can't Get Enough Swords?</h1>
+    <p class="center-text">Join us on your favorite social platform!</p>
 
     <div class="archive-tile-container">
-        {% if comic.patreon_link %}
-        <a class="archive-tile" href="{{ comic.patreon_link }}" style="background-image: url(patreon_link)">
-          <strong>Patreon</strong>
-          <small>Support the Author</small>
-          <div class="social-icon"><i class="fab fa-patreon"></i></div>
-        </a>
-        {% endif %}
-        {% if comic.discord_link %}
-        <a class="archive-tile" href="{{ comic.discord_link }}" style="background-image: url(discord_link)">
-          <strong>Discord</strong>
-          <small>Join the discussion</small>
-          <div class="social-icon"><i class="fab fa-discord"></i></div>
-        </a>
-        {% endif %}
-        {% if comic.reddit_link %}
-        <a class="archive-tile" href="{{ comic.reddit_link }}" style="background-image: url(reddit_link)">
-          <strong>Reddit</strong>
-          <small>Join the Subreddit</small>
-          <div class="social-icon"><i class="fab fa-reddit-alien"></i></div>
-        </a>
-        {% endif %}
-        {% if comic.twitter_link %}
-        <a class="archive-tile" href="{{ comic.twitter_link }}" style="background-image: url(twitter_link)">
-          <strong>Twitter</strong>
-          <small>Follow the Author</small>
-          <div class="social-icon"><i class="fab fa-twitter"></i></div>
-        </a>
-        {% endif %}
-        {% if comic.instagram_link %}
-        <a class="archive-tile" href="{{ comic.instagram_link }}" style="background-image: url(instagram_link)">
-          <strong>Instagram</strong>
-          <small>Follow the Author</small>
-          <div class="social-icon"><i class="fab fa-instagram"></i></div>
-        </a>
-        {% endif %}
-        {% if comic %}
-        <a class="archive-tile" href="{% url 'feed' %}" style="background-image: url(rss)">
-          <strong>RSS Feed</strong>
-          <small>Never Miss an Update</small>
-          <div class="social-icon"><i class="fas fa-rss"></i></div>
-        </a>
-        {% endif %}
-      <!-- TODO: Forums -->
-
+        {% for link in comic.social_links.all %}
+            {% if link.visit_url %}
+            <a class="archive-tile" href="{{ link.visit_url }}"
+               style="background-image: url('{% if link.platform.image %}{{ link.platform.image.url }}{% else %}?{% endif %}')">
+              <strong>{% if link.title %}{{ link.title }}{% else %}{{ link.platform.name }}{% endif %}</strong>
+              <small>{% if link.call_to_action %}{{ link.call_to_action }}{% else %}{{ link.platform.call_to_action }}{% endif %}</small>
+            </a>
+            {% endif %}
+        {% endfor %}
+        <!-- TODO: Forums -->
 
     </div>
 </div>

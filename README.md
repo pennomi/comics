@@ -43,15 +43,14 @@ Sometimes we change this process and forget to update the readme. If it's not wo
     - [x] Add number of appearances
     - [ ] Add live number of results
 - [ ] Nice New Features
+  - [ ] Community Page: a quick link to all social pages
+    - [ ] LD+JSON for author and all community links
   - [x] Extended Markdown for tag links; update transcripts and wiki pages
     - [ ] Auto-migrate tags when they are renamed.
     - [x] One-time migration of transcripts
-  - [x] Configurable 404 and 500 pages
-    - [ ] Maybe add a nice "Return to Home Page" button
   - [ ] Better Header
   - [ ] Landscape side-by-side navigation
-  - [ ] Search functionality for archive (returns tags and pages)
-  - [ ] Dedicated "Pages" archive section
+  - [ ] Global search functionality for archive (returns tags and pages)
 - [ ] Cache invalidation
   - [ ] Configure CloudFlare per-domain
   - [ ] Split first/last AJAX into a separate request
@@ -73,7 +72,7 @@ Sometimes we change this process and forget to update the readme. If it's not wo
   - [x] Easy backup and restore management commands
 - [x] Comments System
   - [x] Style the comments section using the page styles
-- Code Cleanliness & Data Integrity
+- [ ] Code Cleanliness & Data Integrity
   - [ ] Ensure RSS feed has no issues. Validate with http://www.feedvalidator.org/
   - [ ] Make the CSS variables load into the template and move the main css file out
   - [ ] Load any JS variables into the template and move the main js file out
