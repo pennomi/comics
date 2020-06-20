@@ -69,6 +69,8 @@ def render_txt(text) -> str:
     text = TAG_REFERENCE_RE.sub(r"[\2]", text)
     text = text.replace("\r\n", "\n")
     text = text.replace(">", "")
+    text = text.replace("[", "")
+    text = text.replace("]", "")
     text = text.replace("*", "")
     text = text.replace("\n ", "\n")
     text = text.replace("\n\n", "\n")
