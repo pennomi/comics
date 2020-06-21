@@ -281,7 +281,7 @@ footer {
     align-items: center;
     margin-top: auto;
     text-align: center;
-    padding-bottom: var(--ad-height);
+    padding-bottom: 0;
 }
 .footer-content {
     padding: 8px;
@@ -310,6 +310,7 @@ footer a:active {
     width: 100%;
     max-width: var(--comic-max-width);
     overflow: hidden;
+    background-color: #ffffff88;
     margin-bottom: calc(var(--paragraph-padding)*2);
 }
 .ad-mobile-leaderboard {
