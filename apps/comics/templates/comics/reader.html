@@ -53,7 +53,10 @@
             <a href="{% url 'reader' nav.last.slug %}" class="navigation-button navigation-last" onclick="COMICS.lastButtonPressed(); return false;"></a>
         </div>
 
-        <img id="comic-image" class="comic-image" src="{{ page.image.url }}" title="{{ page.alt_text }}" onload="COMICS.imageLoaded();"/>
+        <div class="page-image-wrapper">
+            <img id="comic-image" class="comic-image" src="{{ page.image.url }}" title="{{ page.alt_text }}" onload="COMICS.imageLoaded();"/>
+            <div id="comic-image-spinner"></div>
+        </div>
 
         <div class="navigation-wrapper">
             <a href="{% url 'reader' nav.first.slug %}" class="navigation-button navigation-first" onclick="COMICS.firstButtonPressed(); return false;"></a>
@@ -61,8 +64,6 @@
             <a href="{%if nav.next %}{% url 'reader' nav.next.slug %}{% endif %}" class="navigation-button navigation-next" onclick="COMICS.nextButtonPressed(); return false;"></a>
             <a href="{% url 'reader' nav.last.slug %}" class="navigation-button navigation-last" onclick="COMICS.lastButtonPressed(); return false;"></a>
         </div>
-
-        <div id="comic-image-spinner"></div>
 
         <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
         <div id="ad-banner">

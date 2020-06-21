@@ -339,6 +339,10 @@ footer a:active {
     background-size: contain;
     transition: opacity 0.1s ease-out;
     animation: spin 2s linear infinite;
+    opacity: 0;
+}
+.page-image-wrapper {
+    position: relative;
 }
 @keyframes spin {
     0% { transform: rotate(0deg); }
