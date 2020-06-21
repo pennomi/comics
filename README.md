@@ -33,15 +33,6 @@ Sometimes we change this process and forget to update the readme. If it's not wo
   - [ ] Alt text doesn't dynamically change with page switch on Chrome
   - [ ] Cycle the forum's IP address. The current one is banned in Russia for no reason.
   - [ ] Fonts need о̄ ñ
-  - [ ] Revamp navigation between archive -> tag types -> tags and back.
-    - [ ] Fix "Archive" needing an icon
-    - [ ] Fix "Pages" needing an icon
-    - [ ] Make the TagType group icons use the most common tag's icon.
-    - [x] Find a way to get pages to look beautiful, especially on mobile
-    - [x] Add client-side filtering on tag type page, pages page.
-    - [x] Add sorting by alphabetical, # appearances, first appearance?, etc.
-    - [x] Add number of appearances
-    - [ ] Add live number of results
 - [ ] Nice New Features
   - [ ] Community Page: a quick link to all social pages
     - [ ] LD+JSON for author and all community links
@@ -64,11 +55,9 @@ Sometimes we change this process and forget to update the readme. If it's not wo
   - [ ] Automate NGINX configuration as a management command
   - [ ] Automate SSL certs through LetsEncrypt as a management command
   - [ ] Autorenew certs where applicable
-- [x] Management Convenience
-  - [x] Use SQLite instead of PostgreSQL? We don't need PostgreSQL and everything would be much simpler (only one container) without it.
-  - [x] Easy backup and restore management commands
 - [x] Comments System
   - [x] Style the comments section using the page styles
+  - [ ] Have an auto-generator for Discourse comment embed styles
 - [ ] Code Cleanliness & Data Integrity
   - [ ] Ensure RSS feed has no issues. Validate with http://www.feedvalidator.org/
   - [ ] Make the CSS variables load into the template and move the main css file out
@@ -78,7 +67,7 @@ Sometimes we change this process and forget to update the readme. If it's not wo
   - [ ] Periodically clean out orphaned media. Make sure the forum stuff still links properly.
   - [ ] Consider making slugs case-insensitive, and have restricted slugs, for pages, tags, and tag types
   - [ ] Reduce code duplication in nginx configs
-  - [ ] Remove fontawesome
+  - [x] Remove fontawesome
   - [ ] Use proper HTML template elements for dynamic sections
 - [ ] Optimization
   - [ ] Run everything through an SEO checker

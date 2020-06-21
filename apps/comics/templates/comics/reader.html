@@ -136,7 +136,7 @@
 
         {% if ad %}
         <div class="invitation">
-            <a target="_blank" href="{{ ad.url }}"><img src="{{ ad.image.url }}"/></a>
+            <a target="_blank" rel="noopener" href="{{ ad.url }}"><img alt="Invitation Banner" src="{{ ad.image.url }}"/></a>
         </div>
         {% endif %}
     </div>
