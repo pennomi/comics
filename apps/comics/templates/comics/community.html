@@ -17,7 +17,7 @@
             <a class="archive-tile" href="{{ link.visit_url }}"
                style="background-image: url('{% if link.platform.image %}{{ link.platform.image.url }}{% else %}?{% endif %}')">
               <strong>{% if link.title %}{{ link.title }}{% else %}{{ link.platform.name }}{% endif %}</strong>
-              <small>{% if link.call_to_action %}{{ link.call_to_action }}{% else %}{{ link.platform.call_to_action }}{% endif %}</small>
+              <small>{% if link.visit_cta %}{{ link.visit_cta }}{% else %}{{ link.platform.visit_cta }}{% endif %}</small>
             </a>
             {% endif %}
         {% endfor %}

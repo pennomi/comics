@@ -292,19 +292,21 @@ class SocialPlatform(models.Model):
     To attach it to a Comic, you'll use a LinkedSocialPlatform, configured in the Comic admin.
     """
     name = models.CharField(max_length=32)
-    cta_text = models.CharField(max_length=32, blank=True)
     image = models.ImageField(
         blank=True, null=True, upload_to=social_icon_static_path,
         help_text="This icon should be a 1:1 aspect ratio, and should be in color.")
     visit_template = models.CharField(
         max_length=128, blank=True, help_text="Use {handle} for vars.")
-    share_template = models.CharField(
-        max_length=128, blank=True,
-        help_text="Use {url}, {message} for vars. Leave blank if it doesn't have share functionality.")
     follow_template = models.CharField(
         max_length=128, blank=True,
         help_text="Use {handle} for vars. Leave blank if it doesn't have explicit follow functionality.")
-    call_to_action = models.CharField(max_length=128, blank=True)
+    share_template = models.CharField(
+        max_length=128, blank=True,
+        help_text="Use {url}, {message} for vars. Leave blank if it doesn't have share functionality.")
+    visit_cta = models.CharField(max_length=128, blank=True)
+    follow_cta = models.CharField(max_length=128, blank=True)
+    share_cta = models.CharField(max_length=128, blank=True)
+    requires_money = models.BooleanField(default=False)
 
     def __str__(self):
         return self.name
@@ -319,8 +321,9 @@ class LinkedSocialPlatform(models.Model):
                   "platform.")
     title = models.CharField(
         max_length=64, blank=True, help_text="If not blank, overrides the platform name.")
-    call_to_action = models.CharField(
-        max_length=128, blank=True, help_text="If not blank, overrides the platform CTA.")
+    visit_cta = models.CharField(max_length=128, blank=True, help_text="If not blank, overrides the platform CTA.")
+    follow_cta = models.CharField(max_length=128, blank=True, help_text="If not blank, overrides the platform CTA.")
+    share_cta = models.CharField(max_length=128, blank=True, help_text="If not blank, overrides the platform CTA.")
 
     @property
     def follow_url(self):

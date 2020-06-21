@@ -122,6 +122,32 @@ class FeedView(TemplateView):
 
 @method_decorator(cache_page(60 * 60), name='dispatch')
 @handle_redirect_exception
+class ComicAjaxView(View):
+    def get(self, request, *args, **kwargs):
+        comic = request.comic
+
+        # Build the json
+        data = json.dumps({
+            "socialLinks": [{
+                "title": s.title or s.platform.name,
+                "image": s.platform.image.url if s.platform.image else "",
+                "visitUrl": s.visit_url,
+                "followUrl": s.follow_url or s.visit_url,
+                "shareUrlTemplate": s.platform.share_template,
+                "visitCta": s.visit_cta or s.platform.visit_cta,
+                "followCta": s.follow_cta or s.platform.follow_cta,
+                "shareCta": s.share_cta or s.platform.share_cta,
+                "requiresMoney": s.platform.requires_money,
+            } for s in comic.social_links.all()],
+        })
+
+        response = HttpResponse(data)
+        response["Content-Type"] = "application/json"
+        return response
+
+
+@method_decorator(cache_page(60 * 60), name='dispatch')
+@handle_redirect_exception
 class PageAjaxView(View):
     def get(self, request, *args, **kwargs):
         comic = request.comic
