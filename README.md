@@ -45,9 +45,8 @@ Sometimes we change this process and forget to update the readme. If it's not wo
 - [ ] Nice New Features
   - [ ] Community Page: a quick link to all social pages
     - [ ] LD+JSON for author and all community links
-  - [x] Extended Markdown for tag links; update transcripts and wiki pages
+  - [ ] Extended Markdown for tag links; update transcripts and wiki pages
     - [ ] Auto-migrate tags when they are renamed.
-    - [x] One-time migration of transcripts
   - [ ] Better Header
   - [ ] Landscape side-by-side navigation
   - [ ] Global search functionality for archive (returns tags and pages)
@@ -62,8 +61,6 @@ Sometimes we change this process and forget to update the readme. If it's not wo
   - [ ] Remove comic slug field
   - [ ] Blacklisted page slugs ("feed", "data")
   - [ ] Restricted admin permissions for artists
-  - [x] Index page for exploring comics (gross, but functional)
-  - [x] Catch unconfigured domains and redirect to comic index
   - [ ] Automate NGINX configuration as a management command
   - [ ] Automate SSL certs through LetsEncrypt as a management command
   - [ ] Autorenew certs where applicable

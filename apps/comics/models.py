@@ -33,6 +33,8 @@ class Comic(models.Model):
         blank=True, help_text="A square PNG to be used as a favicon. Ideally 192x192px.")
     overflow_background_image = models.ImageField(
         blank=True, help_text="A large JPG. Ideally 2048px wide by 1024px tall or larger.")
+    archive_icon = models.ImageField(
+        blank=True, help_text="A square PNG to be used as an archive/pages icon.")
     font = models.FileField(blank=True)
     background = models.TextField(
         default="white", help_text="a valid CSS `background` configuration")
@@ -125,6 +127,11 @@ class TagType(models.Model):
         return reverse("archive-tagtype", kwargs={
             "type": self.title
         })
+
+    @property
+    def best_icon(self):
+        most_used_tag = self.tags.annotate(count=models.Count('pages')).order_by("-count", 'title').first()
+        return most_used_tag.icon_url
 
 
 class Tag(models.Model):

@@ -232,7 +232,8 @@ class PageListView(TemplateView):
         context['comic'] = comic
         context['pages_and_chapters'] = pages_and_chapters
         context['breadcrumbs'] = [
-            {'title': 'Archive', 'url': reverse('archive-index'), 'icon': None},
+            {'title': 'Archive', 'url': reverse('archive-index'),
+             'icon': comic.archive_icon.url if comic.archive_icon else None},
         ]
         return context
 
@@ -254,7 +255,8 @@ class TagTypeView(TemplateView):
         context['comic'] = comic
         context['tag_type'] = tag_type
         context['breadcrumbs'] = [
-            {'title': 'Archive', 'url': reverse('archive-index'), 'icon': None},
+            {'title': 'Archive', 'url': reverse('archive-index'),
+             'icon': comic.archive_icon.url if comic.archive_icon else None},
         ]
         return context
 
@@ -278,10 +280,11 @@ class TagView(TemplateView):
         context['tag_type'] = tag_type
         context['tag'] = tag
         context['breadcrumbs'] = [
-            {'title': 'Archive', 'url': reverse('archive-index'), 'icon': None},
+            {'title': 'Archive', 'url': reverse('archive-index'),
+             'icon': comic.archive_icon.url if comic.archive_icon else None},
             {'title': tag_type.title,
              'url': reverse('archive-tagtype', kwargs={'type': tag_type.title}),
-             'icon': tag_type.default_icon.url if tag_type.default_icon else None},
+             'icon': tag_type.best_icon},
         ]
         return context
 

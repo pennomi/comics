@@ -5,13 +5,13 @@
     <div class="archive-tile-container">
         {% for type in comic.tag_types.all %}
         {% with count=type.tags.count %}
-        <a class="archive-tile" href="{{ type.get_absolute_url }}" style="background-image: url({{ type.default_icon.url }});">
+        <a class="archive-tile" href="{{ type.get_absolute_url }}" style="background-image: url({{ type.best_icon }});">
             <strong>{{ type.title }}</strong>
             <small>{{ count }} Tag{{ count|pluralize:",s" }}</small>
         </a>
         {% endwith %}
         {% endfor %}
-        <a class="archive-tile" href="{% url 'archive-pages' %}">
+        <a class="archive-tile" href="{% url 'archive-pages' %}" {% if comic.archive_icon %}style="background-image: url({{ comic.archive_icon.url }});" {% endif %}>
             <strong>Pages</strong>
             <small>{{ comic.pages.count }} Pages</small>
         </a>

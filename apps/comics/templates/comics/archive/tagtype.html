@@ -5,34 +5,34 @@
 <script>
 function filterResults(inputElement) {
     // Declare variables
-    var query = inputElement.value.toLowerCase();
+    const query = inputElement.value.toLowerCase();
 
-    var tiles = document.querySelectorAll(".archive-tile");
+    const tiles = document.querySelectorAll(".archive-tile");
     tiles.forEach(function (tile) {
         tile.hidden = tile.dataset.title.toLowerCase().indexOf(query) == -1;
     });
 }
 
 function sortResults(selectElement) {
-    var selection = selectElement.value;
+    const selection = selectElement.value;
 
     // Define common sorting functions
-    var alphabetical = function(a, b) {
+    const alphabetical = function (a, b) {
         return a.dataset.title.toLowerCase().localeCompare(b.dataset.title.toLowerCase());
-    }
-    var mostAppearances = function(a, b) {
-        var ai = parseInt(a.dataset.count);
-        var bi = parseInt(b.dataset.count);
+    };
+    const mostAppearances = function (a, b) {
+        const ai = parseInt(a.dataset.count);
+        const bi = parseInt(b.dataset.count);
         return ai < bi ? 1 : bi < ai ? -1 : 0;
-    }
-    var fewestAppearances = function(a, b) {
-        var ai = parseInt(a.dataset.count);
-        var bi = parseInt(b.dataset.count);
+    };
+    const fewestAppearances = function (a, b) {
+        const ai = parseInt(a.dataset.count);
+        const bi = parseInt(b.dataset.count);
         return ai > bi ? 1 : bi > ai ? -1 : 0;
-    }
+    };
 
     // Sort the array
-    var tiles = Array.from(document.querySelectorAll(".archive-tile"));
+    const tiles = Array.from(document.querySelectorAll(".archive-tile"));
     if (selection === "alphabetical") {
         tiles.sort(alphabetical);
     } else if (selection === "mostAppearances") {
