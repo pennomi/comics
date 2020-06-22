@@ -62,6 +62,7 @@ const COMICS = function () {
 
     // Make the navigation buttons appear or disappear
     function recalculateNavigationVisibility() {
+        // TODO: This might be re-rendering the page too often because it's messing with the style directly.
         // TODO: Do this with a CSS class
         if (NUM_ACTIVE_REQUESTS > 0) {
             setOpacity(".navigation-wrapper", 0.5);
@@ -69,7 +70,7 @@ const COMICS = function () {
             setOpacity(".navigation-wrapper", 1);
         }
 
-        var page = getActivePageData()
+        const page = getActivePageData();
 
         if (page === undefined) {
             // We're still loading
@@ -147,8 +148,8 @@ const COMICS = function () {
             }
         }
 
-        // Try to refresh the ad
-        refreshAd();
+        // Try to refresh the ads
+        refreshAds();
 
         // Try to refresh the comments
         refreshDiscourseComments();
@@ -248,7 +249,16 @@ const COMICS = function () {
 
     let adLastRefreshed = new Date().getTime();
 
-    function refreshAd() {
+    function reloadAdContent(querySelector, adSlot) {
+        const content = document.querySelector(querySelector);
+        content.innerHTML = `
+        <ins class="adsbygoogle"
+             data-ad-client="ca-{{ comic.adsense_publisher_account }}"
+             data-ad-slot="${ adSlot }"></ins>
+        `;
+    }
+
+    function refreshAds() {
         try {
             // if the ad has been refreshed recently, ignore this
             const now = new Date().getTime();
@@ -256,16 +266,9 @@ const COMICS = function () {
                 return;
             }
 
-            // clear the element out entirely and rebind it
-            const adContainer = document.getElementById("ad-banner");
-            adContainer.innerHTML = `
-            <ins class="adsbygoogle"
-              style="display:block"
-              data-ad-client="ca-{{ comic.adsense_publisher_account }}"
-              data-ad-slot="{{ comic.adsense_ad_slot }}"
-              data-ad-format="auto"
-              data-full-width-responsive="true"></ins>
-            `;
+            // clear the elements out entirely and rebind it
+            reloadAdContent(".ad-mobile-leaderboard", "{{ comic.adsense_ad_slot_header }}");
+            reloadAdContent("#ad-banner", "{{ comic.adsense_ad_slot }}");
 
             const adsbygoogle = window.adsbygoogle || [];
             adsbygoogle.push({});

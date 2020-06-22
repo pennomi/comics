@@ -58,6 +58,8 @@ class Comic(models.Model):
         max_length=32, blank=True, help_text="Looks like `pub-1234567891234567`")
     adsense_ad_slot = models.CharField(
         max_length=10, blank=True, help_text="Looks like `1234567890`")
+    adsense_ad_slot_header = models.CharField(
+        max_length=10, blank=True, help_text="Looks like `1234567890`")
     discourse_url = models.URLField(
         blank=True, help_text="Link to a Discourse forum, for example `https://forum.example.com/`")
 

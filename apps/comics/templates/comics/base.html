@@ -53,7 +53,10 @@
     <header>
         <div>
             <a href="{% url 'reader-redirect' %}"><img alt="Logo" class="header-image" src="{{ comic.header_image.url }}"/></a>
-            <div class="ad-mobile-leaderboard"></div>
+            <div class="ad-mobile-leaderboard">
+                <ins class="adsbygoogle" data-ad-client="ca-{{ comic.adsense_publisher_account }}" data-ad-slot="{{ comic.adsense_ad_slot_header }}"></ins>
+                <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
+            </div>
         </div>
         <div class="header-link-container">
             <a class="header-link" href="{% url 'reader-redirect' %}">Comic</a>

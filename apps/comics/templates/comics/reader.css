@@ -308,6 +308,7 @@ footer a:active {
 /* AD SIZES */
 #ad-banner {
     width: 100%;
+    height: 280px;
     max-width: var(--comic-max-width);
     overflow: hidden;
     background-color: #ffffff88;
@@ -319,6 +320,11 @@ footer a:active {
     background-color: #ffffff88;
     display: inline-block;
     margin-bottom: calc(var(--paragraph-padding));
+}
+.adsbygoogle {
+    width:100%;
+    height: 100%;
+    display: block;
 }
 
 
