@@ -33,6 +33,7 @@ Sometimes we change this process and forget to update the readme. If it's not wo
   - [ ] Alt text doesn't dynamically change with page switch on Chrome
   - [ ] Cycle the forum's IP address. The current one is banned in Russia for no reason.
   - [ ] Fonts need о̄ ñ
+  - [ ] nginx access and error logs don't ever cycle, so they might fill up the disk.
 - [ ] Nice New Features
   - [ ] Community Page: a quick link to all social pages
     - [ ] LD+JSON for author and all community links
