@@ -16,6 +16,7 @@ urlpatterns = [
     # Comic root
     path('', comics_views.ReaderRedirectView.as_view(), name='reader-redirect'),
     path('comic/', comics_views.ReaderRedirectView.as_view(), name='reader-redirect'),
+    path('comic/random/', comics_views.RandomReaderRedirectView.as_view(), name='random-reader-redirect'),
 
     # Legacy redirects
     re_path(r'^swords/', comics_views.LegacyPageRedirectView.as_view(), name='legacy-page-redirect'),

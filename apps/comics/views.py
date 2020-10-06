@@ -72,6 +72,26 @@ class ReaderRedirectView(RedirectView):
         return self.request.build_absolute_uri(page.get_absolute_url())
 
 
+@require_comic
+class RandomReaderRedirectView(RedirectView):
+    """ If the user comes to this page, redirect that user to a random published comic.
+    """
+    permanent = False
+
+    def get_redirect_url(self, *args, **kwargs):
+        comic = self.request.comic
+        page = comic.pages.active().order_by('?').first()
+        if page is None:
+            # But if there's no page, take us to the admin, I guess. TODO: Have a "no content" template
+            return reverse("admin:index")
+        return self.request.build_absolute_uri(page.get_absolute_url())
+
+    def dispatch(self, *args, **kwargs):
+        response = super().dispatch(*args, **kwargs)
+        response['Cache-Control'] = "no-store"
+        return response
+
+
 def _get_navigation_pages(current_page):
     comic = current_page.comic
     return {

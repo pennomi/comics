@@ -443,6 +443,13 @@ footer a:active {
     background-position-x: 100%;
     left: 70%;
 }
+.navigation-random {
+    background: transparent;
+    color: white !important;
+    text-decoration: none;
+    text-align: center;
+    line-height: var(--navigation-height);
+}
 
 
 /* COMIC INVITATION SECTION */

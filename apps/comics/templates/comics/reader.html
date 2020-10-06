@@ -49,6 +49,7 @@
         <div class="navigation-wrapper">
             <a href="{% url 'reader' nav.first.slug %}" class="navigation-button navigation-first" onclick="COMICS.firstButtonPressed(); return false;"></a>
             <a href="{%if nav.previous %}{% url 'reader' nav.previous.slug %}{% endif %}" class="navigation-button navigation-previous" onclick="COMICS.previousButtonPressed(); return false;"></a>
+            <a href="{% url 'random-reader-redirect' %}" class="navigation-button navigation-random">RANDOM</a>
             <a href="{%if nav.next %}{% url 'reader' nav.next.slug %}{% endif %}" class="navigation-button navigation-next" onclick="COMICS.nextButtonPressed(); return false;"></a>
             <a href="{% url 'reader' nav.last.slug %}" class="navigation-button navigation-last" onclick="COMICS.lastButtonPressed(); return false;"></a>
         </div>
@@ -61,6 +62,7 @@
         <div class="navigation-wrapper">
             <a href="{% url 'reader' nav.first.slug %}" class="navigation-button navigation-first" onclick="COMICS.firstButtonPressed(); return false;"></a>
             <a href="{%if nav.previous %}{% url 'reader' nav.previous.slug %}{% endif %}" class="navigation-button navigation-previous" onclick="COMICS.previousButtonPressed(); return false;"></a>
+            <a href="{% url 'random-reader-redirect' %}" class="navigation-button navigation-random">RANDOM</a>
             <a href="{%if nav.next %}{% url 'reader' nav.next.slug %}{% endif %}" class="navigation-button navigation-next" onclick="COMICS.nextButtonPressed(); return false;"></a>
             <a href="{% url 'reader' nav.last.slug %}" class="navigation-button navigation-last" onclick="COMICS.lastButtonPressed(); return false;"></a>
         </div>
