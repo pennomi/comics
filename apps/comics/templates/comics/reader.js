@@ -259,6 +259,7 @@ const COMICS = function () {
     }
 
     function refreshAds() {
+        return;  // For now, we won't refresh ads.
         try {
             // if the ad has been refreshed recently, ignore this
             const now = new Date().getTime();
@@ -283,7 +284,7 @@ const COMICS = function () {
             return;
         }
         try {
-            var url = new URL(document.location);
+            const url = new URL(document.location);
             window.DiscourseEmbed = {
                 discourseUrl: DISCOURSE_URL,
                 discourseEmbedUrl: url.origin + url.pathname

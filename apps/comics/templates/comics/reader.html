@@ -67,12 +67,8 @@
             <a href="{% url 'reader' nav.last.slug %}" class="navigation-button navigation-last" onclick="COMICS.lastButtonPressed(); return false;"></a>
         </div>
 
-        <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
         <div id="ad-banner">
-            <ins class="adsbygoogle"
-              data-ad-client="ca-{{ comic.adsense_publisher_account }}"
-              data-ad-slot="{{ comic.adsense_ad_slot }}"></ins>
-            <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
+            <div id="{{ comic.bsa_ad_slot_body }}"></div>
         </div>
     </div>
 

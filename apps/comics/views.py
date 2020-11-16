@@ -309,14 +309,11 @@ class TagView(TemplateView):
         return context
 
 
-class AdsTxt(TemplateView):
-    template_name = "comics/ads.txt"
+class AdsTxt(RedirectView):
+    permanent = False
 
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        comic = Comic.objects.first()  # TODO: Make this use the inevitable URL router
-        context['comic'] = comic
-        return context
+    def get_redirect_url(self, *args, **kwargs):
+        return "https://cdn4.buysellads.net/ads.txt"
 
 
 class LegacyPageRedirectView(RedirectView):

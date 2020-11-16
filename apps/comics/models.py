@@ -62,6 +62,12 @@ class Comic(models.Model):
         max_length=10, blank=True, help_text="Looks like `1234567890`")
     discourse_url = models.URLField(
         blank=True, help_text="Link to a Discourse forum, for example `https://forum.example.com/`")
+    bsa_link = models.URLField(
+        blank=True, help_text="Link to a BuySellAds js script, for example: `https://cdn4.buysellads.net/pub/foo.js`")
+    bsa_ad_slot_header = models.CharField(
+        max_length=64, blank=True, help_text="Looks like `bsa-zone_1234567890123-4_123456`")
+    bsa_ad_slot_body = models.CharField(
+        max_length=64, blank=True, help_text="Looks like `bsa-zone_1234567890123-4_123456`")
 
     # Misc
     changed_at = models.DateTimeField(auto_now=True, help_text="Records the last edit of this Comic.")

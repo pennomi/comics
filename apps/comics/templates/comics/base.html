@@ -45,6 +45,18 @@
 {% endif %}
 
 {% block social_media_tags %}{% endblock %}
+
+{% if comic.bsa_link %}
+<script type="text/javascript">
+	(function(){
+		let bsa_optimize = document.createElement('script');
+		bsa_optimize.type='text/javascript';
+		bsa_optimize.async=true;
+		bsa_optimize.src='{{ comic.bsa_link }}?'+(new Date()-new Date()%600000);
+		(document.getElementsByTagName('head')[0]||document.getElementsByTagName('body')[0]).appendChild(bsa_optimize);
+	})();
+</script>
+{% endif %}
 </head>
 <body data-discourse-url="{{ comic.discourse_url }}">
 
@@ -54,8 +66,7 @@
         <div>
             <a href="{% url 'reader-redirect' %}"><img alt="Logo" class="header-image" src="{{ comic.header_image.url }}"/></a>
             <div class="ad-mobile-leaderboard">
-                <ins class="adsbygoogle" data-ad-client="ca-{{ comic.adsense_publisher_account }}" data-ad-slot="{{ comic.adsense_ad_slot_header }}"></ins>
-                <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
+                <div id="{{ comic.bsa_ad_slot_header }}"></div>
             </div>
         </div>
         <div class="header-link-container">
