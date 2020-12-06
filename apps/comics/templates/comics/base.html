@@ -55,6 +55,8 @@
 		bsa_optimize.src='{{ comic.bsa_link }}?'+(new Date()-new Date()%600000);
 		(document.getElementsByTagName('head')[0]||document.getElementsByTagName('body')[0]).appendChild(bsa_optimize);
 	})();
+	window.optimize = window.optimize || { queue: [] };
+	window.optimize.pushAll();
 </script>
 {% endif %}
 </head>
