@@ -247,12 +247,12 @@ const COMICS = function () {
 
     document.onkeydown = keyboardNav;
 
-    let adLastRefreshed = new Date().getTime();
+    let adLastRefreshed = 0;
     function refreshAds() {
         try {
             // if the ad has been refreshed recently, ignore this
             const now = new Date().getTime();
-            if (now - adLastRefreshed < 30000) {  // 30 seconds
+            if (now - adLastRefreshed < 5000) {  // 5 seconds
                 return;
             }
 
