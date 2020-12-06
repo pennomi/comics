@@ -248,18 +248,7 @@ const COMICS = function () {
     document.onkeydown = keyboardNav;
 
     let adLastRefreshed = new Date().getTime();
-
-    function reloadAdContent(querySelector, adSlot) {
-        const content = document.querySelector(querySelector);
-        content.innerHTML = `
-        <ins class="adsbygoogle"
-             data-ad-client="ca-{{ comic.adsense_publisher_account }}"
-             data-ad-slot="${ adSlot }"></ins>
-        `;
-    }
-
     function refreshAds() {
-        return;  // For now, we won't refresh ads.
         try {
             // if the ad has been refreshed recently, ignore this
             const now = new Date().getTime();
@@ -267,13 +256,7 @@ const COMICS = function () {
                 return;
             }
 
-            // clear the elements out entirely and rebind it
-            reloadAdContent(".ad-mobile-leaderboard", "{{ comic.adsense_ad_slot_header }}");
-            reloadAdContent("#ad-banner", "{{ comic.adsense_ad_slot }}");
-
-            const adsbygoogle = window.adsbygoogle || [];
-            adsbygoogle.push({});
-            adLastRefreshed = now;
+            window.optimize.pushAll()
         } catch (error) {
             console.log("Ad network not loaded, will try again next time the page navigates.");
         }
