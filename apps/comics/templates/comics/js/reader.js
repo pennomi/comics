@@ -46,6 +46,7 @@ const COMICS = function () {
         document.getElementById("comic-post-date").innerHTML = pageData.posted_at;
         document.getElementById("comic-post").innerHTML = pageData.post;
         document.getElementById("comic-transcript").innerHTML = pageData.transcript;
+        document.getElementById("comic-alt-text").innerHTML = pageData.alt_text;
         document.getElementById("comic-image").src = pageData.image;
         document.getElementById("comic-image").title = pageData.alt_text;
         setOpacity("#comic-image", 0.5);

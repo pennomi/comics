@@ -99,7 +99,7 @@ table {
 
 /* GLOBAL STYLING */
 h1 { font-size: 28px; font-weight: bold; margin-bottom: var(--paragraph-padding); }
-h2 { font-size: 20px; font-weight: bold; margin-bottom: var(--paragraph-padding); }
+h2 { font-size: 20px; margin-top: 20px; font-weight: bold; margin-bottom: var(--paragraph-padding); }
 p { font-size: 14px; margin-bottom: var(--paragraph-padding); }
 small { font-size: 12px; }
 em { font-style: italic; }
