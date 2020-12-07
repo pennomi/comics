@@ -6,6 +6,7 @@ const COMICS = function () {
     const CACHE = {};
     const COMIC = {
         "title": "{{ comic.title }}",
+        "pages": [],
     };
     let NUM_ACTIVE_REQUESTS = 0;
 
@@ -111,6 +112,14 @@ const COMICS = function () {
         // Load the page data
         const response = await requestPageData(getComicAndPageFromActiveUrl().pageSlug);
         await navigateToPage(response.slug, false);
+
+        await preloadRandomComics();
+    }
+
+    async function preloadRandomComics() {
+        const response = await fetch("/comic/data/");
+        const data = await response.json();
+        COMIC.pages = data.pages;
     }
 
     async function navigateToPage(pageSlug, pushState = true) {
@@ -173,6 +182,18 @@ const COMICS = function () {
 
     function previousButtonPressed() {
         navigateToPage(getActivePageData().previous);
+        return false;
+    }
+
+    async function randomButtonPressed() {
+        if (COMIC.pages.length <= 0) {
+            return false;
+        }
+
+        let randomSlug = COMIC.pages[Math.floor(Math.random() * COMIC.pages.length)];
+        await requestPageData(randomSlug);
+        await navigateToPage(randomSlug);
+
         return false;
     }
 
@@ -334,6 +355,7 @@ const COMICS = function () {
         initializePage: initializePage,
         firstButtonPressed: firstButtonPressed,
         previousButtonPressed: previousButtonPressed,
+        randomButtonPressed: randomButtonPressed,
         nextButtonPressed: nextButtonPressed,
         lastButtonPressed: lastButtonPressed,
         imageLoaded: imageLoaded,

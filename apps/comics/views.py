@@ -159,6 +159,7 @@ class ComicAjaxView(View):
                 "shareCta": s.share_cta or s.platform.share_cta,
                 "requiresMoney": s.platform.requires_money,
             } for s in comic.social_links.all()],
+            "pages": [p.slug for p in comic.pages.active()],
         })
 
         response = HttpResponse(data)

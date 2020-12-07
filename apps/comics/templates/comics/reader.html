@@ -14,7 +14,7 @@
 
 {% block content %}
     <script>
-        {% include 'comics/reader.js' %}
+        {% include 'comics/js/reader.js' %}
     </script>
 
     <!-- JSON-ld schema -->
@@ -47,11 +47,11 @@
 
     <div id="reader-panel" class="panel">
         <div class="navigation-wrapper">
-            <a href="{% url 'reader' nav.first.slug %}" class="navigation-button navigation-first" onclick="COMICS.firstButtonPressed(); return false;"></a>
-            <a href="{%if nav.previous %}{% url 'reader' nav.previous.slug %}{% endif %}" class="navigation-button navigation-previous" onclick="COMICS.previousButtonPressed(); return false;"></a>
-            <a href="{% url 'random-reader-redirect' %}" class="navigation-button navigation-random">RANDOM</a>
-            <a href="{%if nav.next %}{% url 'reader' nav.next.slug %}{% endif %}" class="navigation-button navigation-next" onclick="COMICS.nextButtonPressed(); return false;"></a>
-            <a href="{% url 'reader' nav.last.slug %}" class="navigation-button navigation-last" onclick="COMICS.lastButtonPressed(); return false;"></a>
+            <a href="{% url 'reader' nav.first.slug %}" class="navigation-button navigation-first" onclick="return COMICS.firstButtonPressed();"></a>
+            <a href="{%if nav.previous %}{% url 'reader' nav.previous.slug %}{% endif %}" class="navigation-button navigation-previous" onclick="return COMICS.previousButtonPressed();"></a>
+            <a href="{% url 'random-reader-redirect' %}" class="navigation-button navigation-random" onclick="COMICS.randomButtonPressed(); return false;">RANDOM</a>
+            <a href="{%if nav.next %}{% url 'reader' nav.next.slug %}{% endif %}" class="navigation-button navigation-next" onclick="return COMICS.nextButtonPressed();"></a>
+            <a href="{% url 'reader' nav.last.slug %}" class="navigation-button navigation-last" onclick="return COMICS.lastButtonPressed();"></a>
         </div>
 
         <div class="page-image-wrapper">
@@ -60,11 +60,11 @@
         </div>
 
         <div class="navigation-wrapper">
-            <a href="{% url 'reader' nav.first.slug %}" class="navigation-button navigation-first" onclick="COMICS.firstButtonPressed(); return false;"></a>
-            <a href="{%if nav.previous %}{% url 'reader' nav.previous.slug %}{% endif %}" class="navigation-button navigation-previous" onclick="COMICS.previousButtonPressed(); return false;"></a>
-            <a href="{% url 'random-reader-redirect' %}" class="navigation-button navigation-random">RANDOM</a>
-            <a href="{%if nav.next %}{% url 'reader' nav.next.slug %}{% endif %}" class="navigation-button navigation-next" onclick="COMICS.nextButtonPressed(); return false;"></a>
-            <a href="{% url 'reader' nav.last.slug %}" class="navigation-button navigation-last" onclick="COMICS.lastButtonPressed(); return false;"></a>
+            <a href="{% url 'reader' nav.first.slug %}" class="navigation-button navigation-first" onclick="return COMICS.firstButtonPressed();"></a>
+            <a href="{%if nav.previous %}{% url 'reader' nav.previous.slug %}{% endif %}" class="navigation-button navigation-previous" onclick="return COMICS.previousButtonPressed();"></a>
+            <a href="{% url 'random-reader-redirect' %}" class="navigation-button navigation-random" onclick="COMICS.randomButtonPressed(); return false;">RANDOM</a>
+            <a href="{%if nav.next %}{% url 'reader' nav.next.slug %}{% endif %}" class="navigation-button navigation-next" onclick="return COMICS.nextButtonPressed();"></a>
+            <a href="{% url 'reader' nav.last.slug %}" class="navigation-button navigation-last" onclick="return COMICS.lastButtonPressed();"></a>
         </div>
 
         <div id="ad-banner">
