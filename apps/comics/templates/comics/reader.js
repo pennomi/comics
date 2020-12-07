@@ -248,18 +248,36 @@ const COMICS = function () {
     document.onkeydown = keyboardNav;
 
     let adLastRefreshed = 0;
+    let adRefreshAttempts = 0;
     function refreshAds() {
-        try {
-            // if the ad has been refreshed recently, ignore this
-            const now = new Date().getTime();
-            if (now - adLastRefreshed < 5000) {  // 5 seconds
-                return;
-            }
-
-            window.optimize.pushAll()
-        } catch (error) {
-            console.log("Ad network not loaded, will try again next time the page navigates.");
+        // If we're already refreshing, ignore this
+        if (adRefreshAttempts !== 0) {
+            return;
         }
+
+        // if the ad has been refreshed recently, ignore this
+        const now = new Date().getTime();
+        if (now - adLastRefreshed < 5000) {  // 5 seconds
+            return;
+        }
+
+        let interval = setInterval(function () {
+            try {
+                adRefreshAttempts += 1;
+
+                // Don't try too much
+                if (adRefreshAttempts < 10) {
+                    // If this fails, we know BSA is not yet loaded. Keep trying.
+                    window.optimize.pushAll();
+                }
+
+                clearInterval(interval);
+                adLastRefreshed = now;
+                adRefreshAttempts = 0;
+            } catch (error) {
+                console.log("Ad network not loaded, will try again next time the page navigates.");
+            }
+        }, 100);
     }
 
     function refreshDiscourseComments() {
