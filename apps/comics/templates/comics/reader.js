@@ -270,7 +270,9 @@ const COMICS = function () {
                 // Don't try too much
                 if (adRefreshAttempts < 10) {
                     // If this fails, we know BSA is not yet loaded. Keep trying.
+                    console.log("Attempting to refresh ads2");
                     window.optimize.pushAll();
+                    console.log("Attempting to refresh ads3");
                 }
 
                 clearInterval(interval);
