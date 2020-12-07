@@ -261,6 +261,8 @@ const COMICS = function () {
             return;
         }
 
+        console.log("Attempting to refresh ads");
+
         let interval = setInterval(function () {
             try {
                 adRefreshAttempts += 1;
