@@ -2,93 +2,87 @@
 {% load static %}
 <html lang="en">
 <head>
-    <!-- Favicon -->
-    <link rel="shortcut icon" type="image/png" href="{{ request.scheme }}://{{request.get_host}}{% if comic.favicon_image %}{{ comic.favicon_image.url }}{% else %}{% static 'comics/default-favicon/192.png' %}{% endif %}"/>
+	<!-- Favicon -->
+	<link rel="shortcut icon" type="image/png" href="{{ request.scheme }}://{{request.get_host}}{% if comic.favicon_image %}{{ comic.favicon_image.url }}{% else %}{% static 'comics/default-favicon/192.png' %}{% endif %}"/>
 
-    <!-- Global site tag (gtag.js) - Google Analytics -->
-    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-126098960-1"></script>
-    <script>
-      window.dataLayer = window.dataLayer || [];
-      function gtag(){dataLayer.push(arguments);}
-      gtag('js', new Date());
-      gtag('config', 'UA-126098960-1');
-    </script>
+	<!-- Global site tag (gtag.js) - Google Analytics -->
+	<script async src="https://www.googletagmanager.com/gtag/js?id=UA-126098960-1"></script>
+	<script>
+		window.dataLayer = window.dataLayer || [];
+		function gtag(){dataLayer.push(arguments);}
+		gtag('js', new Date());
+		gtag('config', 'UA-126098960-1');
+	</script>
 
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta name="keywords" content="webcomic,comic{% if comic.genre %},{{ comic.genre }}{% endif %}">
-    <title>{% if comic %}{{ comic.title }}{% else %}Comics Platform{% endif %}{% block page_title %} | A webcomic by {{ comic.author }}{% endblock %}</title>
-    <meta name="description" content="{% block page_description %}{{ comic.description }}{% endblock %}" />
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+	<meta name="keywords" content="webcomic,comic{% if comic.genre %},{{ comic.genre }}{% endif %}">
+	<title>{% if comic %}{{ comic.title }}{% else %}Comics Platform{% endif %}{% block page_title %} | A webcomic by {{ comic.author }}{% endblock %}</title>
+	<meta name="description" content="{% block page_description %}{{ comic.description }}{% endblock %}" />
 
-    <style>
-        {% include 'comics/reader.css' %}
-    </style>
-    <script>
-        {% include 'comics/quests.js' %}
-    </script>
+	<style>
+		{% include 'comics/reader.css' %}
+	</style>
+	<script>
+		{% include 'comics/quests.js' %}
+	</script>
 
 {% if comic %}
-    <style>
-    {% if comic.font %}
-    @font-face {
-      font-family: 'ComicFont';
-      src: url({{ comic.font.url }});
-    }
-    {% endif %}
+	<style>
+	{% if comic.font %}
+	@font-face {
+	  font-family: 'ComicFont';
+	  src: url({{ comic.font.url }});
+	}
+	{% endif %}
 
-    :root {
-        {% for style in comic.style_configurations.all %}
-            --{{ style.property }}: {{ style.value }};
-        {% endfor %}
-    }
-    </style>
+	:root {
+		{% for style in comic.style_configurations.all %}
+			--{{ style.property }}: {{ style.value }};
+		{% endfor %}
+	}
+	</style>
 {% endif %}
 
 {% block social_media_tags %}{% endblock %}
 
 {% if comic.bsa_link %}
-<script type="text/javascript">
-	(function(){
-		let bsa_optimize = document.createElement('script');
-		bsa_optimize.type='text/javascript';
-		bsa_optimize.async=true;
-		bsa_optimize.src='{{ comic.bsa_link }}?'+(new Date()-new Date()%600000);
-		(document.getElementsByTagName('head')[0]||document.getElementsByTagName('body')[0]).appendChild(bsa_optimize);
-	})();
-</script>
+	<script type="text/javascript">
+		{% include 'comics/js/ads.js' %}
+	</script>
 {% endif %}
 </head>
 <body data-discourse-url="{{ comic.discourse_url }}">
 
 <div class="content-background">
-    {% if comic.header_image %}
-    <header>
-        <div>
-            <a href="{% url 'reader-redirect' %}"><img alt="Logo" class="header-image" src="{{ comic.header_image.url }}"/></a>
-            <div class="ad-mobile-leaderboard">
-                <div id="{{ comic.bsa_ad_slot_header }}"></div>
-            </div>
-        </div>
-        <div class="header-link-container">
-            <a class="header-link" href="{% url 'reader-redirect' %}">Comic</a>
-            <a class="header-link" href="{% url 'archive-index' %}">Archive</a>
-            <a class="header-link" href="{% url 'community' %}">Community</a>
-            <a class="header-link" href="{% url 'feed' %}">RSS</a>
-        </div>
-    </header>
-    {% endif %}
-    <div class="content">
-        {% block content %}{% endblock %}
-    </div>
+	{% if comic.header_image %}
+	<header>
+		<div>
+			<a href="{% url 'reader-redirect' %}"><img alt="Logo" class="header-image" src="{{ comic.header_image.url }}"/></a>
+			<div class="ad-mobile-leaderboard">
+				<div id="{{ comic.bsa_ad_slot_header }}"></div>
+			</div>
+		</div>
+		<div class="header-link-container">
+			<a class="header-link" href="{% url 'reader-redirect' %}">Comic</a>
+			<a class="header-link" href="{% url 'archive-index' %}">Archive</a>
+			<a class="header-link" href="{% url 'community' %}">Community</a>
+			<a class="header-link" href="{% url 'feed' %}">RSS</a>
+		</div>
+	</header>
+	{% endif %}
+	<div class="content">
+		{% block content %}{% endblock %}
+	</div>
 
-    <footer>
-        <div class="footer-subsection">
-            {% if comic %}
-            <p>{{ comic.title }} © 2018-2020 {{ comic.author }}</p>
-            {% endif %}
-            <p>Comics Platform © 2018-2020 Thane Brimhall. <a href="https://github.com/pennomi/comics">Fork us on GitHub!</a></p>
-        </div>
-    </footer>
+	<footer>
+		<div class="footer-subsection">
+			{% if comic %}
+			<p>{{ comic.title }} © 2018-2020 {{ comic.author }}</p>
+			{% endif %}
+			<p>Comics Platform © 2018-2020 Thane Brimhall. <a href="https://github.com/pennomi/comics">Fork us on GitHub!</a></p>
+		</div>
+	</footer>
 </div>
 
 
