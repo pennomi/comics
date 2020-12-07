@@ -86,10 +86,10 @@ class RandomReaderRedirectView(RedirectView):
             return reverse("admin:index")
         return self.request.build_absolute_uri(page.get_absolute_url())
 
-    def dispatch(self, *args, **kwargs):
-        response = super().dispatch(*args, **kwargs)
-        response['Cache-Control'] = "no-store"
-        return response
+    # def dispatch(self, *args, **kwargs):
+    #     response = super().dispatch(*args, **kwargs)
+    #     response['Cache-Control'] = "no-store"
+    #     return response
 
 
 def _get_navigation_pages(current_page):
