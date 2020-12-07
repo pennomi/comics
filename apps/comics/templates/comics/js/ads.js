@@ -26,7 +26,7 @@ let kickstartInterval = setInterval(function () {
 	}
 
 	// Otherwise, we're good to go. Stop the loop and load the ads
-	clearInterval(interval);
+	clearInterval(kickstartInterval);
 	adNetworkLoaded = true;
 	window.refreshAds();
 }, 100);  // Every 10th of a second
