@@ -46,6 +46,7 @@ class Comic(models.Model):
         blank=True, help_text="A square PNG to be used as a 500 message. Ideally 1000x1000px.")
 
     # Social Links
+    # TODO: These are all deprecated. Where are they being used, and can we replace them?
     patreon_link = models.URLField(blank=True)
     discord_link = models.URLField(blank=True)
     reddit_link = models.URLField(blank=True)
@@ -84,6 +85,35 @@ class Comic(models.Model):
         if IndexUrl.objects.filter(domain=self.domain):
             raise ValidationError("Comic cannot have the same domain as an IndexUrl.")
         return super().clean()
+
+
+class SnippetManager(models.Manager):
+    def at_start_of_head(self):
+        return self.filter(location=0)
+
+    def at_end_of_body(self):
+        return self.filter(location=1)
+
+
+class CodeSnippet(models.Model):
+    """Arbitrary HTML code that gets injected into the main comics pages."""
+
+    name = models.CharField(
+        max_length=32, help_text="Human-readable name for this injected code.")
+    comic = models.ForeignKey(Comic, on_delete=models.CASCADE, related_name="code_snippets")
+    active = models.BooleanField(default=True, help_text="Disable this to remove the injected code from the page.")
+    location = models.PositiveSmallIntegerField(default=0, choices=(
+        (0, 'Start of Head'),
+        (1, 'End of Body'),
+    ), help_text="The location in the document where the code will be injected.")
+    code = models.TextField(
+        blank=True, help_text="The HTML code that is injected into the page. "
+                              "BE CAREFUL -- this code can break your site if you don't know what you are doing!")
+
+    objects = SnippetManager()
+
+    def __str__(self):
+        return f"{self.comic} - {self.name}"
 
 
 class CssPropertyChoices(models.TextChoices):

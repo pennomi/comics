@@ -1,5 +1,6 @@
 from django.apps import AppConfig
 
 
-class SomicsConfig(AppConfig):
-    name = 'somics'
+class ComicsConfig(AppConfig):
+    name = 'apps.comics'
+    verbose_name = 'Comics'

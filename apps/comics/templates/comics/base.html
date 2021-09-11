@@ -2,6 +2,8 @@
 {% load static %}
 <html lang="en">
 <head>
+	{% for snippet in comic.code_snippets.at_start_of_head %}{{  snippet.code|safe }}{% endfor %}
+
 	<!-- Favicon -->
 	<link rel="shortcut icon" type="image/png" href="{{ request.scheme }}://{{request.get_host}}{% if comic.favicon_image %}{{ comic.favicon_image.url }}{% else %}{% static 'comics/default-favicon/192.png' %}{% endif %}"/>
 
@@ -85,6 +87,6 @@
 	</footer>
 </div>
 
-
+{% for snippet in comic.code_snippets.at_end_of_body %}{{  snippet.code|safe }}{% endfor %}
 </body>
 </html>

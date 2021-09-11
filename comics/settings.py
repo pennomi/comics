@@ -27,7 +27,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'apps.comics',
+    'apps.comics.apps.ComicsConfig',
 ]
 
 # Middleware
@@ -70,6 +70,7 @@ DATABASES = {
         'NAME': '/var/lib/comics/comics.sqlite3',
     }
 }
+DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 # Password validation
 AUTH_PASSWORD_VALIDATORS = [

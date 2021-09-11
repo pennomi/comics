@@ -2,7 +2,7 @@ from django.contrib import admin
 from django.utils.safestring import mark_safe
 
 from apps.comics.models import Comic, Page, TagType, Tag, Ad, AliasUrl, IndexUrl, StyleConfiguration, \
-    LinkedSocialPlatform, SocialPlatform
+    LinkedSocialPlatform, SocialPlatform, CodeSnippet
 
 
 admin.site.register(TagType)
@@ -21,9 +21,14 @@ class SocialPlatformInline(admin.TabularInline):
     extra = 1
 
 
+class SnippetInline(admin.TabularInline):
+    model = CodeSnippet
+    extra = 1
+
+
 @admin.register(Comic)
 class ComicAdmin(admin.ModelAdmin):
-    inlines = (StyleInline, SocialPlatformInline, )
+    inlines = (StyleInline, SocialPlatformInline, SnippetInline, )
 
 
 @admin.register(Page)

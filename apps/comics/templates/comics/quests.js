@@ -10,6 +10,7 @@ const QUESTS = function () {
     function makeTile(url="", image="", title="", cta="", share=false) {
         return `
             <a class="archive-tile" ${ share ? `onclick="QUESTS.share('${ url }')"` : `href="${ url }"` }
+               rel="noopener"
                target="blank" style="background-image: url('${ image }')">
               <strong>${ title }</strong>
               <small>${ cta }</small>

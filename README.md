@@ -29,25 +29,35 @@ Sometimes we change this process and forget to update the readme. If it's not wo
 # Roadmap
 
 - [ ] Bug Fixes
-  - [ ] I noticed one iPhone having trouble with the spinner getting stuck active. Is this a widespread problem?
+  - [ ] I noticed one iPhone having trouble with the spinner getting stuck active. Is this a widespread problem? Do we need to handle network errors better?
   - [ ] Alt text doesn't dynamically change with page switch on Chrome
   - [ ] Cycle the forum's IP address. The current one is banned in Russia for no reason.
-  - [ ] Fonts need о̄ ñ
   - [ ] nginx access and error logs don't ever cycle, so they might fill up the disk.
+  - [ ] Migrate to a slightly larger server for the extra RAM
 - [ ] Nice New Features
   - [ ] Community Page: a quick link to all social pages
     - [ ] LD+JSON for author and all community links
   - [ ] Extended Markdown for tag links; update transcripts and wiki pages
     - [ ] Auto-migrate tags when they are renamed.
-  - [ ] Better Header
-  - [ ] Landscape side-by-side navigation
   - [ ] Global search functionality for archive (returns tags and pages)
+- [ ] Comments Overhaul
+  - [ ] The forum isn't working out well for comments, is hard to set up, and embedding has gotten harder. What can we do instead?
+- [ ] RSS Upgrade
+  - [ ] Only show items created within 1 week ago with no count limit (some RSS readers delete their cache after some time)
 - [ ] Cache invalidation
   - [ ] Configure CloudFlare per-domain
   - [ ] Split first/last AJAX into a separate request
   - [ ] Ensure JSON XHR is cached by CloudFlare
   - [ ] On-save Comic/Page trigger that invalidates related URLs (namespace for easier invalidation)
   - [ ] CTA ad should load using API and invalidate on model change
+- [ ] New "Code Snippets" function
+  - [ ] Allow each comic owner to inject arbitrary HTML, CSS, and JS into their pages.
+  - [ ] This should supersede 
+- [ ] Support WebP file format
+  - [ ] Request the best image file format (PNG, JPEG, WEBP).
+  - [ ] Encode many different image permutations (size, format). 
+  - [ ] Request the best file size for the comic view area.
+  - [ ] Create a way to view the highest resolution version of the file.
 - [ ] New URL-based Router
   - [ ] Google Analytics per domain
   - [ ] Remove comic slug field
@@ -61,8 +71,8 @@ Sometimes we change this process and forget to update the readme. If it's not wo
   - [ ] Have an auto-generator for Discourse comment embed styles
 - [ ] Code Cleanliness & Data Integrity
   - [ ] Ensure RSS feed has no issues. Validate with http://www.feedvalidator.org/
-  - [ ] Make the CSS variables load into the template and move the main css file out
-  - [ ] Load any JS variables into the template and move the main js file out
+  - [ ] Make the CSS variables load into the template and move the main css file out to a static file
+  - [ ] Load any JS variables into the template and move the main js file out to a static file
   - [ ] Inject admin edit button ONLY if the cookie is detected (instead of hiding it)
   - [ ] Migrate media files to namespaced paths. Randomize comic page image names so they're not guessable.
   - [ ] Periodically clean out orphaned media. Make sure the forum stuff still links properly.
@@ -74,18 +84,13 @@ Sometimes we change this process and forget to update the readme. If it's not wo
   - [ ] Run everything through an SEO checker
   - [ ] Google PageSpeed Insights
   - [ ] User Timing API for real user data
-  - [ ] Look into Header Bidding for Ad revenue optimization
 - [ ] Onboarding
   - [ ] Add a "no content" placeholder template for comics that have no pages yet
-- [x] Comments embed via Discourse topics
-  - [ ] Only if discourse URL is configured at the comic level
-  - [x] Style for Swords
-  - [ ] Automagically generate a discourse template based on the main site.
 - [ ] Font update
   - [ ] Adjust certain punctuation to be lower (apostrophe, quotation, exclamation, question)
   - [ ] Make left margin slightly smaller on O
   - [ ] Slightly smaller space
-  - [ ] Russian characters
+  - [ ] Russian characters and о̄ñ
   - [ ] Adjust everything down a pixel or so
 - [ ] New Reader "Quests" Section
   - [ ] Subscribe to RSS feed
