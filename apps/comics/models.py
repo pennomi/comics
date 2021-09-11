@@ -89,10 +89,10 @@ class Comic(models.Model):
 
 class SnippetManager(models.Manager):
     def at_start_of_head(self):
-        return self.filter(location=0)
+        return self.filter(active=True, location=0)
 
     def at_end_of_body(self):
-        return self.filter(location=1)
+        return self.filter(active=True, location=1)
 
 
 class CodeSnippet(models.Model):
