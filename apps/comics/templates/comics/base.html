@@ -80,9 +80,9 @@
 	<footer>
 		<div class="footer-subsection">
 			{% if comic %}
-			<p>{{ comic.title }} © 2018-2020 {{ comic.author }}</p>
+			<p>{{ comic.title }} © 2018-{% now 'Y' %} {{ comic.author }}</p>
 			{% endif %}
-			<p>Comics Platform © 2018-2020 Thane Brimhall. <a href="https://github.com/pennomi/comics">Fork us on GitHub!</a></p>
+			<p>Comics Platform © 2018-{% now 'Y' %} Thane Brimhall. <a href="https://github.com/pennomi/comics">Fork us on GitHub!</a></p>
 		</div>
 	</footer>
 </div>
