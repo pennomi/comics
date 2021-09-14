@@ -3,9 +3,11 @@
 This minimal webcomics platform is available under the terms of the permissive MIT license. While not required, if you 
 do something interesting with the code, please drop us a line; we'd love to know what you're up to!
 
+
 # Project Setup
 
 Want to run a comics server for yourself? Maybe you'd rather send us a bug fix or new feature? Get started here.
+
 
 ## Docker Setup
 
@@ -15,15 +17,40 @@ If you're unfamiliar with Docker, this might be a little tricky for you. It's wo
 - Run `python deploy/generate_env.py` to set up the docker environment configuration. Answer `y` to the prompt if you're doing development work, or `n` if you're deploying a server.
 - Run `docker-compose build`
 - Run `docker-compose up -d`
+
+You now have a server running. Unfortunately it doesn't do much - we need to initialize the data or restore from a backup.
+
+
+## Initialize Data From Scratch
+
 - Enter a shell on the docker django machine `docker-compose exec comics_django bash`
 - Create the database `python3 manage.py migrate`
 - Add a superuser `python3 manage.py createsuperuser`. Follow the prompts.
 - Collect static files `python3 manage.py collectstatic`
 - The site will now be running on `http://localhost`. (Note that this is running on port 80 unlike many development servers.)
-- Add Data into the [Django Admin](http://localhost/admin/). Set up at least one Comic and then give it at least one Page.
+- Add Data into the [Django Admin](http://localhost/admin/). Set up at least one Comic and then give it at least one Page. The Comic should use `localhost` as its "domain" so the URL router knows where to find it.
 - Open [the Site](http://localhost) in a Web Browser.
 
-Sometimes we change this process and forget to update the readme. If it's not working for you, open an issue and we'll get it fixed.
+
+## Backing Up and Restoring Data
+
+To back up your database, run `docker-compose exec comics python manage.py backup dump <your filename here>.zip`.
+
+To restore your database from a backup zip:
+ - Clear your database by moving it to a backup location.  `mv deploy/db/comics.sqlite3 deploy/db/comics.sqlite3.bak`
+ - Create a fresh database `docker-compose exec comics python manage.py migrate`
+ - Then load the backup zip `docker-compose exec comics python manage.py backup load <your filename here>.zip`.
+ - Log into your admin and make sure to change any Comics or Alias URLs so they work on your new IPs/Domains.
+ - If you're not seeing the CSS, make sure to run `docker-compose exec comics python manage.py collectstatic`.
+
+# Setting up SSL certs
+
+To create SSL certs for use in production, you need to run certbot from within the comics container
+
+ - `docker-compose exec comics bash`
+ - `certbot certonly --cert-name comics --webroot --webroot-path /var/www/letsencrypt -d <example.com> -d <another.example.com> -d <etc.example.com>`
+ - exit out of the bash shell
+ - `docker-compose restart comics`
 
 
 # Roadmap
@@ -147,6 +174,7 @@ Sometimes we change this process and forget to update the readme. If it's not wo
 - [ ] Other Wishlist
   - [ ] Translations
   - [ ] Order by Chronological vs Release vs whatever
+  - [ ] Make a simpler install process. Maybe avoid docker-compose?
 
 # Other ideas:
 
