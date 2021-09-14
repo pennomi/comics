@@ -86,7 +86,7 @@ To create SSL certs for use in production, you need to run certbot from within t
   - [ ] Request the best file size for the comic view area.
   - [ ] Create a way to view the highest resolution version of the file.
 - [ ] New URL-based Router
-  - [ ] Google Analytics per domain
+  - [x] Google Analytics per domain
   - [ ] Remove comic slug field
   - [ ] Blacklisted page slugs ("feed", "data")
   - [ ] Restricted admin permissions for artists

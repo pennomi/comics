@@ -7,15 +7,6 @@
 	<!-- Favicon -->
 	<link rel="shortcut icon" type="image/png" href="{{ request.scheme }}://{{request.get_host}}{% if comic.favicon_image %}{{ comic.favicon_image.url }}{% else %}{% static 'comics/default-favicon/192.png' %}{% endif %}"/>
 
-	<!-- Global site tag (gtag.js) - Google Analytics -->
-	<script async src="https://www.googletagmanager.com/gtag/js?id=UA-126098960-1"></script>
-	<script>
-		window.dataLayer = window.dataLayer || [];
-		function gtag(){dataLayer.push(arguments);}
-		gtag('js', new Date());
-		gtag('config', 'UA-126098960-1');
-	</script>
-
 	<meta charset="utf-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
 	<meta name="keywords" content="webcomic,comic{% if comic.genre %},{{ comic.genre }}{% endif %}">
@@ -66,10 +57,9 @@
 			</div>
 		</div>
 		<div class="header-link-container">
-			<a class="header-link" href="{% url 'reader-redirect' %}">Comic</a>
-			<a class="header-link" href="{% url 'archive-index' %}">Archive</a>
-			<a class="header-link" href="{% url 'community' %}">Community</a>
-			<a class="header-link" href="{% url 'feed' %}">RSS</a>
+			{% for link in comic.header_links.active %}
+				<a class="header-link" href="{{ link.url }}">{{ link.text }}</a>
+			{% endfor %}
 		</div>
 	</header>
 	{% endif %}

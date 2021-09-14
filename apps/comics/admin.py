@@ -2,13 +2,18 @@ from django.contrib import admin
 from django.utils.safestring import mark_safe
 
 from apps.comics.models import Comic, Page, TagType, Tag, Ad, AliasUrl, IndexUrl, StyleConfiguration, \
-    LinkedSocialPlatform, SocialPlatform, CodeSnippet
+    LinkedSocialPlatform, SocialPlatform, CodeSnippet, HeaderLink
 
 
 admin.site.register(TagType)
 admin.site.register(AliasUrl)
 admin.site.register(IndexUrl)
 admin.site.register(SocialPlatform)
+
+
+class HeaderLinkInline(admin.TabularInline):
+    model = HeaderLink
+    extra = 1
 
 
 class StyleInline(admin.TabularInline):
@@ -28,7 +33,7 @@ class SnippetInline(admin.TabularInline):
 
 @admin.register(Comic)
 class ComicAdmin(admin.ModelAdmin):
-    inlines = (StyleInline, SocialPlatformInline, SnippetInline, )
+    inlines = (HeaderLinkInline, StyleInline, SocialPlatformInline, SnippetInline, )
 
 
 @admin.register(Page)

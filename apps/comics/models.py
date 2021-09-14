@@ -87,6 +87,28 @@ class Comic(models.Model):
         return super().clean()
 
 
+class HeaderLinkManager(models.Manager):
+    def active(self):
+        return self.filter(active=True)
+
+
+class HeaderLink(models.Model):
+    """Customizable Links that appear in the header."""
+    text = models.CharField(max_length=24, help_text="The text the user should see. Keep this short!")
+    comic = models.ForeignKey(Comic, on_delete=models.CASCADE, related_name="header_links")
+    active = models.BooleanField(default=True, help_text="Disable this to remove the injected code from the page.")
+    ordering = models.FloatField(default=0, help_text="The order in which the links are shown. Smaller is shown first.")
+    url = models.URLField(help_text="The URL you want to send people to.")
+
+    objects = HeaderLinkManager()
+
+    class Meta:
+        ordering = ('ordering', )
+
+    def __str__(self):
+        return f"{self.comic} - {self.text}"
+
+
 class SnippetManager(models.Manager):
     def at_start_of_head(self):
         return self.filter(active=True, location=0)

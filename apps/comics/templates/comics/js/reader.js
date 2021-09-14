@@ -149,7 +149,7 @@ const COMICS = function () {
         const readerElement = document.getElementById("reader-panel");
         readerElement.scrollIntoView({behavior: "smooth"});
 
-        // Tell Google Analytics that we successfully loaded the page
+        // Tell Google Analytics that we successfully loaded the page TODO: Make this into a global event that can be used in the CodeSnippets functionality
         if ("ga" in window && ga.getAll !== undefined) {
             var tracker = ga.getAll()[0];
             if (tracker) {
