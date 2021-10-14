@@ -53,12 +53,22 @@ To create SSL certs for use in production, you need to run certbot from within t
  - `docker-compose restart comics`
 
 
+# Configuring Ads
+
+This section is a work in progress, so it may not be entirely accurate!
+
+Ads should currently be configured globally for the entire server, NOT per domain. In order to set up an ad network, you need to do a couple things.
+
+1. Configure your `ads.txt` URL in your server's `django.env` file. It should look like: `DJANGO_ADS_TXT_URL=https://example.com/ads.txt`
+2. Inject the ad network code into the global comic header using the "Code Snippets" function in the Django admin. (Don't specify a comic so it shows up everywhere.)
+3. Inject the ad tags into the appropriate site areas using the "Code Snippets" function.
+
+
 # Roadmap
 
 - [ ] Bug Fixes
-  - [ ] I noticed one iPhone having trouble with the spinner getting stuck active. Is this a widespread problem? Do we need to handle network errors better?
   - [ ] Alt text doesn't dynamically change with page switch on Chrome
-  - [ ] Cycle the forum's IP address. The current one is banned in Russia for no reason.
+  - [ ] Replace the forum with a built-in system for comments. Leave the forum-y stuff to Reddit or something.
   - [ ] nginx access and error logs don't ever cycle, so they might fill up the disk.
   - [ ] Migrate to a slightly larger server for the extra RAM
 - [ ] Nice New Features
@@ -77,9 +87,6 @@ To create SSL certs for use in production, you need to run certbot from within t
   - [ ] Ensure JSON XHR is cached by CloudFlare
   - [ ] On-save Comic/Page trigger that invalidates related URLs (namespace for easier invalidation)
   - [ ] CTA ad should load using API and invalidate on model change
-- [ ] New "Code Snippets" function
-  - [ ] Allow each comic owner to inject arbitrary HTML, CSS, and JS into their pages.
-  - [ ] This should supersede 
 - [ ] Support WebP file format
   - [ ] Request the best image file format (PNG, JPEG, WEBP).
   - [ ] Encode many different image permutations (size, format). 

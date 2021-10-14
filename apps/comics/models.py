@@ -1,8 +1,8 @@
 from django.core.exceptions import ValidationError
 from django.db import models
-from django.db.models.signals import post_save
-from django.dispatch import receiver
+from django.db.models import Q
 from django.urls import reverse
+from django.utils.safestring import mark_safe
 from django.utils.timezone import now
 
 from apps.comics import custom_markdown
@@ -86,6 +86,24 @@ class Comic(models.Model):
             raise ValidationError("Comic cannot have the same domain as an IndexUrl.")
         return super().clean()
 
+    # Snippet convenience getters
+    def snippets_start_of_head(self):
+        return self._snippet_base(0)
+
+    def snippets_end_of_body(self):
+        return self._snippet_base(1)
+
+    def snippets_ad_header(self):
+        return self._snippet_base(2)
+
+    def snippets_ad_content(self):
+        return self._snippet_base(3)
+
+    def _snippet_base(self, location):
+        snips = CodeSnippet.objects.for_comic(self)
+        snippet_string = "\n".join(s.code for s in snips.filter(location=location))
+        return mark_safe(snippet_string)
+
 
 class HeaderLinkManager(models.Manager):
     def active(self):
@@ -109,12 +127,12 @@ class HeaderLink(models.Model):
         return f"{self.comic} - {self.text}"
 
 
-class SnippetManager(models.Manager):
-    def at_start_of_head(self):
-        return self.filter(active=True, location=0)
-
-    def at_end_of_body(self):
-        return self.filter(active=True, location=1)
+class SnippetQuerySet(models.QuerySet):
+    def for_comic(self, comic):
+        return self.filter(
+            Q(comic=comic) | Q(comic=None),
+            active=True
+        )
 
 
 class CodeSnippet(models.Model):
@@ -122,20 +140,23 @@ class CodeSnippet(models.Model):
 
     name = models.CharField(
         max_length=32, help_text="Human-readable name for this injected code.")
-    comic = models.ForeignKey(Comic, on_delete=models.CASCADE, related_name="code_snippets")
+    comic = models.ForeignKey(Comic, null=True, blank=True, on_delete=models.CASCADE, related_name="code_snippets",
+                              help_text="Which comic does this snippet appear on? Leave blank for all comics.")
     active = models.BooleanField(default=True, help_text="Disable this to remove the injected code from the page.")
     location = models.PositiveSmallIntegerField(default=0, choices=(
         (0, 'Start of Head'),
         (1, 'End of Body'),
+        (2, 'Inside Header Ad Slot'),
+        (3, 'Inside Below Comic Ad Slot'),
     ), help_text="The location in the document where the code will be injected.")
     code = models.TextField(
         blank=True, help_text="The HTML code that is injected into the page. "
                               "BE CAREFUL -- this code can break your site if you don't know what you are doing!")
 
-    objects = SnippetManager()
+    objects = SnippetQuerySet.as_manager()
 
     def __str__(self):
-        return f"{self.comic} - {self.name}"
+        return f"{self.comic or 'Global'} - {self.name}"
 
 
 class CssPropertyChoices(models.TextChoices):

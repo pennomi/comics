@@ -9,6 +9,7 @@ admin.site.register(TagType)
 admin.site.register(AliasUrl)
 admin.site.register(IndexUrl)
 admin.site.register(SocialPlatform)
+admin.site.register(CodeSnippet)
 
 
 class HeaderLinkInline(admin.TabularInline):

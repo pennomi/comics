@@ -16,6 +16,9 @@ CSRF_COOKIE_SECURE = not DEBUG
 SESSION_COOKIE_SECURE = not DEBUG
 SECURE_SSL_REDIRECT = not DEBUG
 
+# Ad configuration
+ADS_TXT_URL = os.getenv('DJANGO_ADS_TXT_URL', None)
+
 # Hosts
 ALLOWED_HOSTS = ['*']
 

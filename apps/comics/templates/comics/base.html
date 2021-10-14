@@ -2,7 +2,7 @@
 {% load static %}
 <html lang="en">
 <head>
-	{% for snippet in comic.code_snippets.at_start_of_head %}{{  snippet.code|safe }}{% endfor %}
+	{{ comic.snippets_start_of_head }}
 
 	<!-- Favicon -->
 	<link rel="shortcut icon" type="image/png" href="{{ request.scheme }}://{{request.get_host}}{% if comic.favicon_image %}{{ comic.favicon_image.url }}{% else %}{% static 'comics/default-favicon/192.png' %}{% endif %}"/>
@@ -38,12 +38,6 @@
 {% endif %}
 
 {% block social_media_tags %}{% endblock %}
-
-{% if comic.bsa_link %}
-	<script type="text/javascript">
-		{% include 'comics/js/ads.js' %}
-	</script>
-{% endif %}
 </head>
 <body data-discourse-url="{{ comic.discourse_url }}">
 
@@ -53,7 +47,7 @@
 		<div>
 			<a href="{% url 'reader-redirect' %}"><img alt="Logo" class="header-image" src="{{ comic.header_image.url }}"/></a>
 			<div class="ad-mobile-leaderboard">
-				<div id="{{ comic.bsa_ad_slot_header }}"></div>
+				{{ comic.snippets_ad_header }}
 			</div>
 		</div>
 		<div class="header-link-container">
@@ -77,6 +71,6 @@
 	</footer>
 </div>
 
-{% for snippet in comic.code_snippets.at_end_of_body %}{{  snippet.code|safe }}{% endfor %}
+{{ comic.snippets_end_of_body }}
 </body>
 </html>

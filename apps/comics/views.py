@@ -1,6 +1,7 @@
 import itertools
 import json
 
+from django.conf import settings
 from django.http import HttpResponse, Http404, HttpResponseRedirect
 from django.shortcuts import get_object_or_404, render
 from django.template.defaultfilters import date
@@ -314,7 +315,9 @@ class AdsTxt(RedirectView):
     permanent = False
 
     def get_redirect_url(self, *args, **kwargs):
-        return "https://cdn4.buysellads.net/ads.txt"
+        if settings.ADS_TXT_URL is None:
+            raise Http404()
+        return settings.ADS_TXT_URL
 
 
 class LegacyPageRedirectView(RedirectView):
