@@ -1,4 +1,5 @@
 {% extends 'comics/base.html' %}
+{% load snippet_extras %}
 
 {% block page_title %} | {{ page.title }}{% endblock %}
 {% block page_description %}{{ page.transcript_txt|truncatechars:160 }}{% endblock %}
@@ -68,7 +69,7 @@
         </div>
 
         <div id="ad-banner">
-            {{ comic.snippets_ad_content }}
+            {% snippets_ad_content %}
         </div>
     </div>
 

@@ -27,6 +27,9 @@ urlpatterns = [
     path('comic/data/<slug:page>/', comics_views.PageAjaxView.as_view(), name='page-metadata'),
     path('comic/<slug:page>/', comics_views.ReaderView.as_view(), name='reader'),
 
+    # Testing
+    path('test/', comics_views.TestView.as_view(), name='test'),
+
     # Tag Wiki Pages
     path('archive/', comics_views.ArchiveView.as_view(), name='archive-index'),
     path('archive/pages/', comics_views.PageListView.as_view(), name='archive-pages'),

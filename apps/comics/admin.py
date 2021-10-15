@@ -9,7 +9,6 @@ admin.site.register(TagType)
 admin.site.register(AliasUrl)
 admin.site.register(IndexUrl)
 admin.site.register(SocialPlatform)
-admin.site.register(CodeSnippet)
 
 
 class HeaderLinkInline(admin.TabularInline):
@@ -35,6 +34,13 @@ class SnippetInline(admin.TabularInline):
 @admin.register(Comic)
 class ComicAdmin(admin.ModelAdmin):
     inlines = (HeaderLinkInline, StyleInline, SocialPlatformInline, SnippetInline, )
+
+
+@admin.register(CodeSnippet)
+class CodeSnippetAdmin(admin.ModelAdmin):
+    list_display = ('name', 'comic', 'active', 'testing', )
+    list_filter = ('comic', 'active', 'testing', )
+    list_editable = ('active', 'testing', )
 
 
 @admin.register(Page)

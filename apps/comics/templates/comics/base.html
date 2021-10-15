@@ -1,8 +1,9 @@
 <!DOCTYPE html>
 {% load static %}
+{% load snippet_extras %}
 <html lang="en">
 <head>
-	{{ comic.snippets_start_of_head }}
+	{% snippets_start_of_head %}
 
 	<!-- Favicon -->
 	<link rel="shortcut icon" type="image/png" href="{{ request.scheme }}://{{request.get_host}}{% if comic.favicon_image %}{{ comic.favicon_image.url }}{% else %}{% static 'comics/default-favicon/192.png' %}{% endif %}"/>
@@ -47,7 +48,7 @@
 		<div>
 			<a href="{% url 'reader-redirect' %}"><img alt="Logo" class="header-image" src="{{ comic.header_image.url }}"/></a>
 			<div class="ad-mobile-leaderboard">
-				{{ comic.snippets_ad_header }}
+				{% snippets_ad_header %}
 			</div>
 		</div>
 		<div class="header-link-container">
@@ -71,6 +72,7 @@
 	</footer>
 </div>
 
-{{ comic.snippets_end_of_body }}
+
+{% snippets_end_of_body %}
 </body>
 </html>

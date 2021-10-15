@@ -218,6 +218,17 @@ class PageAjaxView(View):
 
 
 @require_comic
+class TestView(ReaderView):
+    def get_context_data(self, **kwargs):
+        comic = self.request.comic
+        page = comic.pages.active().order_by('-ordering').first()
+        kwargs['page'] = page.slug
+        context = super().get_context_data(**kwargs)
+        context['testing'] = True
+        return context
+
+
+@require_comic
 class ArchiveView(TemplateView):
     template_name = "comics/archive/index.html"
 

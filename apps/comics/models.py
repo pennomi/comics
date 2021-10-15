@@ -86,24 +86,6 @@ class Comic(models.Model):
             raise ValidationError("Comic cannot have the same domain as an IndexUrl.")
         return super().clean()
 
-    # Snippet convenience getters
-    def snippets_start_of_head(self):
-        return self._snippet_base(0)
-
-    def snippets_end_of_body(self):
-        return self._snippet_base(1)
-
-    def snippets_ad_header(self):
-        return self._snippet_base(2)
-
-    def snippets_ad_content(self):
-        return self._snippet_base(3)
-
-    def _snippet_base(self, location):
-        snips = CodeSnippet.objects.for_comic(self)
-        snippet_string = "\n".join(s.code for s in snips.filter(location=location))
-        return mark_safe(snippet_string)
-
 
 class HeaderLinkManager(models.Manager):
     def active(self):
@@ -140,9 +122,12 @@ class CodeSnippet(models.Model):
 
     name = models.CharField(
         max_length=32, help_text="Human-readable name for this injected code.")
-    comic = models.ForeignKey(Comic, null=True, blank=True, on_delete=models.CASCADE, related_name="code_snippets",
-                              help_text="Which comic does this snippet appear on? Leave blank for all comics.")
+    comic = models.ForeignKey(
+        Comic, null=True, blank=True, on_delete=models.CASCADE, related_name="code_snippets",
+        help_text="Which comic does this snippet appear on? Leave blank for all comics.")
     active = models.BooleanField(default=True, help_text="Disable this to remove the injected code from the page.")
+    testing = models.BooleanField(
+        default=False, help_text="When this is active, it is only embedded on the test URL page.")
     location = models.PositiveSmallIntegerField(default=0, choices=(
         (0, 'Start of Head'),
         (1, 'End of Body'),

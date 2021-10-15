@@ -158,11 +158,6 @@ const COMICS = function () {
             }
         }
 
-        // Try to refresh the ads
-        if (window.refreshAds) {
-            window.refreshAds();
-        }
-
         // Try to refresh the comments
         refreshDiscourseComments();
 
