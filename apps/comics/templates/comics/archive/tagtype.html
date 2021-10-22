@@ -52,13 +52,13 @@ function sortResults(selectElement) {
 <div class="archive-tile-container">
     <input type="search" spellcheck="false" oninput="filterResults(this)" placeholder="Search {{ type.title }}...">
     <select onchange="sortResults(this)">
-        <option value="alphabetical">Alphabetical</option>
         <option value="mostAppearances">Most Appearances</option>
         <option value="fewestAppearances">Fewest Appearances</option>
+        <option value="alphabetical">Alphabetical</option>
     </select>
 </div>
 <div class="archive-tile-container">
-    {% for tag in tag_type.tags.all %}
+    {% for tag in sorted_tags.all %}
     {% with count=tag.pages.count %}
     <a data-count="{{ count }}" data-title="{{ tag.title }}" class="archive-tile" href="{{ tag.get_absolute_url }}" style="background-image: url({{tag.icon_url}});">
         <strong>{{ tag.title }}</strong>

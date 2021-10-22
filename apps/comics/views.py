@@ -2,6 +2,7 @@ import itertools
 import json
 
 from django.conf import settings
+from django.db.models import Count
 from django.http import HttpResponse, Http404, HttpResponseRedirect
 from django.shortcuts import get_object_or_404, render
 from django.template.defaultfilters import date
@@ -287,6 +288,7 @@ class TagTypeView(TemplateView):
 
         context['comic'] = comic
         context['tag_type'] = tag_type
+        context['sorted_tags'] = tag_type.tags.annotate(count=Count('pages')).order_by('-count')
         context['breadcrumbs'] = [
             {'title': 'Archive', 'url': reverse('archive-index'),
              'icon': comic.archive_icon.url if comic.archive_icon else None},

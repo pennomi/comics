@@ -61,7 +61,8 @@ Ads should currently be configured globally for the entire server, NOT per domai
 
 1. Configure your `ads.txt` URL in your server's `django.env` file. It should look like: `DJANGO_ADS_TXT_URL=https://example.com/ads.txt`
 2. Inject the ad network code into the global comic header using the "Code Snippets" function in the Django admin. (Don't specify a comic so it shows up everywhere.)
-3. Inject the ad tags into the appropriate site areas using the "Code Snippets" function.
+3. Inject the ad tags into the appropriate site areas using the "Code Snippets" function. Currently the supported areas are hardcoded. You can add more by editing the `apps/comics/templatetags/snippet_extras.py` file.
+4. You may find it helpful to use the "testing" flag before a snippet to the whole site. When this is true it only exists on the `example.com/test/` URL.
 
 
 # Roadmap
@@ -155,13 +156,11 @@ Ads should currently be configured globally for the entire server, NOT per domai
   - [ ] Upload image with strict specifications
   - [ ] Google Analytics tracking for conversion
 - [ ] QoL improvements
-  - [x] Scroll to top of page when navigating
   - [ ] Error handling for failed AJAX requests
   - [ ] Reveal Hover Text button
   - [ ] Smooth out navigation so people don't get stuck in the tag pages ("Return to the Comic" button)
   - [ ] Search
   - [ ] Translations
-  - [x] No Javascript fallback
   - [ ] Transcript/Tag suggestions
   - [ ] Better reading experience for people with 1366x768 laptop screens
   - [ ] Nice 404 page. Maybe make it configurable per comic. (404 Sword Not Found)
