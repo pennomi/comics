@@ -32,3 +32,8 @@ def snippets_ad_header(context):
 @register.simple_tag(takes_context=True)
 def snippets_ad_content(context):
     return _snippet_base(context, 3)
+
+
+@register.simple_tag(takes_context=True)
+def snippets_ad_info(context):
+    return _snippet_base(context, 4)

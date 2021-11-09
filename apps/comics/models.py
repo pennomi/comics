@@ -133,6 +133,7 @@ class CodeSnippet(models.Model):
         (1, 'End of Body'),
         (2, 'Inside Header Ad Slot'),
         (3, 'Inside Below Comic Ad Slot'),
+        (4, 'Inside Below Info Ad Slot'),
     ), help_text="The location in the document where the code will be injected.")
     code = models.TextField(
         blank=True, help_text="The HTML code that is injected into the page. "

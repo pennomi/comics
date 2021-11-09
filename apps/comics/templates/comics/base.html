@@ -47,14 +47,14 @@
 	<header>
 		<div>
 			<a href="{% url 'reader-redirect' %}"><img alt="Logo" class="header-image" src="{{ comic.header_image.url }}"/></a>
-			<div class="ad-mobile-leaderboard">
-				{% snippets_ad_header %}
-			</div>
 		</div>
 		<div class="header-link-container">
 			{% for link in comic.header_links.active %}
 				<a class="header-link" href="{{ link.url }}">{{ link.text }}</a>
 			{% endfor %}
+		</div>
+		<div class="ad-mobile-leaderboard">
+			{% snippets_ad_header %}
 		</div>
 	</header>
 	{% endif %}

@@ -5,134 +5,152 @@
 {% block page_description %}{{ page.transcript_txt|truncatechars:160 }}{% endblock %}
 
 {% block social_media_tags %}
-    <meta property="og:title" content="{{ page.title }}" />
-    <meta property="og:type" content="article" />
-    <meta property="og:url" content="{{ request.scheme }}://{{request.get_host}}{{ page.get_absolute_url }}" />
-    <meta property="og:image" content="{{ request.scheme }}://{{request.get_host}}{{ page.image.url }}" />
-    <meta property="og:description" content="{{ page.transcript_txt }}" />
-    <meta property="og:site_name" content="{{ comic.title }} | A webcomic by {{ comic.author }}" />
+	<meta property="og:title" content="{{ page.title }}"/>
+	<meta property="og:type" content="article"/>
+	<meta property="og:url" content="{{ request.scheme }}://{{ request.get_host }}{{ page.get_absolute_url }}"/>
+	<meta property="og:image" content="{{ request.scheme }}://{{ request.get_host }}{{ page.image.url }}"/>
+	<meta property="og:description" content="{{ page.transcript_txt }}"/>
+	<meta property="og:site_name" content="{{ comic.title }} | A webcomic by {{ comic.author }}"/>
 {% endblock %}
 
 {% block content %}
-    <script>
-        {% include 'comics/js/reader.js' %}
-    </script>
+	<script>
+		{% include 'comics/js/reader.js' %}
+	</script>
 
-    <!-- JSON-ld schema -->
-    {% if comic.header_image %}
-    <script type="application/ld+json">
-    {
-      "@context": "https://schema.org",
-      "@type": "CreativeWork",
-      "name": "{{ comic.title }}",
-      "image": "{{ request.scheme }}://{{ request.get_host }}{{ comic.header_image.url }}",
-      "url": "{{ request.scheme }}://{{ request.get_host }}",
-      "genre": "{{ comic.genre }}",
-      "accessMode": ["textual", "visual"],
-      "sameAs": "{{ request.scheme }}://{{ request.get_host }}",
-      "hasPart": {
-        "@type": "ComicStory",
-        "name": "{{ page.title }}",
-        "position": "{{ page.ordering }}",
-        "datePublished": "{{ page.posted_at|date:'Y-m-d' }}",
-        "image": "{{ request.scheme }}://{{ request.get_host }}{{ page.image.url }}",
-        "text": "{{ page.transcript_txt }}"
-      },
-      "author": {
-        "@type": "Person",
-        "name": "{{ comic.author }}"
-      }
-    }
-    </script>
-    {% endif %}
+	<!-- JSON-ld schema -->
+	{% if comic.header_image %}
+		<script type="application/ld+json">
+		{
+			"@context": "https://schema.org",
+			"@type": "CreativeWork",
+			"name": "{{ comic.title }}",
+			"image": "{{ request.scheme }}://{{ request.get_host }}{{ comic.header_image.url }}",
+			"url": "{{ request.scheme }}://{{ request.get_host }}",
+			"genre": "{{ comic.genre }}",
+			"accessMode": ["textual", "visual"],
+			"sameAs": "{{ request.scheme }}://{{ request.get_host }}",
+			"hasPart": {
+				"@type": "ComicStory",
+				"name": "{{ page.title }}",
+				"position": "{{ page.ordering }}",
+				"datePublished": "{{ page.posted_at|date:'Y-m-d' }}",
+				"image": "{{ request.scheme }}://{{ request.get_host }}{{ page.image.url }}",
+				"text": "{{ page.transcript_txt }}"
+			},
+			"author": {
+				"@type": "Person",
+				"name": "{{ comic.author }}"
+			}
+		}
+		</script>
+	{% endif %}
 
-    <div id="reader-panel" class="panel">
-        <div class="navigation-wrapper">
-            <a href="{% url 'reader' nav.first.slug %}" class="navigation-button navigation-first" onclick="return COMICS.firstButtonPressed();"></a>
-            <a href="{%if nav.previous %}{% url 'reader' nav.previous.slug %}{% endif %}" class="navigation-button navigation-previous" onclick="return COMICS.previousButtonPressed();"></a>
-            <a href="{% url 'random-reader-redirect' %}" class="navigation-button navigation-random" onclick="COMICS.randomButtonPressed(); return false;">RANDOM</a>
-            <a href="{%if nav.next %}{% url 'reader' nav.next.slug %}{% endif %}" class="navigation-button navigation-next" onclick="return COMICS.nextButtonPressed();"></a>
-            <a href="{% url 'reader' nav.last.slug %}" class="navigation-button navigation-last" onclick="return COMICS.lastButtonPressed();"></a>
-        </div>
+	<div id="reader-panel" class="panel">
+		<div class="navigation-wrapper">
+			<a href="{% url 'reader' nav.first.slug %}" class="navigation-button navigation-first"
+				 onclick="return COMICS.firstButtonPressed();"></a>
+			<a href="{% if nav.previous %}{% url 'reader' nav.previous.slug %}{% endif %}"
+				 class="navigation-button navigation-previous" onclick="return COMICS.previousButtonPressed();"></a>
+			<a href="{% url 'random-reader-redirect' %}" class="navigation-button navigation-random"
+				 onclick="COMICS.randomButtonPressed(); return false;">RANDOM</a>
+			<a href="{% if nav.next %}{% url 'reader' nav.next.slug %}{% endif %}" class="navigation-button navigation-next"
+				 onclick="return COMICS.nextButtonPressed();"></a>
+			<a href="{% url 'reader' nav.last.slug %}" class="navigation-button navigation-last"
+				 onclick="return COMICS.lastButtonPressed();"></a>
+		</div>
 
-        <div class="page-image-wrapper">
-            <img id="comic-image" class="comic-image" src="{{ page.image.url }}" title="{{ page.alt_text }}" onload="COMICS.imageLoaded();"/>
-            <div id="comic-image-spinner"></div>
-        </div>
+		<div class="page-image-wrapper">
+			<img id="comic-image" class="comic-image" src="{{ page.image.url }}" title="{{ page.alt_text }}"
+					 onload="COMICS.imageLoaded();"/>
+			<div id="comic-image-spinner"></div>
+		</div>
 
-        <div class="navigation-wrapper">
-            <a href="{% url 'reader' nav.first.slug %}" class="navigation-button navigation-first" onclick="return COMICS.firstButtonPressed();"></a>
-            <a href="{%if nav.previous %}{% url 'reader' nav.previous.slug %}{% endif %}" class="navigation-button navigation-previous" onclick="return COMICS.previousButtonPressed();"></a>
-            <a href="{% url 'random-reader-redirect' %}" class="navigation-button navigation-random" onclick="COMICS.randomButtonPressed(); return false;">RANDOM</a>
-            <a href="{%if nav.next %}{% url 'reader' nav.next.slug %}{% endif %}" class="navigation-button navigation-next" onclick="return COMICS.nextButtonPressed();"></a>
-            <a href="{% url 'reader' nav.last.slug %}" class="navigation-button navigation-last" onclick="return COMICS.lastButtonPressed();"></a>
-        </div>
+		<div class="navigation-wrapper">
+			<a href="{% url 'reader' nav.first.slug %}" class="navigation-button navigation-first"
+				 onclick="return COMICS.firstButtonPressed();"></a>
+			<a href="{% if nav.previous %}{% url 'reader' nav.previous.slug %}{% endif %}"
+				 class="navigation-button navigation-previous" onclick="return COMICS.previousButtonPressed();"></a>
+			<a href="{% url 'random-reader-redirect' %}" class="navigation-button navigation-random"
+				 onclick="COMICS.randomButtonPressed(); return false;">RANDOM</a>
+			<a href="{% if nav.next %}{% url 'reader' nav.next.slug %}{% endif %}" class="navigation-button navigation-next"
+				 onclick="return COMICS.nextButtonPressed();"></a>
+			<a href="{% url 'reader' nav.last.slug %}" class="navigation-button navigation-last"
+				 onclick="return COMICS.lastButtonPressed();"></a>
+		</div>
 
-        <div id="ad-banner">
-            {% snippets_ad_content %}
-        </div>
-    </div>
+		<div class="ad-banner-content">
+			{% snippets_ad_content %}
+		</div>
+	</div>
 
-    <div class="panel">
-        <div class="tab-group">
-            <div class="tab active" data-target="info-frame">Info</div>
-            <div class="tab" data-target="comments-frame">Comments</div>
-            <div class="tab" data-target="quests-frame">Quests</div>
-        </div>
-        <div class="content-frame">
-            <div class="tab-content-area" id="info-frame">
-                <h1 id="comic-title">{{ page.title }}</h1>
-                <div id="comic-post-date">{{ page.posted_at|date }}</div>
+	<div class="panel">
+		<div class="tab-group">
+			<div class="tab active" data-target="info-frame">Info</div>
+			<div class="tab" data-target="comments-frame">Comments</div>
+			<div class="tab" data-target="quests-frame">Quests</div>
+		</div>
+		<div class="content-frame">
+			<div class="tab-content-area" id="info-frame">
+				<h1 id="comic-title">{{ page.title }}</h1>
+				<div id="comic-post-date">{{ page.posted_at|date }}</div>
 
-                <p id="staff-text">Since you're staff, you can <a id="staff-link" href="">EDIT</a> this comic!</p>
+				<p id="staff-text">Since you're staff, you can <a id="staff-link" href="">EDIT</a> this comic!</p>
 
-                <div id="comic-tags">
-                    <!-- If you edit this, you also need to update the templates in the reader.js -->
-                    {% regroup page.tags.all by type as tag_groups %}
-                    {% for group in tag_groups %}
-                        <p>{{group.grouper.title}}:
-                            {% for tag in group.list %}
-                            <a class="tag" style="background-image: url({{ tag.icon_url }});" href="{% url 'archive-tag' tag.type.title tag.title %}">{{ tag.title }}</a>
-                            {% endfor %}
-                        </p>
-                    {% endfor %}
-                </div>
+				<div id="comic-tags">
+					<!-- If you edit this, you also need to update the templates in the reader.js -->
+					{% regroup page.tags.all by type as tag_groups %}
+					{% for group in tag_groups %}
+						<p>{{ group.grouper.title }}:
+							{% for tag in group.list %}
+								<a class="tag" style="background-image: url({{ tag.icon_url }});"
+									 href="{% url 'archive-tag' tag.type.title tag.title %}">{{ tag.title }}</a>
+							{% endfor %}
+						</p>
+					{% endfor %}
+				</div>
 
-                <div id="comic-post">{{ page.post_html | safe }}</div>
-                <div class="comic-transcript-content">
-                    <h2>Transcript</h2>
-                    <div id="comic-transcript">{{ page.transcript_html | safe }}</div>
-                    <h2>Secret Text</h2>
-                    <div id="comic-alt-text">{{ page.alt_text }}</div>
-                </div>
-            </div>
-            <div class="tab-content-area" id="comments-frame">
-                <h2>Comments</h2>
-                <div id='discourse-comments'></div>
-            </div>
-            <div class="tab-content-area" id="quests-frame">
-                <h2>Quests</h2>
-                <p>Help {{ comic.title }} grow by completing these quests!</p>
+				<div id="comic-post">{{ page.post_html | safe }}</div>
+				<div class="comic-transcript-content">
+					<h2>Transcript</h2>
+					<div id="comic-transcript">{{ page.transcript_html | safe }}</div>
+					<h2>Secret Text</h2>
+					<div id="comic-alt-text">{{ page.alt_text }}</div>
+				</div>
+			</div>
+			<div class="tab-content-area" id="comments-frame">
+				<h2>Comments</h2>
+				<div id="discourse-comments"></div>
+			</div>
+			<div class="tab-content-area" id="quests-frame">
+				<h2>Quests</h2>
+				<p>Help {{ comic.title }} grow by completing these quests!</p>
 
-                <h2>Share This Page</h2>
-                <p>The easiest, completely free way to support the comic.</p>
-                <div id="social-share-container" class="archive-tile-container"></div>
+				<h2>Share This Page</h2>
+				<p>The easiest, completely free way to support the comic.</p>
+				<div id="social-share-container" class="archive-tile-container"></div>
 
-                <h2>Join us on Social Media</h2>
-                <p>Never miss another page. Meet the fans. Discuss theories.</p>
-                <div id="social-follow-container" class="archive-tile-container"></div>
+				<h2>Join us on Social Media</h2>
+				<p>Never miss another page. Meet the fans. Discuss theories.</p>
+				<div id="social-follow-container" class="archive-tile-container"></div>
 
-                <h2>Support the Author</h2>
-                <p>Got a little extra cash? Make a big impact using these platforms.</p>
-                <div id="social-money-container" class="archive-tile-container"></div>
-            </div>
-        </div>
+				<h2>Support the Author</h2>
+				<p>Got a little extra cash? Make a big impact using these platforms.</p>
+				<div id="social-money-container" class="archive-tile-container"></div>
+			</div>
 
-        {% if ad %}
-        <div class="invitation">
-            <a target="_blank" rel="noopener" href="{{ ad.url }}"><img alt="Invitation Banner" src="{{ ad.image.url }}"/></a>
-        </div>
-        {% endif %}
-    </div>
+			<div class="ad-banner-content">
+				{% snippets_ad_info %}
+			</div>
+		</div>
+
+		{% if ad %}
+			<div class="invitation">
+				<a target="_blank" rel="noopener" href="{{ ad.url }}">
+					<img alt="Invitation Banner" src="{{ ad.image.url }}"/>
+				</a>
+			</div>
+		{% endif %}
+	</div>
 
 {% endblock %}
