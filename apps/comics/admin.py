@@ -38,8 +38,8 @@ class ComicAdmin(admin.ModelAdmin):
 
 @admin.register(CodeSnippet)
 class CodeSnippetAdmin(admin.ModelAdmin):
-    list_display = ('name', 'comic', 'active', 'testing', )
-    list_filter = ('comic', 'active', 'testing', )
+    list_display = ('name', 'comic', 'active', 'testing', 'location', )
+    list_filter = ('comic', 'active', 'testing', 'location', )
     list_editable = ('active', 'testing', )
 
 
