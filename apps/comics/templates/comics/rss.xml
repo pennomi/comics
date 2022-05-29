@@ -36,7 +36,7 @@
           background-repeat: no-repeat;
         }
       </style>
-      <img src="{{ request.scheme }}://{{request.get_host}}{{ page.image.url }}"></img>
+      <img src="{{ request.scheme }}://{{request.get_host}}{{ page.image.url }}" title="{{ page.alt_text }}"></img>
       {{ page.transcript_html | safe }}
     ]]>
     </description>
