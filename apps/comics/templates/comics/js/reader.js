@@ -150,12 +150,9 @@ const COMICS = function () {
         readerElement.scrollIntoView({behavior: "smooth"});
 
         // Tell Google Analytics that we successfully loaded the page TODO: Make this into a global event that can be used in the CodeSnippets functionality
-        if ("ga" in window && ga.getAll !== undefined) {
-            var tracker = ga.getAll()[0];
-            if (tracker) {
-                tracker.set('page', window.location.pathname);
-                tracker.send('pageview');
-            }
+        if ("gtag" in window) {
+            gtag('set', 'page_path', window.location.pathname);
+            gtag('event', 'page_view');
         }
 
         // Try to refresh the comments
