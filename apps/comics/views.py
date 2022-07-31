@@ -133,6 +133,11 @@ class ReaderView(TemplateView):
 class FeedView(TemplateView):
     template_name = "comics/rss.xml"
 
+    def render_to_response(self, context, **response_kwargs):
+        response = super().render_to_response(context, **response_kwargs)
+        response['Content-Type'] = 'application/xml'
+        return response
+
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         comic = self.request.comic
