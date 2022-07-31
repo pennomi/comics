@@ -23,6 +23,7 @@ urlpatterns = [
 
     # Reader
     path('comic/feed/', comics_views.FeedView.as_view(), name='feed'),  # RSS Feed
+    path('comic/rss.xml', comics_views.FeedView.as_view(), name='feed'),  # RSS Feed Alternate URL
     path('comic/data/', comics_views.ComicAjaxView.as_view(), name='comic-metadata'),
     path('comic/data/<slug:page>/', comics_views.PageAjaxView.as_view(), name='page-metadata'),
     path('comic/<slug:page>/', comics_views.ReaderView.as_view(), name='reader'),
