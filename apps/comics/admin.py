@@ -4,8 +4,9 @@ from django import forms
 from django.contrib.admin.widgets import FilteredSelectMultiple
 
 from apps.comics.models import Comic, Page, TagType, Tag, Ad, AliasUrl, IndexUrl, StyleConfiguration, \
-    LinkedSocialPlatform, SocialPlatform, CodeSnippet, HeaderLink
+    LinkedSocialPlatform, SocialPlatform, CodeSnippet, HeaderLink, Chapter
 
+admin.site.register(Chapter)
 admin.site.register(TagType)
 admin.site.register(AliasUrl)
 admin.site.register(IndexUrl)

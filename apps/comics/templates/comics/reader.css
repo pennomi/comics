@@ -541,6 +541,9 @@ footer a:active {
     padding-bottom: 4px;
     padding-left: 24px;
 }
+.archive-chapter-break {
+    text-align: center;
+}
 
 
 /* TAG DETAIL PAGE */
