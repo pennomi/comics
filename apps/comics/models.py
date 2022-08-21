@@ -53,6 +53,9 @@ class Comic(models.Model):
     twitter_link = models.URLField(blank=True)
     instagram_link = models.URLField(blank=True)
 
+    # Misc configuration
+    quests_tab_title = models.CharField(max_length=16, default="Quests")
+
     # Third-party integrations
     # TODO: Add Google Analytics
     adsense_publisher_account = models.CharField(
@@ -253,6 +256,8 @@ class Page(models.Model):
     slug = models.CharField(max_length=32)
     title = models.CharField(max_length=128)
     ordering = models.FloatField(
+        help_text="Lower numbers appear first. You can use negative numbers and decimals (eg. -2.5).")
+    chronological_ordering = models.FloatField(default=0,
         help_text="Lower numbers appear first. You can use negative numbers and decimals (eg. -2.5).")
     posted_at = models.DateTimeField(
         default=now, help_text="If this is in the future, it won't be visible until that time.")
