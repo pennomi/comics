@@ -18,6 +18,8 @@
     <link>{{ request.scheme }}://{{request.get_host}}{{ page.get_absolute_url }}</link>
     <guid>{{ request.scheme }}://{{request.get_host}}{{ page.get_absolute_url }}</guid>
     <description><![CDATA[
+      <img src="{{ request.scheme }}://{{request.get_host}}{{ page.image.url }}" title="{{ page.alt_text }}"></img>
+      {{ page.transcript_html | safe }}
       <style>
         .tag {
           background-color: var(--tag-background-color);
@@ -36,8 +38,6 @@
           background-repeat: no-repeat;
         }
       </style>
-      <img src="{{ request.scheme }}://{{request.get_host}}{{ page.image.url }}" title="{{ page.alt_text }}"></img>
-      {{ page.transcript_html | safe }}
     ]]>
     </description>
     <author>{{ comic.author }}</author>
