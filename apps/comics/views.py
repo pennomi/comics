@@ -126,7 +126,7 @@ class ReaderView(TemplateView):
         context['comic'] = comic
         context['page'] = page
         context['nav'] = _get_navigation_pages(page)
-        context['ad'] = Ad.objects.filter(comic=comic, active=True).order_by("?").first()
+        context['ad'] = Ad.objects.active(comic)
         return context
 
 
@@ -242,6 +242,7 @@ class ArchiveView(TemplateView):
         context = super().get_context_data(**kwargs)
         comic = self.request.comic
         context['comic'] = comic
+        context['ad'] = Ad.objects.active(comic)
         return context
 
 
@@ -274,6 +275,7 @@ class PageListView(TemplateView):
             {'title': 'Archive', 'url': reverse('archive-index'),
              'icon': comic.archive_icon.url if comic.archive_icon else None},
         ]
+        context['ad'] = Ad.objects.active(comic)
         return context
 
 
@@ -298,6 +300,7 @@ class TagTypeView(TemplateView):
             {'title': 'Archive', 'url': reverse('archive-index'),
              'icon': comic.archive_icon.url if comic.archive_icon else None},
         ]
+        context['ad'] = tag_type.ad_override if tag_type.ad_override else Ad.objects.active(comic)
         return context
 
 
@@ -326,6 +329,7 @@ class TagView(TemplateView):
              'url': reverse('archive-tagtype', kwargs={'type': tag_type.title}),
              'icon': tag_type.best_icon},
         ]
+        context['ad'] = tag.ad_override if tag.ad_override else Ad.objects.active(comic)
         return context
 
 

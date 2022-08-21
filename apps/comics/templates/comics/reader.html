@@ -144,13 +144,7 @@
 			</div>
 		</div>
 
-		{% if ad %}
-			<div class="invitation">
-				<a target="_blank" rel="noopener" href="{{ ad.url }}">
-					<img alt="Invitation Banner" src="{{ ad.image.url }}"/>
-				</a>
-			</div>
-		{% endif %}
+        {% include 'comics/ad.html' %}
 	</div>
 
 {% endblock %}

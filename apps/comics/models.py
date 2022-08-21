@@ -2,7 +2,6 @@ from django.core.exceptions import ValidationError
 from django.db import models
 from django.db.models import Q
 from django.urls import reverse
-from django.utils.safestring import mark_safe
 from django.utils.timezone import now
 
 from apps.comics import custom_markdown
@@ -185,6 +184,9 @@ class TagType(models.Model):
     title = models.CharField(max_length=16)  # TODO: Make sure this is URL-safe?
     default_icon = models.ImageField(blank=True, help_text="Tags without an image will use this instead.")
     changed_at = models.DateTimeField(auto_now=True, help_text="Records the last edit of this TagType.")
+    ad_override = models.ForeignKey(
+        'comics.Ad', on_delete=models.SET_NULL, null=True, blank=True,
+        help_text="If not blank, this ad will be shown on this tag page. HEADS UP! It will show even if deactivated!")
 
     def __str__(self):
         return f"{self.title} ({self.comic})"
@@ -211,6 +213,9 @@ class Tag(models.Model):
     type = models.ForeignKey(TagType, on_delete=models.CASCADE, related_name="tags")
     post = models.TextField(blank=True, help_text="Accepts Markdown")
     changed_at = models.DateTimeField(auto_now=True, help_text="Records the last edit of this Tag.")
+    ad_override = models.ForeignKey(
+        'comics.Ad', on_delete=models.SET_NULL, null=True, blank=True,
+        help_text="If not blank, this ad will be shown on this tag page. HEADS UP! It will show even if deactivated!")
 
     def __str__(self):
         return self.title
@@ -237,12 +242,6 @@ class Tag(models.Model):
             "type": self.type.title,
             "tag": self.title,
         })
-
-#
-# @receiver(post_save, sender=Tag, dispatch_uid="migrate_tags")
-# def update_stock(sender, instance, **kwargs):
-#     instance.product.stock -= instance.amount
-#     instance.product.save()
 
 
 class PageQuerySet(models.QuerySet):
@@ -313,6 +312,11 @@ class Chapter(models.Model):
         return f'{self.comic} | {self.title}'
 
 
+class AdQuerySet(models.QuerySet):
+    def active(self, comic):
+        return self.filter(comic=comic, active=True).order_by("?").first()
+
+
 class Ad(models.Model):
     """Ad objects show a custom banner at the bottom of the comic."""
     comic = models.ForeignKey(Comic, on_delete=models.PROTECT, related_name="ads")
@@ -320,6 +324,8 @@ class Ad(models.Model):
     url = models.URLField()
     active = models.BooleanField(
         default=True, help_text="The ad shown on the page is randomly chosen from all active ads.")
+
+    objects = AdQuerySet.as_manager()
 
     def __str__(self):
         return f'{self.comic} | {self.url}'
