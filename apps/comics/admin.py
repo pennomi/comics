@@ -1,9 +1,10 @@
 from django.contrib import admin
 from django.utils.safestring import mark_safe
+from django import forms
+from django.contrib.admin.widgets import FilteredSelectMultiple
 
 from apps.comics.models import Comic, Page, TagType, Tag, Ad, AliasUrl, IndexUrl, StyleConfiguration, \
     LinkedSocialPlatform, SocialPlatform, CodeSnippet, HeaderLink
-
 
 admin.site.register(TagType)
 admin.site.register(AliasUrl)
@@ -33,22 +34,22 @@ class SnippetInline(admin.TabularInline):
 
 @admin.register(Comic)
 class ComicAdmin(admin.ModelAdmin):
-    inlines = (HeaderLinkInline, StyleInline, SocialPlatformInline, SnippetInline, )
+    inlines = (HeaderLinkInline, StyleInline, SocialPlatformInline, SnippetInline,)
 
 
 @admin.register(CodeSnippet)
 class CodeSnippetAdmin(admin.ModelAdmin):
-    list_display = ('name', 'comic', 'active', 'testing', 'location', )
-    list_filter = ('comic', 'active', 'testing', 'location', )
-    list_editable = ('active', 'testing', )
+    list_display = ('name', 'comic', 'active', 'testing', 'location',)
+    list_filter = ('comic', 'active', 'testing', 'location',)
+    list_editable = ('active', 'testing',)
 
 
 @admin.register(Page)
 class PageAdmin(admin.ModelAdmin):
     list_display = ('title', 'ordering', 'comic', 'post_transcript_alt', 'tag_list')
     list_filter = ('comic', 'tags')
-    filter_horizontal = ('tags', )
-    search_fields = ('title', 'slug', )
+    filter_horizontal = ('tags',)
+    search_fields = ('title', 'slug',)
 
     def post_transcript_alt(self, obj):
         post = "✓" if obj.post else "✗"
@@ -60,11 +61,45 @@ class PageAdmin(admin.ModelAdmin):
         return ", ".join([t.title for t in obj.tags.all()])
 
 
+class TagAdminForm(forms.ModelForm):
+    pages = forms.ModelMultipleChoiceField(
+        queryset=Page.objects.all(),
+        required=False,
+        widget=FilteredSelectMultiple(
+            verbose_name='Pages',
+            is_stacked=False
+        )
+    )
+
+    class Meta:
+        model = Tag
+        fields = "__all__"
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+
+        if self.instance and self.instance.pk:
+            self.fields['pages'].initial = self.instance.pages.all()
+
+    def save(self, commit=True):
+        tag = super().save(commit=False)
+
+        if commit:
+            tag.save()
+
+        if tag.pk:
+            tag.pages.set(self.cleaned_data['pages'])
+            self.save_m2m()
+
+        return tag
+
+
 @admin.register(Tag)
 class TagAdmin(admin.ModelAdmin):
     list_display = ('thumbnail', 'type')
     list_filter = ('type',)
-    search_fields = ('title', )
+    search_fields = ('title',)
+    form = TagAdminForm
 
     def thumbnail(self, obj):
         if obj.icon:
