@@ -88,7 +88,7 @@
 		<div class="tab-group">
 			<div class="tab active" data-target="info-frame">Info</div>
 			<div class="tab" data-target="comments-frame">Comments</div>
-			<div class="tab" data-target="quests-frame">Quests</div>
+			<div class="tab" data-target="quests-frame">{{ comic.quests_tab_title }}</div>
 		</div>
 		<div class="content-frame">
 			<div class="tab-content-area" id="info-frame">
@@ -123,7 +123,7 @@
 				<div id="discourse-comments"></div>
 			</div>
 			<div class="tab-content-area" id="quests-frame">
-				<h2>Quests</h2>
+				<h2>{{ comic.quests_tab_title }}</h2>
 				<p>Help {{ comic.title }} grow by completing these quests!</p>
 
 				<h2>Share This Page</h2>
