@@ -41,7 +41,7 @@
     ]]>
     </description>
     <author>{{ comic.author }}</author>
-    <pubDate>{{ page.posted_at }}</pubDate>
+    <pubDate>{{ page.posted_at|date:"r" }}</pubDate>
   </item>
   {% endfor %}
 </channel>
