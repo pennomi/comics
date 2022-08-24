@@ -10,10 +10,7 @@
     {% for page in pages_and_chapters %}
         {% if page.posted_at %}
             {# This is a Page #}
-            <a data-title="{{ page.title }}" class="archive-tile archive-tile-short" href="{{ page.get_absolute_url }}" style="background-image: url({{page.thumb_url}});">
-                <strong>{{ page.title }}</strong>
-                <small>{{ page.posted_at | date:"d M Y" }}</small>
-            </a>
+            {% include "comics/archive/page_element.html" %}
         {% else %}
             {# This is a Chapter Heading instead #}
             <h2 class="archive-chapter-break" style="width:100%">{{ page.title }}</h2>

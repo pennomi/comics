@@ -250,20 +250,28 @@ class PageQuerySet(models.QuerySet):
 
 
 class Page(models.Model):
+    def get_image_file_path(self, filename):
+        return f"{self.comic.title}/images/{filename}"
+
+    def get_thumbnail_file_path(self, filename):
+        return f"{self.comic.title}/thumbnails/{filename}"
+
     """A Page is a single image of a Comic, with associated position (ordering) data."""
     comic = models.ForeignKey(Comic, on_delete=models.PROTECT, related_name="pages")
     slug = models.CharField(max_length=32)
     title = models.CharField(max_length=128)
     ordering = models.FloatField(
         help_text="Lower numbers appear first. You can use negative numbers and decimals (eg. -2.5).")
-    chronological_ordering = models.FloatField(default=0,
-        help_text="Lower numbers appear first. You can use negative numbers and decimals (eg. -2.5).")
+    chronological_ordering = models.FloatField(
+        default=0, help_text="Lower numbers appear first. You can use negative numbers and decimals (eg. -2.5).")
     posted_at = models.DateTimeField(
         default=now, help_text="If this is in the future, it won't be visible until that time.")
     changed_at = models.DateTimeField(auto_now=True, help_text="Records the last edit of this Page.")
     post = models.TextField(blank=True, help_text="Accepts Markdown")
     transcript = models.TextField(blank=True, help_text="Accepts Markdown")
-    image = models.ImageField()
+    image = models.ImageField(upload_to=get_image_file_path)
+    thumbnail = models.ImageField(upload_to=get_thumbnail_file_path, null=True, blank=True,
+                                  help_text="Recommended size: 300x300px")
     alt_text = models.CharField(max_length=150, blank=True)
     tags = models.ManyToManyField(Tag, blank=True, related_name="pages")
 

@@ -24,10 +24,7 @@
     {% endwith %}
     <div class="archive-tile-container">
         {% for page in tag.pages.active %}
-            <a data-title="{{ page.title }}" class="archive-tile archive-tile-short" href="{{ page.get_absolute_url }}" style="background-image: url({{page.thumb_url}});">
-                <strong>{{ page.title }}</strong>
-                <small>{{ page.posted_at | date:"d M Y" }}</small>
-            </a>
+            {% include "comics/archive/page_element.html" %}
         {% endfor %}
     </div>
     {% include 'comics/ad.html' %}

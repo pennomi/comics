@@ -1,0 +1,10 @@
+<a data-title="{{ page.title }}" href="{{ page.get_absolute_url }}" class="archive-tile archive-tile"
+    {% if page.thumbnail %}
+        style="background-image: url({{ page.thumbnail.url }});"
+    {% elif comic.archive_icon %}
+        style="background-image: url({{ comic.archive_icon.url }});"
+    {% endif %}
+>
+    <strong>{{ page.title }}</strong>
+    <small>{{ page.posted_at | date:"d M Y" }}</small>
+</a>
