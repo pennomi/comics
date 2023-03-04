@@ -167,7 +167,6 @@ body {
     margin: 0;
     min-width: var(--comic-min-width);
     background: var(--overflow-background);
-    background-size: cover;
     display: flex;
     justify-content: center;
     color: var(--primary-text-color);
