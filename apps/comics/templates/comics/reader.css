@@ -607,6 +607,8 @@ dialog.is-hidden::backdrop {
 .dialog-image {
     width: 100%;
     height: 100%;
+    max-width: 95vw;
+    max-height: 95vh;
     object-fit: contain;
 }
 .dialog-close-button {
