@@ -24,6 +24,7 @@ class Comic(models.Model):
     # Style & Images
     # TODO: Add documentation on preferred pixel sizes
     header_image = models.ImageField(blank=True)
+    secret_image = models.ImageField(blank=True, help_text="Shows up when the user inputs the Konami code")
     post_border_image = models.ImageField(blank=True)
     navigation_spritesheet = models.ImageField(blank=True)
     spinner_image = models.ImageField(
