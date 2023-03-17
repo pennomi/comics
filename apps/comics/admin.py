@@ -113,7 +113,7 @@ class TagAdmin(admin.ModelAdmin):
 
 @admin.register(Ad)
 class AdAdmin(admin.ModelAdmin):
-    list_display = ('thumbnail', 'url', 'comic', 'active',)
+    list_display = ('thumbnail', 'type', 'url', 'comic', 'active',)
     list_editable = ('active',)
     list_filter = ('active', 'comic')
 

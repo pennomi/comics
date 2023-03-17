@@ -32,7 +32,9 @@ const QUESTS = function () {
         }
         // TODO: If the device supports navigator.share, make a special tile
         const shareContainer = document.getElementById("social-share-container");
-        shareContainer.innerHTML = html;
+        if (shareContainer !== null) {
+            shareContainer.innerHTML = html;
+        }
 
         // Set up the social follow links
         html = "";
@@ -42,7 +44,9 @@ const QUESTS = function () {
             html += makeTile(link.followUrl || link.visitUrl, link.image, link.title, link.followCta);
         }
         const followContainer = document.getElementById("social-follow-container");
-        followContainer.innerHTML = html;
+        if (followContainer !== null) {
+            followContainer.innerHTML = html;
+        }
 
         // Set up the contribution follow links
         html = "";
@@ -52,7 +56,9 @@ const QUESTS = function () {
             html += makeTile(link.followUrl || link.visitUrl, link.image, link.title, link.followCta);
         }
         const moneyContainer = document.getElementById("social-money-container");
-        moneyContainer.innerHTML = html;
+        if (moneyContainer !== null) {
+            moneyContainer.innerHTML = html;
+        }
 
     };
 

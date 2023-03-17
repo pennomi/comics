@@ -158,13 +158,16 @@ const COMICS = function () {
         // Try to refresh the comments
         refreshDiscourseComments();
 
+        // Try to show the popup
+        attemptToShowPopup();
+
         // Cache all the pages we can navigate to from this page
         await Promise.all([
             requestPageData(pageData.first),
             requestPageData(pageData.previous),
             requestPageData(pageData.next),
             requestPageData(pageData.last),
-        ])
+        ]);
     }
 
     // The next 4 functions perform the navigation.
@@ -355,6 +358,6 @@ const COMICS = function () {
     };
 }();
 
-document.addEventListener("DOMContentLoaded", function(event) {
+document.addEventListener("DOMContentLoaded", function (event) {
     COMICS.initializePage();
 });

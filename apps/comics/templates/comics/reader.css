@@ -575,3 +575,58 @@ footer a:active {
 .index-section:nth-child(even) {
     background-color: #B0BEC5;
 }
+
+/* Popup dialogs */
+dialog {
+    padding: 0;
+    border: none;
+}
+dialog[open] {
+  animation: slidein 500ms cubic-bezier(0.25, 0, 0.3, 1) normal;
+}
+dialog.is-hidden {
+  animation: minimize 500ms cubic-bezier(0.5, -0.5, 0.1, 1.5) normal;
+}
+dialog::backdrop {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, 0.25);
+    backdrop-filter: blur(0.25rem);
+    transition: opacity 0.5s;
+    opacity: 0;
+}
+dialog[open]::backdrop {
+  opacity: 1;
+}
+dialog.is-hidden::backdrop {
+  opacity: 0;
+}
+.dialog-image {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+}
+.dialog-close-button {
+    position: absolute;
+    top: 0;
+    right: 0;
+}
+@keyframes slidein {
+  from {
+    opacity: 0;
+    transform: translateY(50%);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+@keyframes minimize {
+  to {
+    opacity: 0;
+    transform: scale(0);
+  }
+}

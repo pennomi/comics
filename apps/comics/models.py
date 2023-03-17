@@ -327,7 +327,13 @@ class AdQuerySet(models.QuerySet):
 
 class Ad(models.Model):
     """Ad objects show a custom banner at the bottom of the comic."""
+    AD_TYPES = [
+        ('Banner', 'Banner'),
+        ('Popup', 'Popup'),
+    ]
+
     comic = models.ForeignKey(Comic, on_delete=models.PROTECT, related_name="ads")
+    type = models.CharField(max_length=6, choices=AD_TYPES, default="Banner")
     image = models.ImageField()
     url = models.URLField()
     active = models.BooleanField(
