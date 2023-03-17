@@ -159,7 +159,7 @@ const COMICS = function () {
         refreshDiscourseComments();
 
         // Try to show the popup
-        attemptToShowPopup();
+        window.setTimeout(attemptToShowPopup, 5000);
 
         // Cache all the pages we can navigate to from this page
         await Promise.all([
