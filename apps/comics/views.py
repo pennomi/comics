@@ -13,7 +13,7 @@ from django.views.decorators.cache import cache_page
 from django.views.generic import TemplateView, RedirectView
 from django.utils.decorators import method_decorator
 
-from apps.comics.models import Comic, Page, TagType, Tag, Ad
+from apps.comics.models import Comic, Page, TagType, Tag, Ad, ShortCodeRedirect
 
 
 def require_comic(cls):
@@ -354,6 +354,14 @@ class LegacyPageRedirectView(RedirectView):
         url = self.request.build_absolute_uri()
         url = url.replace("/swords/", "/comic/")
         return url
+
+class ShortCodeRedirectView(RedirectView):
+    permanent = False
+
+    def get_redirect_url(self, *args, **kwargs):
+        code = kwargs['short_code']
+        redirect = get_object_or_404(ShortCodeRedirect, short_code=code, comic=self.request.comic)
+        return redirect.url
 
 
 def comic_404_view(request, exception):

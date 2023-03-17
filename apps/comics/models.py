@@ -111,6 +111,13 @@ class HeaderLink(models.Model):
         return f"{self.comic} - {self.text}"
 
 
+class ShortCodeRedirect(models.Model):
+    """Short URLs for redirecting to other places. For example, https://comic.example.com/patreon -> your Patreon URL"""
+    comic = models.ForeignKey(Comic, on_delete=models.CASCADE, related_name="short_codes")
+    short_code = models.CharField(max_length=24, help_text="The uri you want on the comics side, eg. 'patreon'")
+    url = models.URLField(help_text="The URL you want to send people to.")
+
+
 class SnippetQuerySet(models.QuerySet):
     def for_comic(self, comic):
         return self.filter(

@@ -4,7 +4,7 @@ from django import forms
 from django.contrib.admin.widgets import FilteredSelectMultiple
 
 from apps.comics.models import Comic, Page, TagType, Tag, Ad, AliasUrl, IndexUrl, StyleConfiguration, \
-    LinkedSocialPlatform, SocialPlatform, CodeSnippet, HeaderLink, Chapter
+    LinkedSocialPlatform, SocialPlatform, CodeSnippet, HeaderLink, Chapter, ShortCodeRedirect
 
 admin.site.register(Chapter)
 admin.site.register(TagType)
@@ -15,6 +15,11 @@ admin.site.register(SocialPlatform)
 
 class HeaderLinkInline(admin.TabularInline):
     model = HeaderLink
+    extra = 1
+
+
+class ShortCodeInline(admin.TabularInline):
+    model = ShortCodeRedirect
     extra = 1
 
 
@@ -35,7 +40,7 @@ class SnippetInline(admin.TabularInline):
 
 @admin.register(Comic)
 class ComicAdmin(admin.ModelAdmin):
-    inlines = (HeaderLinkInline, StyleInline, SocialPlatformInline, SnippetInline,)
+    inlines = (HeaderLinkInline, ShortCodeInline, StyleInline, SocialPlatformInline, SnippetInline,)
 
 
 @admin.register(CodeSnippet)
