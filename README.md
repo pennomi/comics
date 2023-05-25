@@ -47,6 +47,8 @@ To restore your database from a backup zip:
 
 To create SSL certs for use in production, you need to run certbot from within the comics container
 
+ - `sudo certbot certonly --cert-name <project name> --standalone --staple-ocsp -m <your email> --agree-tos -d <example.com> -d <another.example.com>`
+
  - `docker-compose exec comics bash`
  - `certbot certonly --cert-name comics --webroot --webroot-path /var/www/letsencrypt -d <example.com> -d <another.example.com> -d <etc.example.com>`
  - exit out of the bash shell
@@ -188,46 +190,39 @@ Ads should currently be configured globally for the entire server, NOT per domai
 
 # AWS Ubuntu Setup
 
-Here's a rough outline of what I did to get this server deployed on an Ubuntu AWS EC2 instance.
+Here's a rough outline of what I did to get this server deployed on a fresh Ubuntu AWS EC2 instance.
 
 ```bash
-# Fix an annoying bug in AWS. This will be the last "unable to resolve host" error you see
-sudo sh -c 'echo "127.0.0.1 $(hostname)" >> /etc/hosts'
+# Apply security updates
+sudo apt update
+sudo apt upgrade
 
 # Get Docker
-sudo apt-get update
-sudo apt-get install apt-transport-https ca-certificates curl software-properties-common
-curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -
-sudo apt-key fingerprint 0EBFCD88
-sudo add-apt-repository "deb [arch=amd64] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable"
-sudo apt-get update
-sudo apt-get install docker-ce
+sudo apt install apt-transport-https ca-certificates curl software-properties-common
+curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo gpg --dearmor -o /usr/share/keyrings/docker-archive-keyring.gpg
+echo "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/docker-archive-keyring.gpg] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable" | sudo tee /etc/apt/sources.list.d/docker.list > /dev/null
+sudo apt update
+sudo apt install docker-ce
+
+# Get Docker Compose
+mkdir -p ~/.docker/cli-plugins/
+curl -SL https://github.com/docker/compose/releases/download/v2.3.3/docker-compose-linux-x86_64 -o ~/.docker/cli-plugins/docker-compose
+chmod +x ~/.docker/cli-plugins/docker-compose
 
 # Make it so we don't have to use docker with sudo
-sudo groupadd docker
-sudo usermod -aG docker $USER
-sudo systemctl enable docker
-
-# Apply security updates
-sudo apt-get upgrade
-
-# Reboot to apply changes
-sudo reboot now
-
-# Get docker-compose
-sudo curl -L https://github.com/docker/compose/releases/download/1.22.0/docker-compose-`uname -s`-`uname -m` -o /usr/local/bin/docker-compose
-sudo chmod 777 /usr/local/bin/docker-compose
+sudo usermod -aG docker ${USER}
+newgrp docker
 
 # Get the project
 git clone https://github.com/pennomi/comics.git
 cd comics
-python3 deploy/generate_env.py  # Select "n" because this is a production environment
-docker-compose build
-docker-compose up -d
+python3 generate_env.py  # Select "n" because this is a production environment
+docker compose build
+docker compose up -d
 
 # Configure SSL Cert with Let's Encrypt
 # First, set your DNS to the public IP address of the server
-docker-compose exec comics bash
+docker compose exec comics bash
 
 # Set up the temporary challenge folder
 mkdir /var/www/letsencrypt

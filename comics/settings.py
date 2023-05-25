@@ -70,9 +70,11 @@ TEMPLATES = [
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': '/var/lib/comics/comics.sqlite3',
+        'NAME': f'/var/lib/django/{os.getenv("DJANGO_PROJECT_DIR")}.sqlite3',
     }
 }
+
+
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 # Password validation
