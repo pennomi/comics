@@ -9,7 +9,7 @@ services:
     volumes:
       - .:/opt/django
       - ./deploy/db:/var/lib/django
-      - ./deploy/certs:/etc/letsencrypt
+      - /etc/letsencrypt:/etc/letsencrypt
       - ./deploy/static:/var/www/static
       - ./deploy/media:/var/www/media
     ports:

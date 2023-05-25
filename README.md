@@ -47,13 +47,7 @@ To restore your database from a backup zip:
 
 To create SSL certs for use in production, you need to run certbot from within the comics container
 
- - `sudo certbot certonly --cert-name <project name> --standalone --staple-ocsp -m <your email> --agree-tos -d <example.com> -d <another.example.com>`
-
- - `docker-compose exec comics bash`
- - `certbot certonly --cert-name comics --webroot --webroot-path /var/www/letsencrypt -d <example.com> -d <another.example.com> -d <etc.example.com>`
- - exit out of the bash shell
- - `docker-compose restart comics`
-
+ - `sudo certbot certonly --cert-name <project name> --standalone --staple-ocsp -m <your email> --non-interactive --agree-tos -d <example.com> -d <another.example.com>`
 
 # Configuring Ads
 
@@ -218,18 +212,17 @@ git clone https://github.com/pennomi/comics.git
 cd comics
 python3 generate_env.py  # Select "n" because this is a production environment
 docker compose build
-docker compose up -d
 
 # Configure SSL Cert with Let's Encrypt
-# First, set your DNS to the public IP address of the server
-docker compose exec comics bash
+# HEADS UP! First remember to set your DNS to the public IP address of the server
+sudo apt install certbot
+sudo certbot certonly --cert-name <project name> --standalone --staple-ocsp -m <your email> --non-interactive --agree-tos -d <example.com> -d <another.example.com>
 
-# Set up the temporary challenge folder
-mkdir /var/www/letsencrypt
-certbot certonly --cert-name comics --webroot-path /var/www/letsencrypt -d <your_domain_name>,<another_domain>
-# To renew  TODO: This is wrong, move to a management command
-certbot renew --pre-hook "service nginx stop" --post-hook "service nginx start"
-# Make sure to restart nginx
+# HEAD UP! You don't need this yet, but to renew do this.
+certbot renew --post-hook "docker compose restart"
+
+# You have the certs, so you can finally start the server
+docker compose up -d
 
 # Create the database and initialize the static files
 python manage.py migrate
