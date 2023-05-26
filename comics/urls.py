@@ -8,7 +8,6 @@ from apps.comics import views as comics_views
 
 urlpatterns = [
     path('', comics_views.ComicsIndexView.as_view(), name='index'),
-    path('admin', admin.site.urls),
     path('admin/', admin.site.urls),
     path('ads.txt', comics_views.AdsTxt.as_view(), name='ads-txt'),
     # path('robots.txt', comics_views.RobotsTxtView.as_view(), name='robots'),
