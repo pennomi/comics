@@ -1,10 +1,12 @@
 from django.core.exceptions import ValidationError
 from django.db import models
 from django.db.models import Q
+from django.db.models.signals import post_save
 from django.urls import reverse
 from django.utils.timezone import now
 
 from apps.comics import custom_markdown
+from apps.comics.cloudflare_utilities import purge_paths
 
 
 class Comic(models.Model):
@@ -72,6 +74,8 @@ class Comic(models.Model):
         max_length=64, blank=True, help_text="Looks like `bsa-zone_1234567890123-4_123456`")
     bsa_ad_slot_body = models.CharField(
         max_length=64, blank=True, help_text="Looks like `bsa-zone_1234567890123-4_123456`")
+    cloudflare_token = models.CharField(max_length=50, blank=True, help_text="Your Cloudflare API Token")
+    cloudflare_zone = models.CharField(max_length=50, blank=True, help_text="Your Cloudflare Zone ID")
 
     # Misc
     changed_at = models.DateTimeField(auto_now=True, help_text="Records the last edit of this Comic.")
@@ -85,9 +89,14 @@ class Comic(models.Model):
     def clean(self):
         if AliasUrl.objects.filter(domain=self.domain):
             raise ValidationError("Comic cannot have the same domain as an AliasUrl.")
-        if IndexUrl.objects.filter(domain=self.domain):
-            raise ValidationError("Comic cannot have the same domain as an IndexUrl.")
         return super().clean()
+
+    @staticmethod
+    def clear_cache(sender, instance, **kwargs):
+        purge_paths(instance, [], everything=True)
+
+
+post_save.connect(Comic.clear_cache, Comic)
 
 
 class HeaderLinkManager(models.Manager):
@@ -153,6 +162,13 @@ class CodeSnippet(models.Model):
 
     def __str__(self):
         return f"{self.comic or 'Global'} - {self.name}"
+
+    @staticmethod
+    def clear_cache(sender, instance, **kwargs):
+        Comic.clear_cache(sender, instance.comic, **kwargs)
+
+
+post_save.connect(CodeSnippet.clear_cache, CodeSnippet)
 
 
 class CssPropertyChoices(models.TextChoices):
@@ -327,6 +343,15 @@ class Chapter(models.Model):
     def __str__(self):
         return f'{self.comic} | {self.title}'
 
+    @staticmethod
+    def clear_cache(sender, instance, **kwargs):
+        purge_paths(instance.comic, [
+            reverse("archive-pages"),
+        ])
+
+
+post_save.connect(Chapter.clear_cache, Chapter)
+
 
 class AdQuerySet(models.QuerySet):
     def active(self, comic):
@@ -352,6 +377,13 @@ class Ad(models.Model):
     def __str__(self):
         return f'{self.comic} | {self.url}'
 
+    @staticmethod
+    def clear_cache(sender, instance, **kwargs):
+        Comic.clear_cache(sender, instance.comic, **kwargs)
+
+
+post_save.connect(Ad.clear_cache, Ad)
+
 
 class AliasUrl(models.Model):
     """AliasUrl objects are used to redirect domains to the canonical URL for the attached Comic object."""
@@ -367,26 +399,6 @@ class AliasUrl(models.Model):
     def clean(self):
         if Comic.objects.filter(domain=self.domain):
             raise ValidationError("AliasUrl cannot have the same domain as a Comic.")
-        if IndexUrl.objects.filter(domain=self.domain):
-            raise ValidationError("AliasUrl cannot have the same domain as an IndexUrl.")
-        super().clean()
-
-
-class IndexUrl(models.Model):
-    """This model exists for ensuring automatic SSL is generated for the index domains."""
-
-    domain = models.CharField(
-        max_length=128, unique=True,
-        help_text="Any request going to this domain will be shown the comic index pages.")
-
-    def __str__(self):
-        return f'{self.domain}'
-
-    def clean(self):
-        if Comic.objects.filter(domain=self.domain):
-            raise ValidationError("IndexUrl cannot have the same domain as a Comic.")
-        if AliasUrl.objects.filter(domain=self.domain):
-            raise ValidationError("IndexUrl cannot have the same domain as an AliasUrl.")
         super().clean()
 
 

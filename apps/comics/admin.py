@@ -3,13 +3,12 @@ from django.utils.safestring import mark_safe
 from django import forms
 from django.contrib.admin.widgets import FilteredSelectMultiple
 
-from apps.comics.models import Comic, Page, TagType, Tag, Ad, AliasUrl, IndexUrl, StyleConfiguration, \
+from apps.comics.models import Comic, Page, TagType, Tag, Ad, AliasUrl, StyleConfiguration, \
     LinkedSocialPlatform, SocialPlatform, CodeSnippet, HeaderLink, Chapter, ShortCodeRedirect
 
 admin.site.register(Chapter)
 admin.site.register(TagType)
 admin.site.register(AliasUrl)
-admin.site.register(IndexUrl)
 admin.site.register(SocialPlatform)
 
 
