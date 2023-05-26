@@ -11,11 +11,7 @@ ENV PYTHONUNBUFFERED 1
 
 # Get Packages and Other Dependencies
 # RUN apt update && apt install -y nginx
-RUN pip install -r /opt/django/requirements.txt gunicorn certbot
-
-# Make things executable
-RUN chmod +x ./generate_env.py
-RUN chmod +x ./run_server.sh
+RUN pip install -r /opt/django/requirements.txt gunicorn
 
 EXPOSE 80
 EXPOSE 443
