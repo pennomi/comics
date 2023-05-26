@@ -14,16 +14,12 @@ urlpatterns = [
     # path('sitemap.xml', comics_views.SitemapView.as_view(), name='sitemap'),
 
     # Comic root
-    path('', comics_views.ReaderRedirectView.as_view(), name='reader-redirect'),
     path('comic/', comics_views.ReaderRedirectView.as_view(), name='reader-redirect'),
     path('comic/random/', comics_views.RandomReaderRedirectView.as_view(), name='random-reader-redirect'),
 
-    # Legacy redirects
-    re_path(r'^swords/', comics_views.LegacyPageRedirectView.as_view(), name='legacy-page-redirect'),
-
     # Reader
     path('comic/feed/', comics_views.FeedView.as_view(), name='feed'),  # RSS Feed
-    path('comic/rss.xml', comics_views.FeedView.as_view(), name='feed'),  # RSS Feed Alternate URL
+    path('comic/rss.xml', comics_views.FeedView.as_view(), name='feed-alt'),  # RSS Feed Alternate URL
     path('comic/data/', comics_views.ComicAjaxView.as_view(), name='comic-metadata'),
     path('comic/data/<slug:page>/', comics_views.PageAjaxView.as_view(), name='page-metadata'),
     path('comic/<slug:page>/', comics_views.ReaderView.as_view(), name='reader'),

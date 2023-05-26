@@ -74,6 +74,7 @@ class ReaderRedirectView(RedirectView):
         return self.request.build_absolute_uri(page.get_absolute_url())
 
 
+# TODO: Make this instead use an API to get all the pages, and randomly select one.
 @require_comic
 class RandomReaderRedirectView(RedirectView):
     """ If the user comes to this page, redirect that user to a random published comic.
@@ -190,7 +191,8 @@ class PageAjaxView(View):
         pages = _get_navigation_pages(page)
 
         # Compute tag data
-        tags = page.tags.order_by('type__title', 'title')
+        # Sort tags by type, then popularity, then alphabetically
+        tags = page.tags.annotate(count=Count('pages')).order_by('type__title', '-count', 'title')
         tag_types = itertools.groupby(tags, lambda _: _.type)
         tag_type_data = [{"title": key.title, "tags": [{
             "url": reverse("archive-tag", kwargs={"type": t.type.title, "tag": t.title}),

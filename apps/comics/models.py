@@ -47,33 +47,12 @@ class Comic(models.Model):
     error_500_image = models.ImageField(
         blank=True, help_text="A square PNG to be used as a 500 message. Ideally 1000x1000px.")
 
-    # Social Links
-    # TODO: These are all deprecated. Where are they being used, and can we replace them?
-    patreon_link = models.URLField(blank=True)
-    discord_link = models.URLField(blank=True)
-    reddit_link = models.URLField(blank=True)
-    twitter_link = models.URLField(blank=True)
-    instagram_link = models.URLField(blank=True)
-
     # Misc configuration
     quests_tab_title = models.CharField(max_length=16, default="Quests")
 
     # Third-party integrations
-    # TODO: Add Google Analytics
-    adsense_publisher_account = models.CharField(
-        max_length=32, blank=True, help_text="Looks like `pub-1234567891234567`")
-    adsense_ad_slot = models.CharField(
-        max_length=10, blank=True, help_text="Looks like `1234567890`")
-    adsense_ad_slot_header = models.CharField(
-        max_length=10, blank=True, help_text="Looks like `1234567890`")
     discourse_url = models.URLField(
         blank=True, help_text="Link to a Discourse forum, for example `https://forum.example.com/`")
-    bsa_link = models.URLField(
-        blank=True, help_text="Link to a BuySellAds js script, for example: `https://cdn4.buysellads.net/pub/foo.js`")
-    bsa_ad_slot_header = models.CharField(
-        max_length=64, blank=True, help_text="Looks like `bsa-zone_1234567890123-4_123456`")
-    bsa_ad_slot_body = models.CharField(
-        max_length=64, blank=True, help_text="Looks like `bsa-zone_1234567890123-4_123456`")
     cloudflare_token = models.CharField(max_length=50, blank=True, help_text="Your Cloudflare API Token")
     cloudflare_zone = models.CharField(max_length=50, blank=True, help_text="Your Cloudflare Zone ID")
 
@@ -229,6 +208,13 @@ class TagType(models.Model):
         most_used_tag = self.tags.annotate(count=models.Count('pages')).order_by("-count", 'title').first()
         return most_used_tag.icon_url
 
+    @staticmethod
+    def clear_cache(sender, instance, **kwargs):
+        Comic.clear_cache(sender, instance.comic, **kwargs)
+
+
+post_save.connect(TagType.clear_cache, TagType)
+
 
 class Tag(models.Model):
     icon = models.ImageField(
@@ -266,6 +252,13 @@ class Tag(models.Model):
             "type": self.type.title,
             "tag": self.title,
         })
+
+    @staticmethod
+    def clear_cache(sender, instance, **kwargs):
+        Comic.clear_cache(sender, instance.type.comic, **kwargs)
+
+
+post_save.connect(Tag.clear_cache, Tag)
 
 
 class PageQuerySet(models.QuerySet):
@@ -324,6 +317,13 @@ class Page(models.Model):
     @property
     def transcript_txt(self):
         return custom_markdown.render_txt(self.transcript)
+
+    @staticmethod
+    def clear_cache(sender, instance, **kwargs):
+        Comic.clear_cache(sender, instance.comic, **kwargs)
+
+
+post_save.connect(Page.clear_cache, Page)
 
 
 class Chapter(models.Model):
