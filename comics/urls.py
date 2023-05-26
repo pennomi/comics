@@ -8,6 +8,7 @@ from apps.comics import views as comics_views
 
 urlpatterns = [
     path('', comics_views.ComicsIndexView.as_view(), name='index'),
+    path('admin', admin.site.urls),
     path('admin/', admin.site.urls),
     path('ads.txt', comics_views.AdsTxt.as_view(), name='ads-txt'),
     # path('robots.txt', comics_views.RobotsTxtView.as_view(), name='robots'),
@@ -42,7 +43,9 @@ urlpatterns = [
     path('500/', comics_views.comic_500_view),
     path('<str:short_code>', comics_views.ShortCodeRedirectView.as_view(), name = 'configured-redirect'),
 
-] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+]
+urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
 
 handler404 = comics_views.comic_404_view
 handler500 = comics_views.comic_500_view

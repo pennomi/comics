@@ -225,19 +225,16 @@ certbot renew --post-hook "docker compose restart"
 docker compose up -d
 
 # Create the database and initialize the static files
-python manage.py migrate
-python manage.py collectstatic
+docker compose exec django python manage.py migrate
+docker compose exec django python manage.py collectstatic
 
 # EITHER initialize the data
-python manage.py createsuperuser
+docker compose exec python manage.py createsuperuser
 # OR load from a data dump
-python manage.py backup load <dumpfile.zip>
-
-# Exit out of the shell
-<ctrl-d>
+docker compose exec django python manage.py backup load <dumpfile.zip>
 
 # Restart the server
-docker-compose restart
+docker compose restart
 ```
 
 # Notes on comfortable reading

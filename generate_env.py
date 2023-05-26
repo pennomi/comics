@@ -17,9 +17,10 @@ def main():
             response = input("Is this a dev environment (disable SSL and enable debug mode)? (y/N) ").strip().lower()
             if response == "":
                 response = "n"
-        debug_string = ""
         if response == "y":
-            debug_string = "DJANGO_DEBUG=1"
+            debug_string = "DJANGO_DEBUG=1\nUSE_SSL=0"
+        else:
+            debug_string = "DJANGO_DEBUG=0\nUSE_SSL=1"
 
         chars = 'abcdefghijklmnopqrstuvwxyz0123456789!@#$%^&*(-_=+)'
         with open(filepath, 'w') as outfile:
