@@ -14,19 +14,19 @@ Want to run a comics server for yourself? Maybe you'd rather send us a bug fix o
 If you're unfamiliar with Docker, this might be a little tricky for you. It's worth learning though; power through it until you understand!
 
 - Install Docker and Docker Compose for your platform
-- Run `python deploy/generate_env.py` to set up the docker environment configuration. Answer `y` to the prompt if you're doing development work, or `n` if you're deploying a server.
-- Run `docker-compose build`
-- Run `docker-compose up -d`
+- Run `python generate_env.py` to set up the docker environment configuration. Answer `y` to the prompt if you're doing development work, or `n` if you're deploying a server.
+- Run `docker compose build`
+- Run `docker compose up -d`
 
 You now have a server running. Unfortunately it doesn't do much - we need to initialize the data or restore from a backup.
 
 
 ## Initialize Data From Scratch
 
-- Enter a shell on the docker django machine `docker-compose exec comics_django bash`
-- Create the database `python3 manage.py migrate`
-- Add a superuser `python3 manage.py createsuperuser`. Follow the prompts.
-- Collect static files `python3 manage.py collectstatic`
+- Enter a shell on the docker django machine `docker compose exec comics bash`
+- Create the database `python manage.py migrate`
+- Add a superuser `python manage.py createsuperuser`. Follow the prompts.
+- Collect static files `python manage.py collectstatic`
 - The site will now be running on `http://localhost`. (Note that this is running on port 80 unlike many development servers.)
 - Add Data into the [Django Admin](http://localhost/admin/). Set up at least one Comic and then give it at least one Page. The Comic should use `localhost` as its "domain" so the URL router knows where to find it.
 - Open [the Site](http://localhost) in a Web Browser.
@@ -34,38 +34,21 @@ You now have a server running. Unfortunately it doesn't do much - we need to ini
 
 ## Backing Up and Restoring Data
 
-To back up your database, run `docker-compose exec comics python manage.py backup dump <your filename here>.zip`.
+To back up your database, run `docker compose exec comics python manage.py backup dump <your filename here>.zip`.
 
 To restore your database from a backup zip:
- - Clear your database by moving it to a backup location.  `mv deploy/db/comics.sqlite3 deploy/db/comics.sqlite3.bak`
- - Create a fresh database `docker-compose exec comics python manage.py migrate`
+ - Ensure you have an empty database to start. It should be migrated.
  - Then load the backup zip `docker-compose exec comics python manage.py backup load <your filename here>.zip`.
  - Log into your admin and make sure to change any Comics or Alias URLs so they work on your new IPs/Domains.
- - If you're not seeing the CSS, make sure to run `docker-compose exec comics python manage.py collectstatic`.
 
 # Setting up SSL certs
 
-To create SSL certs for use in production, you need to run certbot from within the comics container
-
- - `sudo certbot certonly --cert-name <project name> --standalone --staple-ocsp -m <your email> --non-interactive --agree-tos -d <example.com> -d <another.example.com>`
-
-# Configuring Ads
-
-This section is a work in progress, so it may not be entirely accurate!
-
-Ads should currently be configured globally for the entire server, NOT per domain. In order to set up an ad network, you need to do a couple things.
-
-1. Configure your `ads.txt` URL in your server's `django.env` file. It should look like: `DJANGO_ADS_TXT_URL=https://example.com/ads.txt`
-2. Inject the ad network code into the global comic header using the "Code Snippets" function in the Django admin. (Don't specify a comic so it shows up everywhere.)
-3. Inject the ad tags into the appropriate site areas using the "Code Snippets" function. Currently the supported areas are hardcoded. You can add more by editing the `apps/comics/templatetags/snippet_extras.py` file.
-4. You may find it helpful to use the "testing" flag before a snippet to the whole site. When this is true it only exists on the `example.com/test/` URL.
-
+To create SSL certs for use in production, you need to run certbot. See the AWS setup guide for an example.
 
 # Roadmap
 
 - [ ] Bug Fixes
   - [ ] Alt text doesn't dynamically change with page switch on Chrome
-  - [ ] Replace the forum with a built-in system for comments. Leave the forum-y stuff to Reddit or something.
   - [ ] nginx access and error logs don't ever cycle, so they might fill up the disk.
   - [ ] Migrate to a slightly larger server for the extra RAM
 - [ ] Nice New Features
@@ -90,7 +73,6 @@ Ads should currently be configured globally for the entire server, NOT per domai
   - [ ] Request the best file size for the comic view area.
   - [ ] Create a way to view the highest resolution version of the file.
 - [ ] New URL-based Router
-  - [x] Google Analytics per domain
   - [ ] Remove comic slug field
   - [ ] Blacklisted page slugs ("feed", "data")
   - [ ] Restricted admin permissions for artists
@@ -236,15 +218,3 @@ docker compose exec django python manage.py backup load <dumpfile.zip>
 # Restart the server
 docker compose restart
 ```
-
-# Notes on comfortable reading
-
-The theory behind the design on the site is that it should be a perfectly comfortable reading experience for all of
-the following screen sizes:
-
-- [ ] 1024x768 (iPad landscape. This also covers smallish laptops, which are typically wider with the same height.
- In this case, the vertical height is the limitation.)
-- [ ] 329x568 (iPhone 5 portrait. This also covers most Android phones)
-- [ ] (Very large screens. This covers the case where neither the height nor width are bounded.)
-
-These need to have the comic fill the majority of the screen, while still exposing the navigation buttons.
