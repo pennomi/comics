@@ -11,4 +11,6 @@ reload = True
 if int(os.getenv('USE_SSL')):
     bind = "0.0.0.0:443"
     certfile = f"/etc/letsencrypt/live/{PROJECT_DIR}/cert.pem"
-    keyfile = f"/etc/letsencrypt/live/{PROJECT_DIR}/fullchain.pem"
+    keyfile = f"/etc/letsencrypt/live/{PROJECT_DIR}/privkey.pem"
+    ca_certs = f"/etc/letsencrypt/live/{PROJECT_DIR}/fullchain.pem"
+    ssl_version = "TLS"
