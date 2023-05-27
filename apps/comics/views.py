@@ -9,9 +9,7 @@ from django.template.defaultfilters import date
 from django.urls import reverse
 from django.utils.timezone import now
 from django.views import View
-from django.views.decorators.cache import cache_page
 from django.views.generic import TemplateView, RedirectView
-from django.utils.decorators import method_decorator
 
 from apps.comics.models import Comic, Page, TagType, Tag, Ad, ShortCodeRedirect
 
@@ -149,7 +147,6 @@ class FeedView(TemplateView):
         return context
 
 
-@method_decorator(cache_page(60 * 60), name='dispatch')
 @handle_redirect_exception
 class ComicAjaxView(View):
     def get(self, request, *args, **kwargs):
@@ -176,7 +173,6 @@ class ComicAjaxView(View):
         return response
 
 
-@method_decorator(cache_page(60 * 60), name='dispatch')
 @handle_redirect_exception
 class PageAjaxView(View):
     def get(self, request, *args, **kwargs):
