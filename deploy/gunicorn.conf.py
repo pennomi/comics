@@ -8,6 +8,7 @@ wsgi_app = f"{PROJECT_DIR}.wsgi"
 workers = multiprocessing.cpu_count() * 2 + 1
 threads = 3
 reload = True
+accesslog = "-"
 
 if int(os.getenv('USE_SSL')):
     bind = "0.0.0.0:443"
