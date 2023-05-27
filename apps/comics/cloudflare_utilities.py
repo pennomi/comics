@@ -24,3 +24,7 @@ def purge_paths(comic, paths: List[str], everything=False):
     response = requests.post(url, json=body, headers=headers).json()
     if not response["success"]:
         raise Exception(response["errors"][0]["message"])
+
+
+def build_resize_url(path: str, width: int) -> str:
+    return f"/cdn-cgi/image/width={width},format=auto{path}"

@@ -6,7 +6,7 @@ from django.urls import reverse
 from django.utils.timezone import now
 
 from apps.comics import custom_markdown
-from apps.comics.cloudflare_utilities import purge_paths
+from apps.comics.cloudflare_utilities import purge_paths, build_resize_url
 
 
 class Comic(models.Model):
@@ -54,6 +54,8 @@ class Comic(models.Model):
         blank=True, help_text="Link to a Discourse forum, for example `https://forum.example.com/`")
     cloudflare_token = models.CharField(max_length=50, blank=True, help_text="Your Cloudflare API Token")
     cloudflare_zone = models.CharField(max_length=50, blank=True, help_text="Your Cloudflare Zone ID")
+    cloudflare_resize = models.BooleanField(
+        default=False, help_text="If True, resize images using CloudFlare's API. (Requires paid account.)")
 
     # Misc
     changed_at = models.DateTimeField(auto_now=True, help_text="Records the last edit of this Comic.")
@@ -296,6 +298,12 @@ class Page(models.Model):
     class Meta:
         unique_together = (("comic", "slug"), ("comic", "ordering"), )
         ordering = ('ordering', )
+
+    @property
+    def resized_image_url(self):
+        if self.comic.cloudflare_resize:
+            return build_resize_url(self.image.url, 1440)  # 1440 is a size that works on virtually all screens
+        return self.image.url
 
     def get_absolute_url(self):
         return reverse("reader", kwargs={

@@ -8,7 +8,7 @@
 	<meta property="og:title" content="{{ page.title }}"/>
 	<meta property="og:type" content="article"/>
 	<meta property="og:url" content="{{ request.scheme }}://{{ request.get_host }}{{ page.get_absolute_url }}"/>
-	<meta property="og:image" content="{{ request.scheme }}://{{ request.get_host }}{{ page.image.url }}"/>
+	<meta property="og:image" content="{{ request.scheme }}://{{ request.get_host }}{{ page.resized_image_url }}"/>
 	<meta property="og:description" content="{{ page.transcript_txt }}"/>
 	<meta property="og:site_name" content="{{ comic.title }} | A webcomic by {{ comic.author }}"/>
 {% endblock %}
@@ -35,7 +35,7 @@
 				"name": "{{ page.title }}",
 				"position": "{{ page.ordering }}",
 				"datePublished": "{{ page.posted_at|date:'Y-m-d' }}",
-				"image": "{{ request.scheme }}://{{ request.get_host }}{{ page.image.url }}",
+				"image": "{{ request.scheme }}://{{ request.get_host }}{{ page.resized_image_url }}",
 				"text": "{{ page.transcript_txt }}"
 			},
 			"author": {
@@ -61,7 +61,7 @@
 		</div>
 
 		<div class="page-image-wrapper">
-			<img id="comic-image" class="comic-image" src="{{ page.image.url }}" title="{{ page.alt_text }}"
+			<img id="comic-image" class="comic-image" src="{{ page.resized_image_url }}" title="{{ page.alt_text }}"
 					 onload="COMICS.imageLoaded();"/>
 			<div id="comic-image-spinner"></div>
 		</div>

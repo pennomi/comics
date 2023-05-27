@@ -18,7 +18,7 @@
     <link>{{ request.scheme }}://{{request.get_host}}{{ page.get_absolute_url }}</link>
     <guid>{{ request.scheme }}://{{request.get_host}}{{ page.get_absolute_url }}</guid>
     <description><![CDATA[
-      <img src="{{ request.scheme }}://{{request.get_host}}{{ page.image.url }}" title="{{ page.alt_text }}"></img>
+      <img src="{{ request.scheme }}://{{request.get_host}}{{ page.resized_image_url }}" title="{{ page.alt_text }}"></img>
       {{ page.transcript_html | safe }}
       <style>
         .tag {
