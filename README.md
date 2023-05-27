@@ -59,39 +59,22 @@ To create SSL certs for use in production, you need to run certbot. See the AWS 
   - [ ] Global search functionality for archive (returns tags and pages)
 - [ ] Comments Overhaul
   - [ ] The forum isn't working out well for comments, is hard to set up, and embedding has gotten harder. What can we do instead?
-- [ ] RSS Upgrade
-  - [ ] Only show items created within 1 week ago with no count limit (some RSS readers delete their cache after some time)
-- [ ] Cache invalidation
-  - [ ] Configure CloudFlare per-domain
-  - [ ] Split first/last AJAX into a separate request
-  - [ ] Ensure JSON XHR is cached by CloudFlare
-  - [ ] On-save Comic/Page trigger that invalidates related URLs (namespace for easier invalidation)
-  - [ ] CTA ad should load using API and invalidate on model change
 - [ ] Support WebP file format
   - [ ] Request the best image file format (PNG, JPEG, WEBP).
   - [ ] Encode many different image permutations (size, format). 
   - [ ] Request the best file size for the comic view area.
   - [ ] Create a way to view the highest resolution version of the file.
 - [ ] New URL-based Router
-  - [ ] Remove comic slug field
   - [ ] Blacklisted page slugs ("feed", "data")
   - [ ] Restricted admin permissions for artists
-  - [ ] Automate NGINX configuration as a management command
   - [ ] Automate SSL certs through LetsEncrypt as a management command
   - [ ] Autorenew certs where applicable
-- [x] Comments System
-  - [x] Style the comments section using the page styles
-  - [ ] Have an auto-generator for Discourse comment embed styles
 - [ ] Code Cleanliness & Data Integrity
-  - [ ] Ensure RSS feed has no issues. Validate with http://www.feedvalidator.org/
+  - [ ] Ensure RSS feed has no issues. Validate with https://validator.w3.org/feed/check.cgi
   - [ ] Make the CSS variables load into the template and move the main css file out to a static file
   - [ ] Load any JS variables into the template and move the main js file out to a static file
-  - [ ] Inject admin edit button ONLY if the cookie is detected (instead of hiding it)
   - [ ] Migrate media files to namespaced paths. Randomize comic page image names so they're not guessable.
-  - [ ] Periodically clean out orphaned media. Make sure the forum stuff still links properly.
-  - [ ] Consider making slugs case-insensitive, and have restricted slugs, for pages, tags, and tag types
-  - [ ] Reduce code duplication in nginx configs
-  - [x] Remove fontawesome
+  - [ ] Periodically clean out orphaned media. Make sure the comments still link properly.
   - [ ] Use proper HTML template elements for dynamic sections
 - [ ] Optimization
   - [ ] Run everything through an SEO checker
@@ -120,6 +103,7 @@ To create SSL certs for use in production, you need to run certbot. See the AWS 
   - [ ] Join the Conversation on Discord
   - [ ] Tip me on Ko-Fi
   - [ ] GA event tracking
+- [ ] Host static media through a better server than gunicorn
 - [ ] Auto-post to various social media
   - [ ] General OAuth login
   - [ ] Reddit

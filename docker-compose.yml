@@ -5,7 +5,7 @@ services:
     build: .
     env_file:
       - ./project.env
-    command: gunicorn -c ./deploy/gunicorn.conf.py
+    command: supervisord -n -c deploy/supervisor.conf
     volumes:
       - .:/opt/django
       - ./deploy/db:/var/lib/django

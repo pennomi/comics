@@ -36,7 +36,7 @@
 
     /* Page sizing */
     --comic-max-width: 728px;  /* 728px because that fits the widest ad size */
-    --comic-min-width: 320px;  /* 728px because that fits the widest ad size */
+    --comic-min-width: 320px;  /* 320px because that is the smallest screen (iPhone) */
     --overflow-extra-width: 82px;  /* Just a comfortable padding for wider screens. */
     --spinner-size: 120px;
     --navigation-height: 64px;

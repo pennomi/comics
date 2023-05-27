@@ -15,7 +15,6 @@ class Comic(models.Model):
         max_length=128, unique=True, blank=True,
         help_text="The domain used to view this comic, in the format `subdomain.example.com`. "
                   "If this is blank, the comic will not be able to be viewed.")
-    slug = models.CharField(max_length=128, unique=True, help_text="Deprecated.")
 
     # Comic information
     title = models.CharField(max_length=128)

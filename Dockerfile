@@ -11,7 +11,7 @@ ENV PYTHONUNBUFFERED 1
 
 # Get Packages and Other Dependencies
 # RUN apt update && apt install -y nginx
-RUN pip install -r /opt/django/requirements.txt gunicorn
+RUN pip install -r /opt/django/requirements.txt gunicorn supervisor
 
 EXPOSE 80
 EXPOSE 443
