@@ -332,6 +332,20 @@ const COMICS = function () {
             }
         });
 
+        // Refresh discourse comments if loaded invisibly (no height)
+        if (target === 'comments-frame') {
+            let embedFrame = document.getElementById('discourse-embed-frame');
+            let embedHeight = -1;
+
+            if (embedFrame && embedFrame.height) {
+                embedHeight = parseInt(embedFrame.height, 10);
+            }
+
+            if (embedHeight <= 0) {
+                refreshDiscourseComments();
+            }
+        }
+
         // Set content styling
         document.querySelectorAll('.tab-content-area').forEach(function (element) {
             if (element.id === target) {
