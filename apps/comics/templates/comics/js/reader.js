@@ -330,10 +330,10 @@ const COMICS = function () {
         if (activeTab === null || !["info-frame", "comments-frame", "quests-frame"].includes(activeTab)) {
             activeTab = "info-frame";
         }
-        activateTab(activeTab);
+        setTabActive(activeTab);
     }
 
-    function activateTab(target) {
+    function setTabActive(target) {
         localStorage.setItem("comics.activeTab", target);
 
         // Set tab styling
@@ -353,11 +353,15 @@ const COMICS = function () {
                 element.style.display = "none";
             }
         });
+    }
+
+    function activateTab(target) {
+        setTabActive(target);
 
         // Queue a refresh check if comments loaded invisibly (no height)
         if (target === 'comments-frame' && getCommentFrameHeight() <= 0) {
             window.setTimeout(() => {
-                refreshDiscourseComments(false);
+            refreshDiscourseComments(false);
             }, 0);
         }
     }
