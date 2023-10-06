@@ -156,7 +156,7 @@ const COMICS = function () {
         }
 
         // Try to refresh the comments
-        refreshDiscourseComments();
+        refreshDiscourseComments(true);
 
         // Try to show the popup
         window.setTimeout(attemptToShowPopup, 5000);
@@ -266,8 +266,21 @@ const COMICS = function () {
 
     document.onkeydown = keyboardNav;
 
-    function refreshDiscourseComments() {
+    function getCommentFrameHeight() {
+        const embedFrame = document.getElementById('discourse-embed-frame');
+        let embedHeight = -1;
+
+        if (embedFrame && embedFrame.height) {
+            embedHeight = parseInt(embedFrame.height, 10);
+        }
+        return embedHeight;
+    }
+
+    function refreshDiscourseComments(forced=true) {
         if (!DISCOURSE_URL) {
+            return;
+        }
+        if (!forced && getCommentFrameHeight() > 0) {
             return;
         }
         try {
@@ -332,20 +345,6 @@ const COMICS = function () {
             }
         });
 
-        // Refresh discourse comments if loaded invisibly (no height)
-        if (target === 'comments-frame') {
-            let embedFrame = document.getElementById('discourse-embed-frame');
-            let embedHeight = -1;
-
-            if (embedFrame && embedFrame.height) {
-                embedHeight = parseInt(embedFrame.height, 10);
-            }
-
-            if (embedHeight <= 0) {
-                refreshDiscourseComments();
-            }
-        }
-
         // Set content styling
         document.querySelectorAll('.tab-content-area').forEach(function (element) {
             if (element.id === target) {
@@ -354,6 +353,13 @@ const COMICS = function () {
                 element.style.display = "none";
             }
         });
+
+        // Queue a refresh check if comments loaded invisibly (no height)
+        if (target === 'comments-frame' && getCommentFrameHeight() <= 0) {
+            window.setTimeout(() => {
+                refreshDiscourseComments(false);
+            }, 0);
+        }
     }
 
     window.onpopstate = function (event) {
