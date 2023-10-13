@@ -3,6 +3,8 @@ version: '3'
 services:
   django:
     build: .
+    depends_on:
+      - caddy
     env_file:
       - ./project.env
     command: supervisord -n -c deploy/supervisor.conf
@@ -12,10 +14,28 @@ services:
       - /etc/letsencrypt:/etc/letsencrypt
       - ./deploy/static:/var/www/static
       - ./deploy/media:/var/www/media
-    ports:
-      - "80:80"
-      - "443:443"
     logging:
       options:
         max-size: "50m"
         max-file: "2"
+  caddy:
+    image: caddy
+    ports:
+      - "80:80"
+      - "443:443"
+    env_file:
+      - ./project.env
+    volumes:
+      - ./deploy/Caddyfile:/etc/caddy/Caddyfile
+      - caddy_data:/data
+      - caddy_config:/config
+      - ./deploy/static:/srv/static
+      - ./deploy/media:/srv/media
+    logging:
+      options:
+        max-size: "50m"
+        max-file: "2"
+volumes:
+  caddy_data:
+    external: true
+  caddy_config:

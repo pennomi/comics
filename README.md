@@ -15,15 +15,14 @@ If you're unfamiliar with Docker, this might be a little tricky for you. It's wo
 
 - Install Docker and Docker Compose for your platform
 - Run `python generate_env.py` to set up the docker environment configuration. Answer `y` to the prompt if you're doing development work, or `n` if you're deploying a server.
-- Run `docker compose build`
-- Run `docker compose up -d`
+- Run `docker compose up --build -d`
 
 You now have a server running. Unfortunately it doesn't do much - we need to initialize the data or restore from a backup.
 
 
 ## Initialize Data From Scratch
 
-- Enter a shell on the docker django machine `docker compose exec comics bash`
+- Enter a shell on the docker django machine `docker compose exec django bash`
 - Create the database `python manage.py migrate`
 - Add a superuser `python manage.py createsuperuser`. Follow the prompts.
 - Collect static files `python manage.py collectstatic`
@@ -34,16 +33,16 @@ You now have a server running. Unfortunately it doesn't do much - we need to ini
 
 ## Backing Up and Restoring Data
 
-To back up your database, run `docker compose exec comics python manage.py backup dump <your filename here>.zip`.
+To back up your database, run `docker compose exec django python manage.py backup dump <your filename here>.zip`.
 
 To restore your database from a backup zip:
  - Ensure you have an empty database to start. It should be migrated.
- - Then load the backup zip `docker-compose exec comics python manage.py backup load <your filename here>.zip`.
+ - Then load the backup zip `docker-compose exec django python manage.py backup load <your filename here>.zip`.
  - Log into your admin and make sure to change any Comics or Alias URLs so they work on your new IPs/Domains.
 
 # Setting up SSL certs
 
-To create SSL certs for use in production, you need to run certbot. See the AWS setup guide for an example.
+The caddy server will automatically generate certs for the domain set in project.env
 
 # Roadmap
 
@@ -176,26 +175,20 @@ newgrp docker
 # Get the project
 git clone https://github.com/pennomi/comics.git
 cd comics
+
+# HEADS UP! First remember to set your DNS to the public IP address of the server
 python3 generate_env.py  # Select "n" because this is a production environment
 docker compose build
 
-# Configure SSL Cert with Let's Encrypt
-# HEADS UP! First remember to set your DNS to the public IP address of the server
-sudo apt install certbot
-sudo certbot certonly --cert-name <project name> --standalone --staple-ocsp -m <your email> --non-interactive --agree-tos -d <example.com> -d <another.example.com>
-
-# HEAD UP! You don't need this yet, but to renew do this.
-certbot renew --post-hook "docker compose restart"
-
-# You have the certs, so you can finally start the server
-docker compose up -d
+# Start the server
+docker compose up --build -d
 
 # Create the database and initialize the static files
 docker compose exec django python manage.py migrate
 docker compose exec django python manage.py collectstatic
 
 # EITHER initialize the data
-docker compose exec python manage.py createsuperuser
+docker compose exec django python manage.py createsuperuser
 # OR load from a data dump
 docker compose exec django python manage.py backup load <dumpfile.zip>
 

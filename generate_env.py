@@ -14,19 +14,25 @@ def main():
     except FileNotFoundError:
         response = ""
         while response not in ("y", "n"):
-            response = input("Is this a dev environment (disable SSL and enable debug mode)? (y/N) ").strip().lower()
+            response = input("Is this a dev environment (enable debug mode)? (y/N) ").strip().lower()
             if response == "":
                 response = "n"
         if response == "y":
-            debug_string = "DJANGO_DEBUG=1\nUSE_SSL=0"
+            debug_string = "DJANGO_DEBUG=1"
         else:
-            debug_string = "DJANGO_DEBUG=0\nUSE_SSL=1"
+            debug_string = "DJANGO_DEBUG=0"
+
+        domain = input("Domain (default: localhost): ").strip()
+        if domain == "":
+            domain = "localhost"
 
         chars = 'abcdefghijklmnopqrstuvwxyz0123456789!@#$%^&*(-_=+)'
         with open(filepath, 'w') as outfile:
-            outfile.write(f'''DJANGO_PROJECT_DIR=comics
+            outfile.write(f'''
+DJANGO_PROJECT_DIR=comics
 DJANGO_SECRET={get_random_string(50, chars)}
 {debug_string}
+SITE_DOMAIN={domain}
 ''')
         print("Created environment file successfully.")
 
