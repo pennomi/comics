@@ -20,7 +20,10 @@ SECURE_SSL_REDIRECT = not DEBUG
 ADS_TXT_URL = os.getenv('DJANGO_ADS_TXT_URL', None)
 
 # Hosts
-ALLOWED_HOSTS = ['*']
+ALLOWED_HOSTS = [os.getenv('SITE_DOMAIN', 'localhost')]
+CSRF_TRUSTED_ORIGINS = [
+    f'https://{host}' for host in ALLOWED_HOSTS
+]
 
 # Apps
 INSTALLED_APPS = [
