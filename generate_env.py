@@ -22,7 +22,7 @@ def main():
         else:
             debug_string = "DJANGO_DEBUG=0\nUSE_SSL=1"
 
-        chars = 'abcdefghijklmnopqrstuvwxyz0123456789!@#$%^&*(-_=+)'
+        chars = 'abcdefghijklmnopqrstuvwxyz0123456789!@#%^&*(-_=+)'  # Removed $ because docker compose is stupid
         with open(filepath, 'w') as outfile:
             outfile.write(f'''DJANGO_PROJECT_DIR=comics
 DJANGO_SECRET={get_random_string(50, chars)}
