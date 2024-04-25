@@ -1,3 +1,3 @@
-http://{$SITE_DOMAIN}, https://{$SITE_DOMAIN}
+http://, https://
 
 reverse_proxy django:8000

@@ -27,15 +27,14 @@ services:
       - ./project.env
     volumes:
       - ./deploy/Caddyfile:/etc/caddy/Caddyfile
-      - caddy_data:/data
-      - caddy_config:/config
-      - ./deploy/static:/srv/static
-      - ./deploy/media:/srv/media
+      - caddy_data:/var/lib/cadddy/data
+      - caddy_config:/var/lib/caddy/config
+      - ./deploy/static:/var/www/static
+      - ./deploy/media:/var/www/media
     logging:
       options:
         max-size: "50m"
         max-file: "2"
 volumes:
   caddy_data:
-    external: true
   caddy_config:

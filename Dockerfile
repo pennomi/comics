@@ -1,5 +1,4 @@
 # Set Up the Basic System
-# TODO: Try python3-alpine?
 FROM python:3-alpine
 
 # Mount the host directory
