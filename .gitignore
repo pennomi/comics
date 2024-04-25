@@ -5,3 +5,4 @@
 supervisord.pid
 project.env
 *.zip
+desktop.ini

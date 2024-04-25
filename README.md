@@ -58,11 +58,6 @@ The caddy server will automatically generate certs for the domain set in project
   - [ ] Global search functionality for archive (returns tags and pages)
 - [ ] Comments Overhaul
   - [ ] The forum isn't working out well for comments, is hard to set up, and embedding has gotten harder. What can we do instead?
-- [ ] Support WebP file format
-  - [ ] Request the best image file format (PNG, JPEG, WEBP).
-  - [ ] Encode many different image permutations (size, format). 
-  - [ ] Request the best file size for the comic view area.
-  - [ ] Create a way to view the highest resolution version of the file.
 - [ ] New URL-based Router
   - [ ] Blacklisted page slugs ("feed", "data")
   - [ ] Restricted admin permissions for artists
@@ -81,12 +76,6 @@ The caddy server will automatically generate certs for the domain set in project
   - [ ] User Timing API for real user data
 - [ ] Onboarding
   - [ ] Add a "no content" placeholder template for comics that have no pages yet
-- [ ] Font update
-  - [ ] Adjust certain punctuation to be lower (apostrophe, quotation, exclamation, question)
-  - [ ] Make left margin slightly smaller on O
-  - [ ] Slightly smaller space
-  - [ ] Russian characters and о̄ñ
-  - [ ] Adjust everything down a pixel or so
 - [ ] New Reader "Quests" Section
   - [ ] Subscribe to RSS feed
   - [ ] Social Share Functionality
@@ -141,7 +130,6 @@ The caddy server will automatically generate certs for the domain set in project
 - [ ] Other Wishlist
   - [ ] Translations
   - [ ] Order by Chronological vs Release vs whatever
-  - [ ] Make a simpler install process. Maybe avoid docker-compose?
 
 # Other ideas:
 

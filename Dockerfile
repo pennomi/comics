@@ -1,6 +1,6 @@
 # Set Up the Basic System
 # TODO: Try python3-alpine?
-FROM python:3-slim
+FROM python:3-alpine
 
 # Mount the host directory
 COPY . /opt/django
@@ -10,7 +10,7 @@ ENV PYTHONDONTWRITEBYTECODE 1
 ENV PYTHONUNBUFFERED 1
 
 # Get Packages and Other Dependencies
-# RUN apt update && apt install -y nginx
+RUN apk add -u zlib-dev jpeg-dev gcc musl-dev
 RUN pip install -r /opt/django/requirements.txt gunicorn supervisor
 
 EXPOSE 8000
