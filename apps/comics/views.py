@@ -11,7 +11,7 @@ from django.utils.timezone import now
 from django.views import View
 from django.views.generic import TemplateView, RedirectView
 
-from apps.comics.models import Comic, Page, TagType, Tag, Ad, ShortCodeRedirect
+from apps.comics.models import Comic, Page, TagType, Tag, Ad, ShortCodeRedirect, AliasUrl
 
 
 def require_comic(cls):
@@ -387,3 +387,14 @@ Disallow:
 Sitemap: {reverse('sitemap')}
         """
         return HttpResponse(data)
+
+
+def caddy_config(request):
+    host = request.GET.get('domain')
+
+    if AliasUrl.objects.filter(domain=host).exists():
+        return HttpResponse(status=200)
+    if Comic.objects.filter(domain=host).exists():
+        return HttpResponse(status=200)
+
+    raise Http404()

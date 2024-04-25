@@ -14,10 +14,12 @@ SECRET_KEY = os.getenv('DJANGO_SECRET', 'SAMPLE_KEY_PLEASE_CHANGE')
 DEBUG = int(os.getenv('DJANGO_DEBUG', '0'))
 CSRF_COOKIE_SECURE = not DEBUG
 SESSION_COOKIE_SECURE = not DEBUG
-SECURE_SSL_REDIRECT = not DEBUG
+
+SECURE_SSL_REDIRECT = False  # This is provided by Caddy
 
 # Ad configuration
 ADS_TXT_URL = os.getenv('DJANGO_ADS_TXT_URL', None)
+CSRF_TRUSTED_ORIGINS = []
 
 # Hosts
 ALLOWED_HOSTS = ['*']

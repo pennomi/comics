@@ -36,6 +36,7 @@ urlpatterns = [
     # Miscellaneous
     path('community/', comics_views.CommunityView.as_view(), name='community'),
     path('500/', comics_views.comic_500_view),
+    path('caddy/', comics_views.caddy_config),
     path('<str:short_code>', comics_views.ShortCodeRedirectView.as_view(), name = 'configured-redirect'),
 
 ]

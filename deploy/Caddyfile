@@ -1,3 +1,14 @@
-http://, https://
+# https://caddy.community/t/serving-tens-of-thousands-of-domains-over-https-with-caddy/11179
 
-reverse_proxy django:8000
+{
+	on_demand_tls {
+		ask	http://django:8000/caddy/
+	}
+}
+
+http://, https:// {
+	tls internal {
+		on_demand
+	}
+	reverse_proxy django:8000
+}
