@@ -11,4 +11,13 @@ http://, https:// {
 		on_demand
 	}
 	reverse_proxy django:8000
+
+	handle_path /static/* {
+		root * /var/www/static/
+		file_server
+	}
+	handle_path /media/* {
+		root * /var/www/media/
+		file_server
+	}
 }
