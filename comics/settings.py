@@ -17,6 +17,9 @@ SESSION_COOKIE_SECURE = not DEBUG
 
 SECURE_SSL_REDIRECT = False  # This is provided by Caddy
 
+# Make Django understand that we are behind a proxy
+SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
+
 # Ad configuration
 ADS_TXT_URL = os.getenv('DJANGO_ADS_TXT_URL', None)
 CSRF_TRUSTED_ORIGINS = []
