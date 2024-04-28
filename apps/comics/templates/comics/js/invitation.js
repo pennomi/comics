@@ -10,19 +10,19 @@ function initializePopups() {
 }
 
 function attemptToShowPopup() {
-    const timeout = 600000;  // 10 minutes
+    const timeout = 1000 * 60 * 60 * 6;  // 6 hours
 
     // Check if we've shown a popup recently
     if (sessionStorage.lastInvite != null) {
-        var timeSinceLastShown = Date.now() - sessionStorage.lastInvite;
-        if (timeSinceLastShown < timeout) { // 10 minutes
+        let timeSinceLastShown = Date.now() - sessionStorage.lastInvite;
+        if (timeSinceLastShown < timeout) {
             return;
         }
     }
 
     // Try to show the popup
     const e = document.querySelector(".dialog-invitation");
-    if (e.open) {
+    if (e === null || e.open) {
         return;
     }
     e.showModal();

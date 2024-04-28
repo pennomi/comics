@@ -609,10 +609,17 @@ dialog.is-hidden::backdrop {
     max-height: 95vh;
     object-fit: contain;
 }
-.dialog-close-button {
+.dialog-close {
     position: absolute;
-    top: 0;
-    right: 0;
+    width: 32px;
+    height: 32px;
+    border: 1px solid white;
+    border-radius: 4px;
+    background-color: #691b17;
+    color: white;
+    font-weight: bold;
+    top: 4px;
+    right: 4px;
 }
 @keyframes slidein {
   from {
