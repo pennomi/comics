@@ -13,7 +13,7 @@ function attemptToShowPopup() {
     const timeout = 1000 * 60 * 60 * 6;  // 6 hours
 
     // Check if we've shown a popup recently
-    if (sessionStorage.lastInvite != null) {
+    if (sessionStorage.lastInvite !== undefined) {
         let timeSinceLastShown = Date.now() - sessionStorage.lastInvite;
         if (timeSinceLastShown < timeout) {
             return;
